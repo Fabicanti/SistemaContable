@@ -1,0 +1,18 @@
+
+.componentForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55vh;
+    color: white;
+
+}
+
+.componentForm form{
+    border-radius: 7px;
+    background-color: rgba(18, 57, 102, 0.815);
+    padding: 40px;
+    width: 25em;
+    display: flex;
+    flex-direction: column;
+}
