@@ -1,4 +1,36 @@
-#submit{
+
+@import url('./themes/colors.css');
+
+.register-selection{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.form-group.sign::after, .form-group.sign::before{
+    background-color: var(--color-gradiant_1);
+}
+
+.iconSing{
+    color: rgba(252,70,107,1);
+}
+
+.register-selection .selection{
+    width: 50%;
+    height: 30px;
+    padding: 3px;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: var(--color-gradiant_1);
+}
+
+.form-sumbit.sign{
+    background: linear-gradient(27deg, var(--color-gradiant_1) 0%, var(--color-gradiant_2) 100%);
+    background-size: 200%;
+}
+
+.form-sumbit.sign:hover{
+    background-position: right;
 }

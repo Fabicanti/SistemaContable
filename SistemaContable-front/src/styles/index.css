@@ -1,5 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('./themes/colors.css');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
+
+html{
+    height: 100%;
+}
+
+
+body{
+    min-height: 100vh;
+    background-color: #fff;
+    background: var(--color-gradiant_2);
+    background: linear-gradient(27deg, var(--color-gradiant_2) 0%, var(--color-gradiant_1) 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    /* background-color: var(--color-gradiant_2); */
+}
+

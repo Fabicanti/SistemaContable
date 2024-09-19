@@ -1,30 +1,47 @@
-import { Button, NavbarCollapse } from 'react-bootstrap';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import { IoIosLogOut } from "react-icons/io";
+import { useUser } from "../context/UserProvider";
+import logo from "../assets/icono-sistema.png";
+import "../styles/Header.css";
 
-export const Head = ({ login = false }) => {
+export const Head = ({ login = false, logout }) => {
+  const navigate = useNavigate();
+  const { user } = useUser();
 
-    const navigate = useNavigate();
-
-    return (
-        <>
-            <Navbar bg="dark" data-bs-theme="dark">
-                <Container>
-                    <Navbar.Brand>Sistema contable</Navbar.Brand>
-                    <NavbarCollapse>
-                        <Nav className="me-auto">
-                            <Nav.Link onClick={() => navigate("/")}>inicio</Nav.Link>
-                        </Nav>
-
-
-                        {login ? <Button onClick={() => navigate("/")} variant="outline-success">Cerrar sesion</Button>
-                            : <Button onClick={() => navigate("/login")} variant="outline-success">Iniciar sesion</Button>}
-                    </NavbarCollapse>
-                </Container>
-
-            </Navbar >
-        </>
-    );
+  return (
+    <>
+      <header className="cabecera" style={ {background: ` ${login ? "rgba(255, 255, 255, 0.2)" : "rgb(0, 0, 0, 0.6)"}`} }>
+        {login ? (
+          user?.roles === "SUPERUSER" ? (
+            <div className="roles a">Administrador</div>
+          ) : (
+            <div className="roles b">Usuario</div>
+          )
+        ) : (
+          <Link
+            className="logo-system"
+            style={{ textDecoration: "none" }}
+            to={"/"}
+          >
+            <img src={logo} alt="" />
+            <span>Sistema contable</span>
+          </Link>
+        )}
+        <div className="div-nav">
+          {login ? (
+            <button onClick={() => logout()} className="log-button out">
+              <IoIosLogOut size={36} />
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="log-button in"
+            >
+              Iniciar sesión
+            </button>
+          )}
+        </div>
+      </header>
+    </>
+  );
 }

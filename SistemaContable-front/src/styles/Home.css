@@ -1,0 +1,26 @@
+
+.view-layout{
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content{
+    display: flex;
+    flex-direction: column;
+    margin-left: 16%;
+}
+
+@media (max-width: 1080px) {
+
+    /* Cuando se despliega el menú, el contenido principal ocupa toda la página*/
+    .main-content, .side-bar.open{
+        margin-left: 0;
+    }
+
+
+    /* Estilo del Head - El div de roles desaparece cuando se despliega el menu*/
+    .roles{
+        opacity: 0;
+        visibility: visible;
+    }
+}

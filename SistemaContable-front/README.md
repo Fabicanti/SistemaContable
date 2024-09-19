@@ -1,8 +1,41 @@
-# React + Vite
+# Sistema Contable.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción.
+Se trata de un proyecto académico para la asignatura de **Sistemas Administrativos II** sobre de desarrollo de un **Sistema Contable**
 
-Currently, two official plugins are available:
+## Requirimientos.
+* Login de usuarios.
+* Tareas y restricciones por roles de usuario.
+* Administración del plan de cuentas.
+* Registro de asientos contables.
+* Reporte de libro diario.
+* Reporte de libro mayor.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnológias Utilizadas.
+### Backend.
+* [Spring Boot](https://spring.io/projects/spring-boot).
+* Base de datos relacional ([PostgreSQL](https://www.postgresql.org/)).
+### Frontend.
+* [React](https://es.react.dev/).
+* [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript).
+* [Bootstrap](https://getbootstrap.com/).
+
+## Instalación del proyecto.
+1. Clonar repositorio.
+```
+git clone https://github.com/enzovillanueva/sistema-contable.git
+```
+2. Navegar en la carpeta del proyecto.
+```
+cd sistema-contable
+```
+3. Instala las dependencias usando ```npm```.
+```
+npm install
+```
+Esto instalará todas las dependencias listadas en el archivo ```package.json```.
+
+4. Iniciar la aplicación.
+```
+npm run dev
+```
