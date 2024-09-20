@@ -73,7 +73,13 @@
     padding: 10px;
     width: 100%;
     font-weight: bolder;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.links-aside li .elem-link div{
+    margin-left: 10px;
 }
 
 .side-bar hr {
@@ -104,7 +110,7 @@
         display: none; /* Ocultar el nombre del logo en pantallas pequeñas */
     }
     
-    .side-bar .links-aside li .elem-link{
+    .side-bar .links-aside li .elem-link div{
         display: none;
     }
 
@@ -145,7 +151,11 @@
 
     .side-bar.open .links-aside h4,
     .side-bar.open .links-aside li .elem-link {
-        display: block; /* Mostrar el contenido del menú cuando está abierto */
+        display: flex; /* Mostrar el contenido del menú cuando está abierto */
+    }
+
+    .side-bar .links-aside li .elem-link div{
+        display: block;
     }
 
     .links-aside h4{

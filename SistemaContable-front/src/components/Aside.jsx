@@ -31,35 +31,47 @@ export const Aside = () => {
       <ul className="links-aside">
         <h4>Menu principal</h4>
         <li>
-          <IoHomeOutline size={sizeIcon} color={colorIcon} />
-          <Link to="/home" className="elem-link">Inicio</Link>
+          <Link to="/home" className="elem-link">
+            <IoHomeOutline size={sizeIcon} color={colorIcon} />
+            <div>Inicio</div>
+          </Link>
         </li>
         <li>
-          <MdOutlineAccountBalance size={sizeIcon} color={colorIcon} />
-          <Link to="/home/account" className="elem-link">Cuentas</Link>
+          <Link to="/home/account" className="elem-link">
+          <MdOutlineAccountBalance size={sizeIcon} color={colorIcon}/>
+           <div>Cuentas</div>
+           </Link>
         </li>
         <hr />
 
         <h4>Avanzado</h4>
         <li>
-          <IoBookOutline size={sizeIcon} color={colorIcon} />
-          <Link className="elem-link">Libros</Link>
+          <Link className="elem-link">
+            <IoBookOutline size={sizeIcon} color={colorIcon} />
+            <div>Libros</div>
+          </Link>
         </li>
         <li>
-          <PiSneakerMove size={sizeIcon} color={colorIcon} />
-          <Link className="elem-link">Movimientos</Link>
+          <Link className="elem-link">
+            <PiSneakerMove size={sizeIcon} color={colorIcon} />
+            <div>Movimientos</div>
+          </Link>
         </li>
 
         <hr />
 
         <h4>Preferencias</h4>
         <li>
-          <IoSettingsOutline size={sizeIcon} color={colorIcon} />
-          <Link className="elem-link">Configuración</Link>
+          <Link className="elem-link">
+            <IoSettingsOutline size={sizeIcon} color={colorIcon} />
+            <div>Configuración</div>
+          </Link>
         </li>
         <li>
-          <MdOutlineSupervisorAccount size={sizeIcon} color={colorIcon} />
-          <Link className="elem-link">Usuario</Link>
+          <Link className="elem-link">
+            <MdOutlineSupervisorAccount size={sizeIcon} color={colorIcon} />
+            <div>Usuario</div>
+          </Link>
         </li>
       </ul>
     </aside>
