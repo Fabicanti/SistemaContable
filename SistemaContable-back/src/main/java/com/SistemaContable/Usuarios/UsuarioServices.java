@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,6 +54,10 @@ public class UsuarioServices {
             hexString.append(hex);
         }
         return hexString.toString();
+    }
+
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return usuarioRepository.findAll();
     }
 
 }

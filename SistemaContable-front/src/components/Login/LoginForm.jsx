@@ -7,7 +7,7 @@ const initialForm = {
     password: "",
 };
 // url backend - Spring Boot
-const urlBackendLogin = "http://localhost:8080/api/login"
+const urlBackendLogin = "http://localhost:8080/api/usuarios/login"
 
 
 export const LoginForm = ({ avatarLogin, login, form }) => {

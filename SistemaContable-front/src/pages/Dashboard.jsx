@@ -2,7 +2,7 @@
 import "../styles/ArticleHomePage.css";
 import { useFetchGET } from "../hooks/useFetchGET";
 
-const urlUsers = "http://localhost:8080/api/users"
+const urlUsers = "http://localhost:8080/api/usuarios"
 
 export const Dashboard = () => {
 
@@ -15,6 +15,8 @@ export const Dashboard = () => {
       <h1>Usuarios registrados</h1>
       {isLoading ? (
         <h2>Cargando..</h2>
+      ) : errors ? (
+        <h2>Error al cargar los usuarios: {errors.message}</h2>
       ) : (
         <table>
           <thead>
@@ -27,9 +29,9 @@ export const Dashboard = () => {
           <tbody>
             {data.map((element, index) => (
               <tr key={index}>
-                <th>{element.id_usuario}</th>
+                <th>{element.id}</th>
                 <th>{element.username}</th>
-                <th>{element.roles}</th>
+                <th>{element.role}</th>
               </tr>
             ))}
           </tbody>

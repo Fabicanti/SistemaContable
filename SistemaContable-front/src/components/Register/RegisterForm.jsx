@@ -7,10 +7,10 @@ import { AlertModal } from "../../utils/AlertModal";
 const initialForm = {
     username: "",
     password: "",
-    roles: "USER"
+    role: ""
 };
 // url Backend - Spring Boot
-const urlBackendRegister = "http://localhost:8080/api/register";
+const urlBackendRegister = "http://localhost:8080/api/usuarios/registrar";
 
 
 export const RegisterForm = ({ avatarRegister, form }) => {
@@ -18,7 +18,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
 
     const { formState, setFormState, onInputChange } = form(initialForm);
 
-    const { username, password, roles } = formState;
+    const { username, password, role } = formState;
 
     const onClean = () => {
         setFormState(initialForm);
@@ -30,7 +30,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
         const response = await fetch(urlBackendRegister, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password, roles }),
+            body: JSON.stringify({ username, password, role }),
         });
 
         if (response.ok) {
@@ -88,8 +88,8 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                     </div>
                     <select
                         className="selection"
-                        name="roles"
-                        value={roles}
+                        name="role"
+                        value={role}
                         onChange={onInputChange}
                     >
                         <option value="USER">Usuario</option>
