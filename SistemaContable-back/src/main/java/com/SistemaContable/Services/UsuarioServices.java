@@ -1,7 +1,11 @@
-package com.SistemaContable.Usuarios;
+package com.SistemaContable.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.SistemaContable.DTO.UsuarioDTO;
+import com.SistemaContable.Entities.Usuario;
+import com.SistemaContable.Repositories.UsuarioRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

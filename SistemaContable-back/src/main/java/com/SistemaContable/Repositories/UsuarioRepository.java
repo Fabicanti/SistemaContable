@@ -1,6 +1,8 @@
-package com.SistemaContable.Usuarios;
+package com.SistemaContable.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.SistemaContable.Entities.Usuario;
 
 import java.util.Optional;
 
