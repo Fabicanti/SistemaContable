@@ -1,7 +1,5 @@
 package com.SistemaContable.Entities;
-
 import java.util.List;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +12,7 @@ public class Rol {
     @Column(nullable = false, unique = true)
     private String nombre;  // "USER" o "SUPERUSER"
 
-    @OneToMany(mappedBy = "rol")
+    @OneToMany(mappedBy = "role")
     private List<Usuario> usuarios;
 
     public Rol() {

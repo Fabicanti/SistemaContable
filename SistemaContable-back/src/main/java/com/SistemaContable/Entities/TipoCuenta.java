@@ -1,5 +1,4 @@
 package com.SistemaContable.Entities;
-
 import java.util.List;
 import jakarta.persistence.*;
 
@@ -45,6 +44,4 @@ public class TipoCuenta {
         this.cuentas = cuentas;
     }
 
-    
-    // Getters y Setters
 }

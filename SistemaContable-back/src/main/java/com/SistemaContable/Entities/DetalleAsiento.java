@@ -1,7 +1,5 @@
 package com.SistemaContable.Entities;
-
 import java.math.BigDecimal;
-
 import jakarta.persistence.*;
 
 @Entity
