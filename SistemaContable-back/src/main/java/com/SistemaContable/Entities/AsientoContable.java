@@ -10,13 +10,17 @@ public class AsientoContable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private Date fecha;
+
     @Column(nullable = false)
     private String descripcion;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+    
     @OneToMany(mappedBy = "asientoContable", cascade = CascadeType.ALL)
     private List<DetalleAsiento> detalles;
 
