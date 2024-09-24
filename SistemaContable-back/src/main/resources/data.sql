@@ -58,24 +58,21 @@ CREATE TABLE detalles_asiento (
     FOREIGN KEY (cuenta_id) REFERENCES cuentas(id),
     FOREIGN KEY (asiento_id) REFERENCES asientos_contables(id)
 );
-/*
+
 -- Carga de datos en la tabla Rol
 INSERT INTO roles (nombre) VALUES ('USER');
 INSERT INTO roles (nombre) VALUES ('SUPERUSER');
 
--- Carga de datos en la tabla Usuario
-INSERT INTO usuarios (username, password_hash, rol_id) VALUES ('admin', 'hashed_password_admin', 1);
-INSERT INTO usuarios (username, password_hash, rol_id) VALUES ('user', 'hashed_password_user', 2);
+-- Cargar datos en la tabla TipoCuenta
+INSERT INTO tipos_cuenta (nombre) VALUES ('ACTIVO');
+INSERT INTO tipos_cuenta (nombre) VALUES ('PASIVO');
+INSERT INTO tipos_cuenta (nombre) VALUES ('PATRIMONIO NETO');
+INSERT INTO tipos_cuenta (nombre) VALUES ('GANANCIA');
+INSERT INTO tipos_cuenta (nombre) VALUES ('PERDIDA');
 
--- Carga de datos en la tabla Cuenta
-INSERT INTO cuentas (nombre, tipo_cuenta_id) VALUES ('Caja', 1);
-INSERT INTO cuentas (nombre, tipo_cuenta_id) VALUES ('Banco', 2);
-
--- Carga de datos en la tabla AsientoContable
-INSERT INTO asientos_contables (fecha) VALUES ('2024-01-01');
-INSERT INTO asientos_contables (fecha) VALUES ('2024-02-01');
-
--- Carga de datos en la tabla DetalleAsiento
-INSERT INTO detalles_asiento (asiento_contable_id, cuenta_id, debe, haber) VALUES (1, 1, 1000.00, 0.00);
-INSERT INTO detalles_asiento (asiento_contable_id, cuenta_id, debe, haber) VALUES (1, 2, 0.00, 1000.00);
-*/
+-- Cargar datos en la tabla Usuario
+-- Las contraseñas user1: user123 ; admin : admin123)
+INSERT INTO usuarios (username, password_hash, nombre, apellido, email, role_id)
+VALUES ('admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Admin', 'Example', 'admin@example.com', 1);
+INSERT INTO usuarios (username, password_hash, nombre, apellido, email, role_id)
+VALUES ('user1', 'e606e38b0d8c19b24cf0ee3808183162ea7cd63ff7912dbb22b5e803286b4446', 'User1', 'Example', 'user1@example.com', 2);
