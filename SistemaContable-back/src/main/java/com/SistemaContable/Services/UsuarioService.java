@@ -8,7 +8,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -18,7 +17,7 @@ public class UsuarioService {
     private RolRepository rolRepository;
 
     // Método para registrar un nuevo usuario
-    public UsuarioDTO registrarUsuario(UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
+    public Usuario registrarUsuario(UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
         // Mapeo de DTO a entidad
         Usuario usuario = new Usuario();
         usuario.setUsername(usuarioDTO.getUsername());
@@ -31,9 +30,9 @@ public class UsuarioService {
 
         // Guardar en la base de datos
         Usuario nuevoUsuario = usuarioRepository.save(usuario);
-
+        mapToDTO(nuevoUsuario);
         // Mapeo de la entidad guardada a DTO
-        return mapToDTO(nuevoUsuario);
+        return nuevoUsuario;
     }
 
     public boolean eliminarUsuario(UsuarioDTO usuarioDTO){
@@ -57,9 +56,8 @@ public class UsuarioService {
     }
 
     // Obtener todos los usuarios
-    public List<UsuarioDTO> obtenerTodosLosUsuarios() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        return usuarios.stream().map(this::mapToDTO).collect(Collectors.toList());
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return usuarioRepository.findAll(); 
     }
 
     // Mapeo de entidad a DTO

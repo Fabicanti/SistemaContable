@@ -6,10 +6,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.web.bind.annotation.GetMapping;
+
 import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Entities.Usuario;
-import com.SistemaContable.Services.UsuarioServices;
+import com.SistemaContable.Services.UsuarioService;
 
 
 @RestController
@@ -17,10 +17,10 @@ import com.SistemaContable.Services.UsuarioServices;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioServices usuarioService;
+    private UsuarioService usuarioService;
 
     @PostMapping("/registrar")
-    public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
         Usuario user = usuarioService.registrarUsuario(usuarioDTO);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Usuario registrado exitosamente");
@@ -33,7 +33,7 @@ public class UsuarioController {
         boolean isAuthenticated = false;
         Map<String, String> response = new HashMap<>();
         try {
-            isAuthenticated = usuarioService.validarUsuario(usuarioDTO.getUsername(), usuarioDTO.getPassword());
+            isAuthenticated = usuarioService.autenticarUsuario(usuarioDTO.getUsername(), usuarioDTO.getPassword());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
