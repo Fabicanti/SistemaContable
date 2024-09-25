@@ -27,7 +27,6 @@ public class UsuarioController {
         response.put("userId", String.valueOf(user.getId()));
         return ResponseEntity.ok(response);
     }
-
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> autenticarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         boolean isAuthenticated = false;
@@ -47,11 +46,9 @@ public class UsuarioController {
         }
 
     }
-
     @GetMapping
     public ResponseEntity<List<Usuario>> obtenerUsuarios() {
         List<Usuario> usuarios = usuarioService.obtenerTodosLosUsuarios();
         return ResponseEntity.ok(usuarios);
     }
-    
 }

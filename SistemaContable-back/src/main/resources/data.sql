@@ -33,6 +33,7 @@ CREATE TABLE cuentas (
     FOREIGN KEY (tipo_cuenta_id) REFERENCES tipos_cuenta(id),
     FOREIGN KEY (cuenta_padre_id) REFERENCES cuentas(id)
 );
+
 -- Relación de subcuentas (una cuenta puede tener varias subcuentas)
 ALTER TABLE cuentas
 ADD CONSTRAINT fk_cuenta_padre
@@ -67,8 +68,8 @@ INSERT INTO roles (nombre) VALUES ('SUPERUSER');
 INSERT INTO tipos_cuenta (nombre) VALUES ('ACTIVO');
 INSERT INTO tipos_cuenta (nombre) VALUES ('PASIVO');
 INSERT INTO tipos_cuenta (nombre) VALUES ('PATRIMONIO NETO');
-INSERT INTO tipos_cuenta (nombre) VALUES ('GANANCIA');
-INSERT INTO tipos_cuenta (nombre) VALUES ('PERDIDA');
+INSERT INTO tipos_cuenta (nombre) VALUES ('RESULTADO POSITIVO');
+INSERT INTO tipos_cuenta (nombre) VALUES ('RESULTADO NEGATIVO');
 
 -- Cargar datos en la tabla Usuario
 -- Las contraseñas user1: user123 ; admin : admin123)

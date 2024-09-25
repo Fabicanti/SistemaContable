@@ -1,4 +1,5 @@
 package com.SistemaContable.Services;
+
 import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Entities.*;
 import com.SistemaContable.Repositories.*;
@@ -8,12 +9,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
     private RolRepository rolRepository;
 
     // Método para registrar un nuevo usuario
@@ -25,7 +28,7 @@ public class UsuarioService {
 
         // Aquí asumo que tienes un método para encontrar el Rol por su ID
         Rol rol = rolRepository.findById(usuarioDTO.getRoleId())
-                               .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
         usuario.setRole(rol); // Asignar el Rol al usuario
 
         // Guardar en la base de datos
@@ -35,12 +38,12 @@ public class UsuarioService {
         return nuevoUsuario;
     }
 
-    public boolean eliminarUsuario(UsuarioDTO usuarioDTO){
+    public boolean eliminarUsuario(UsuarioDTO usuarioDTO) {
         Optional<Usuario> usuario = usuarioRepository.findByUsername(usuarioDTO.getUsername());
-        if (usuario.isPresent()){
+        if (usuario.isPresent()) {
             usuarioRepository.deleteById(usuario.get().getId());
             return true;
-        } else{
+        } else {
             return false;
         }
     }
@@ -56,14 +59,16 @@ public class UsuarioService {
     }
 
     // Obtener todos los usuarios
-    public List<Usuario> obtenerTodosLosUsuarios() {
-        return usuarioRepository.findAll(); 
+    public List<UsuarioDTO> obtenerTodosLosUsuarios() {
+        return usuarioRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     // Mapeo de entidad a DTO
     private UsuarioDTO mapToDTO(Usuario usuario) {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setId(usuario.getId());  // Ahora tiene el ID generado
+        usuarioDTO.setId(usuario.getId()); // Ahora tiene el ID generado
         usuarioDTO.setUsername(usuario.getUsername());
         usuarioDTO.setRoleId(usuario.getRole().getId()); // Aquí se obtiene el ID del rol
         return usuarioDTO;
@@ -76,7 +81,8 @@ public class UsuarioService {
         StringBuilder hexString = new StringBuilder();
         for (byte b : hash) {
             String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
+            if (hex.length() == 1)
+                hexString.append('0');
             hexString.append(hex);
         }
         return hexString.toString();
