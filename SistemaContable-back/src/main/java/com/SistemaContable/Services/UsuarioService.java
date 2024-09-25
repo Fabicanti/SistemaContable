@@ -70,7 +70,11 @@ public class UsuarioService {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId(usuario.getId()); // Ahora tiene el ID generado
         usuarioDTO.setUsername(usuario.getUsername());
-        usuarioDTO.setRoleId(usuario.getRole().getId()); // Aquí se obtiene el ID del rol
+        usuarioDTO.setRoleId(usuario.getRole().getId());
+        usuarioDTO.setRoleName(usuario.getRole().getNombre());
+        usuarioDTO.setNombre(usuario.getNombre());
+        usuarioDTO.setApellido(usuario.getApellido());
+        usuarioDTO.setEmail(usuario.getEmail());
         return usuarioDTO;
     }
 

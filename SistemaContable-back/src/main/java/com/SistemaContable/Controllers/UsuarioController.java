@@ -44,11 +44,10 @@ public class UsuarioController {
             response.put("error", "Credenciales incorrectas");
             return ResponseEntity.status(401).body(response);
         }
-
     }
     @GetMapping
-    public ResponseEntity<List<Usuario>> obtenerUsuarios() {
-        List<Usuario> usuarios = usuarioService.obtenerTodosLosUsuarios();
+    public ResponseEntity<List<UsuarioDTO>> obtenerUsuarios() {
+        List<UsuarioDTO> usuarios = usuarioService.obtenerTodosLosUsuarios();
         return ResponseEntity.ok(usuarios);
     }
 }

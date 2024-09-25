@@ -55,7 +55,6 @@ public class TipoCuentaService {
 
         return null; // Manejar este caso en el controlador o lanzar excepción
     }
-
     // Método para eliminar un tipo de cuenta por ID
     public boolean eliminarTipoCuenta(Long id) {
         if (tipoCuentaRepository.existsById(id)) {

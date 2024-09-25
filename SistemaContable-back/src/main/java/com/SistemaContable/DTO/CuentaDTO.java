@@ -22,7 +22,7 @@ public class CuentaDTO {
         this.cuentaPadreId = cuentaPadreId;
         this.subCuentasIds = subCuentasIds;
     }
-
+ 
     public CuentaDTO(String nombre, String codigoCuenta, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
         this.nombre = nombre;
         this.codigoCuenta = codigoCuenta;
