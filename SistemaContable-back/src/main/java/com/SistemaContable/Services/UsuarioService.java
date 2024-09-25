@@ -25,6 +25,10 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setUsername(usuarioDTO.getUsername());
         usuario.setPasswordHash(encryptPassword(usuarioDTO.getPassword()));
+        //Agregacion
+        usuario.setNombre(usuarioDTO.getNombre());
+        usuario.setApellido(usuarioDTO.getApellido());
+        usuario.setEmail(usuarioDTO.getEmail());
 
         // Aquí asumo que tienes un método para encontrar el Rol por su ID
         Rol rol = rolRepository.findById(usuarioDTO.getRoleId())
@@ -71,7 +75,6 @@ public class UsuarioService {
         usuarioDTO.setId(usuario.getId()); // Ahora tiene el ID generado
         usuarioDTO.setUsername(usuario.getUsername());
         usuarioDTO.setRoleId(usuario.getRole().getId());
-        usuarioDTO.setRoleName(usuario.getRole().getNombre());
         usuarioDTO.setNombre(usuario.getNombre());
         usuarioDTO.setApellido(usuario.getApellido());
         usuarioDTO.setEmail(usuario.getEmail());

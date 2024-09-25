@@ -8,12 +8,11 @@ public class UsuarioDTO {
     private String username;
     private String password;
     private Long roleId;
-    private String roleName;
 
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(Long id, String nombre, String apellido, String email, String username, String password, Long roleId, String roleName) {
+    public UsuarioDTO(Long id, String nombre, String apellido, String email, String username, String password, Long roleId) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -21,17 +20,15 @@ public class UsuarioDTO {
         this.username = username;
         this.password = password;
         this.roleId = roleId;
-        this.roleName = roleName;
     }
 
-    public UsuarioDTO(String nombre, String apellido, String email, String username, String password, Long roleId, String roleName) {
+    public UsuarioDTO(String nombre, String apellido, String email, String username, String password, Long roleId) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.username = username;
         this.password = password;
         this.roleId = roleId;
-        this.roleName = roleName;
     }
 
     public Long getId() {
@@ -80,14 +77,6 @@ public class UsuarioDTO {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
 
     public String getPassword() {

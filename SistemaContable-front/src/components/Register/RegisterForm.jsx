@@ -1,13 +1,16 @@
 import React from "react";
 import { TbSelector } from "react-icons/tb";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaPenAlt, FaPen, FaAt, FaUser, FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { AlertModal } from "../../utils/AlertModal";
 
 const initialForm = {
+    nombre: "",
+    apellido: "",
+    email: "",
     username: "",
     password: "",
-    role: ""
+    roleId: "",
 };
 // url Backend - Spring Boot
 const urlBackendRegister = "http://localhost:8080/api/usuarios/registrar";
@@ -18,7 +21,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
 
     const { formState, setFormState, onInputChange } = form(initialForm);
 
-    const { username, password, role } = formState;
+    const { username, password, nombre, apellido, email, roleId } = formState;
 
     const onClean = () => {
         setFormState(initialForm);
@@ -30,7 +33,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
         const response = await fetch(urlBackendRegister, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password, role }),
+            body: JSON.stringify({ nombre, apellido, email, username, password, roleId }),
         });
 
         if (response.ok) {
@@ -46,7 +49,57 @@ export const RegisterForm = ({ avatarRegister, form }) => {
             <form onSubmit={onSumbit}>
                 <img src={avatarRegister} alt="" className="avatarLogin" />
                 <h2>Registrate</h2>
+                {/* Nombre */}
+                <div className="form-group focus sign">
+                    <div className="i">
+                        <FaPen className="iconSing" />
+                    </div>
 
+                    <div>
+                        <label htmlFor="nombre">Nombre: </label>
+                        <input
+                            type="text"
+                            className="form-input"
+                            name="nombre"
+                            value={nombre}
+                            onChange={onInputChange}
+                        />
+                    </div>
+                </div>
+                {/* Apellido */}
+                <div className="form-group focus sign">
+                    <div className="i">
+                        <FaPenAlt className="iconSing" />
+                    </div>
+
+                    <div>
+                        <label htmlFor="apellido">Apellido: </label>
+                        <input
+                            type="text"
+                            className="form-input"
+                            name="apellido"
+                            value={apellido}
+                            onChange={onInputChange}
+                        />
+                    </div>
+                </div>
+                {/* Email */}
+                <div className="form-group focus sign">
+                    <div className="i">
+                        <FaAt className="iconSing" />
+                    </div>
+
+                    <div>
+                        <label htmlFor="email">Email: </label>
+                        <input
+                            type="email"
+                            className="form-input"
+                            name="email"
+                            value={email}
+                            onChange={onInputChange}
+                        />
+                    </div>
+                </div>
                 <div className="form-group focus sign">
                     <div className="i">
                         <FaUser className="iconSing" />
@@ -88,12 +141,12 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                     </div>
                     <select
                         className="selection"
-                        name="role"
-                        value={role}
+                        name="roleId"
+                        value={roleId}
                         onChange={onInputChange}
                     >
-                        <option value="USER">Usuario</option>
-                        <option value="SUPERUSER">Administrador</option>
+                        <option value={1}>Usuario</option>
+                        <option value={2}>Administrador</option>
                     </select>
                 </div>
 
