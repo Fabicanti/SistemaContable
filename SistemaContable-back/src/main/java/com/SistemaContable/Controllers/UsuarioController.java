@@ -27,8 +27,14 @@ public class UsuarioController {
         response.put("userId", String.valueOf(user.getId()));
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * Se modifico el tipo de retorno de la función de Map<String, String> a ?
+     * @param usuarioDTO
+     * @return Retorna los datos de usuario logeado si la autenticación es exitosa, caso contrario será un estado HTTP 403: Unauthorized.
+     */
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> autenticarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<?> autenticarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         boolean isAuthenticated = false;
         Map<String, String> response = new HashMap<>();
         try {
@@ -37,9 +43,9 @@ public class UsuarioController {
             throw new RuntimeException(e);
         }
         if (isAuthenticated){
+            UsuarioDTO usuario = usuarioService.buscarUsuario(usuarioDTO);
             response.put("message", "Usuario autenticado exitosamente");
-            response.put("username", usuarioDTO.getUsername());
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(usuario);
         }else {
             response.put("error", "Credenciales incorrectas");
             return ResponseEntity.status(401).body(response);

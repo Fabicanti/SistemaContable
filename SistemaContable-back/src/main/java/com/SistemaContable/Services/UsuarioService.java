@@ -94,4 +94,14 @@ public class UsuarioService {
         }
         return hexString.toString();
     }
+
+    /**
+     * Busco el usuario por su username, reutilice en método 'mapToDTO'
+     * @param usuarioDTO es objeto que me envía el login
+     * @return Todos los datos el usuario buscado.
+     */
+    public UsuarioDTO buscarUsuario(UsuarioDTO usuarioDTO){
+        Optional<Usuario> usuario = usuarioRepository.findByUsername(usuarioDTO.getUsername());
+        return this.mapToDTO(usuario.get());
+    }
 }
