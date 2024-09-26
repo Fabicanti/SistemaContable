@@ -82,6 +82,10 @@
 }
 
 .log-button.in {
+    background-color: var(--color-gradiant_2-h);
+}
+
+.log-button:hover{
     background-color: var(--color-gradiant_2);
 }
 

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserProvider";
+import { MdOutlineLogin } from "react-icons/md";
 import logo from "../assets/icono-sistema.png";
 import avatarUsuario from "../assets/avatars/admin-4.png"
 import "../styles/Head.css";
@@ -20,7 +21,7 @@ export const Head = ({ login = false, logout }) => {
             to={"/"}
           >
             <img src={logo} alt="" />
-            <span>Sistema contable</span>
+            <span>SSAAII</span>
           </Link>
         )}
         {/* Otro componente? */}
@@ -44,7 +45,7 @@ export const Head = ({ login = false, logout }) => {
               onClick={() => navigate("/login")}
               className="log-button in"
             >
-              Iniciar sesión
+              <MdOutlineLogin size={36}/>
             </button>
           )}
         </div>

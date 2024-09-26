@@ -19,6 +19,7 @@
     align-items: center;
     padding: 25px 10px 15px;
     margin-left: 20px;
+    width: 100%;
 }
 
 .side-bar.open{
@@ -30,13 +31,19 @@
     color: #fff;
 } 
 
+.logo-aside div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+}
 
 .logo-aside img {
     height: auto;
     width: 3rem;
 }
 
-.logo-aside h2 {
+.logo-aside .text-logo {
     font-size: 1.4em;
     font-weight: bolder;
     color: #fff;
@@ -120,6 +127,10 @@
 
     .side-bar .links-aside h4{
         display: none;
+    }
+
+    .logo-aside div{
+        margin-left: 0;
     }
 } 
 

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { TbSelector } from "react-icons/tb";
 import { FaPenAlt, FaPen, FaAt, FaUser, FaLock } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AlertModal } from "../../utils/AlertModal";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const initialForm = {
     nombre: "",
@@ -20,6 +21,12 @@ export const RegisterForm = ({ avatarRegister, form }) => {
     const navigate = useNavigate();
 
     const { formState, setFormState, onInputChange } = form(initialForm);
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     const { username, password, nombre, apellido, email, roleId } = formState;
 
@@ -59,6 +66,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                         <label htmlFor="nombre">Nombre: </label>
                         <input
                             type="text"
+                            required={true}
                             className="form-input"
                             name="nombre"
                             value={nombre}
@@ -76,6 +84,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                         <label htmlFor="apellido">Apellido: </label>
                         <input
                             type="text"
+                            required={true}
                             className="form-input"
                             name="apellido"
                             value={apellido}
@@ -93,6 +102,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                         <label htmlFor="email">Email: </label>
                         <input
                             type="email"
+                            required={true}
                             className="form-input"
                             name="email"
                             value={email}
@@ -109,6 +119,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                         <label htmlFor="username">Nombre de usuario: </label>
                         <input
                             type="text"
+                            required={true}
                             className="form-input"
                             name="username"
                             value={username}
@@ -125,13 +136,22 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                     <div>
                         <label htmlFor="password">Contraseña: </label>
                         <input
-                            type="password"
+                            type={passwordVisible ? "text" : "password"}
+                            required={true}
                             className="form-input"
                             name="password"
                             value={password}
                             onChange={onInputChange}
                         />
                     </div>
+
+                    {password && 
+                    <span 
+                        onClick={togglePasswordVisibility}
+                        className="toggle-password">
+                        {passwordVisible ? <IoEyeOutline className="icon-pass"/> : <IoEyeOffOutline className="icon-pass"/>}
+                    </span>}
+
                 </div>
 
                 <div className="register-selection">
@@ -156,6 +176,10 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                     value={"REGISTRARSE"}
                     className="form-sumbit sign"
                 />
+                <div className="answer-login">
+                    <div>¿Ya tienes cuenta?</div>
+                    <Link className="link" to="/login"> Inicia sesión</Link>
+                </div>
             </form>
         </div>
     );

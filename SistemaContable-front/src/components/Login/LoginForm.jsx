@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+
 import Swal from "sweetalert2";
 
 const initialForm = {
@@ -15,6 +18,12 @@ export const LoginForm = ({ avatarLogin, login, form }) => {
     const { formState, setFormState,  onInputChange } = form(initialForm);
 
     const { username, password } = formState;
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     const onSumbit = async (event) => {
         event.preventDefault();
@@ -70,18 +79,26 @@ export const LoginForm = ({ avatarLogin, login, form }) => {
                     <div>
                         <label htmlFor="password">Contraseña: </label>
                         <input
-                            type="password"
+                            type={passwordVisible ? "text" : "password"}
                             className="form-input"
                             name="password"
                             value={password}
                             onChange={onInputChange}
                         />
                     </div>
-                </div>
 
-                <a className="a link" href="#">
+                    {password && 
+                    <span 
+                        onClick={togglePasswordVisibility}
+                        className="toggle-password">
+                        {passwordVisible ? <IoEyeOutline className="icon-pass"/> : <IoEyeOffOutline className="icon-pass"/>}
+                    </span>}
+
+                </div>
+{/* 
+                <a className="a link" href="#" style={ {opacity: '0'} }>
                     ¿Olvidaste tu contraseña?
-                </a>
+                </a> */}
 
                 <input
                     type="submit"
@@ -90,12 +107,10 @@ export const LoginForm = ({ avatarLogin, login, form }) => {
                     className="form-sumbit"
                 />
 
-                <p className="form-register" href="#">
-                    ¿No tienes cuenta?{" "}
-                    <Link className="link" to="/register">
-                        <b>Registrate</b>
-                    </Link>
-                </p>
+                <div className="answer-login">
+                    <div>¿No tienes cuenta?</div>
+                    <Link className="link" to="/register"> Registrate</Link>
+                </div>
             </form>
         </div>
     );

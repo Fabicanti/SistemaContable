@@ -2,7 +2,7 @@
 
 /* Contenedor con la imagen y login o registro */
 .containerLogin{
-    margin: 4em auto;
+    margin: 2em auto;
     height: auto; 
     display: grid;
     grid-template-columns: 1fr;
@@ -43,7 +43,7 @@
 /* Titulo del registro */
 .componentForm form h2{
     font-size: 2em;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 /* Las partes (labels e inputs) del login */
@@ -112,13 +112,26 @@
     font-size: 1rem;
 }
 
+/* iconos para mostrar-ocultar contraseña */
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.toggle-password .icon-pass{
+    font-size: 1.6em;
+    color: var(--color-gradiant_2);
+}
+
 /* links del login (¿Olvidaste tu contraseña? - Registrate) */
 .link{
     display: block;
     text-align: right;
     text-decoration: none;
     color: #999;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: bolder;
     transition: .3s;
 }
 
@@ -130,7 +143,7 @@
 .form-sumbit{
     width: 100%;
     height: 50px;
-    border-radius: 15px;
+    border-radius: 5px;
     margin: 1rem 0;
     outline: none;
     border: none;
@@ -139,10 +152,21 @@
     font-size: 1.2rem;
     background-size: 200%;
     transition: .5s;
+    font-weight: bolder;
 }
 
 .form-sumbit:hover{
     background-position: right;
+}
+
+/* Pregunta al final */
+.answer-login{
+    display: flex;
+    align-items: center;
+}
+
+.answer-login div{
+    margin-right: 10px;
 }
 
 /* Restricciones al cambio de resoluciones */

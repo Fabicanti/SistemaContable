@@ -34,3 +34,7 @@
 .form-sumbit.sign:hover{
     background-position: right;
 }
+
+.toggle-password .icon-pass{
+    color: var(--color-gradiant_1);
+}

@@ -28,8 +28,10 @@ export const Aside = () => {
         style={{ textDecoration: "none" }}
         onClick={toggleMenu}
       >
-        <img src={logo} alt="" />
-        <h2 className="text-logo">Sistema Contable</h2>
+        <div>
+          <img src={logo} alt="" />
+          <div className="text-logo">SSAAII</div>
+        </div>
       </Link>
       <BadgeUser rol={user?.roleId}/>
       <ul className="links-aside">
