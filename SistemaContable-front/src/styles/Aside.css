@@ -130,6 +130,10 @@
         height: 85px;
     }
 
+    .side-bar .roles{
+        display: none;
+    }
+
     .side-bar .logo-aside .text-logo {
       display: none; /* Ocultar el nombre del logo en pantallas pequeñas */
     }
@@ -139,6 +143,7 @@
         height: 100%;
         border-end-end-radius: 10px;
     }
+
 
     .side-bar .links-aside li{
         justify-content: start;
@@ -150,7 +155,8 @@
     }
 
     .side-bar.open .links-aside h4,
-    .side-bar.open .links-aside li .elem-link {
+    .side-bar.open .links-aside li .elem-link,
+    .side-bar.open .roles {
         display: flex; /* Mostrar el contenido del menú cuando está abierto */
     }
 

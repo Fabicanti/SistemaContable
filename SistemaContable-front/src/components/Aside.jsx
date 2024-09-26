@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineAccountBalance, MdOutlineSupervisorAccount } from "react-icons/md";
+import { TbReportAnalytics } from "react-icons/tb";
 import { PiSneakerMove } from "react-icons/pi";
 import { IoSettingsOutline, IoHomeOutline, IoBookOutline } from "react-icons/io5";
+import { useUser } from "../context/UserProvider";
+import { BadgeUser } from "./BadgeUser";
 import logo from "../assets/icono-sistema.png";
 import "../styles/Aside.css";
 
@@ -12,6 +15,7 @@ const colorIcon = "white";
 export const Aside = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useUser();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -27,7 +31,7 @@ export const Aside = () => {
         <img src={logo} alt="" />
         <h2 className="text-logo">Sistema Contable</h2>
       </Link>
-
+      <BadgeUser rol={user?.roleId}/>
       <ul className="links-aside">
         <h4>Menu principal</h4>
         <li>
@@ -41,6 +45,12 @@ export const Aside = () => {
           <MdOutlineAccountBalance size={sizeIcon} color={colorIcon}/>
            <div>Cuentas</div>
            </Link>
+        </li>
+        <li>
+          <Link to="/home/users" className="elem-link">
+            <MdOutlineSupervisorAccount size={sizeIcon} color={colorIcon} />
+            <div>Usuarios</div>
+          </Link>
         </li>
         <hr />
 
@@ -57,6 +67,12 @@ export const Aside = () => {
             <div>Movimientos</div>
           </Link>
         </li>
+        <li>
+          <Link className="elem-link">
+            <TbReportAnalytics size={sizeIcon} color={colorIcon} />
+            <div>Asientos</div>
+          </Link>
+        </li>
 
         <hr />
 
@@ -65,12 +81,6 @@ export const Aside = () => {
           <Link className="elem-link">
             <IoSettingsOutline size={sizeIcon} color={colorIcon} />
             <div>Configuración</div>
-          </Link>
-        </li>
-        <li>
-          <Link className="elem-link">
-            <MdOutlineSupervisorAccount size={sizeIcon} color={colorIcon} />
-            <div>Usuario</div>
           </Link>
         </li>
       </ul>

@@ -1,0 +1,23 @@
+.roles{
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bolder;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.roles.a{
+    background: linear-gradient(27deg, var(--color-gradiant_1), var(--color-gradiant_2));
+    background-size: 150%;
+    transition: all 0.3s ease;
+}
+
+.roles.a:hover{
+    transform: scale(1.05);
+    background-position: right;
+}
+
+.roles.b{
+    background-color: darkblue;
+}

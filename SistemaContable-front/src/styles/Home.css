@@ -18,8 +18,8 @@
     }
 
 
-    /* Estilo del Head - El div de roles desaparece cuando se despliega el menu*/
-    .roles{
+    /* Estilo del Head - El div de texto desaparece cuando se despliega el menu*/
+    .text-wel{
         opacity: 0;
         visibility: visible;
     }

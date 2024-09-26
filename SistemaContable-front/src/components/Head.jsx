@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { IoIosLogOut } from "react-icons/io";
 import { useUser } from "../context/UserProvider";
 import logo from "../assets/icono-sistema.png";
-import "../styles/Header.css";
+import avatarUsuario from "../assets/avatars/admin-4.png"
+import "../styles/Head.css";
 
 export const Head = ({ login = false, logout }) => {
   const navigate = useNavigate();
@@ -12,11 +12,7 @@ export const Head = ({ login = false, logout }) => {
     <>
       <header className="cabecera" style={ {background: ` ${login ? "rgba(255, 255, 255, 0.2)" : "rgb(0, 0, 0, 0.6)"}`} }>
         {login ? (
-          user?.roles === "SUPERUSER" ? (
-            <div className="roles a">Administrador</div>
-          ) : (
-            <div className="roles b">Usuario</div>
-          )
+          <div className="text-wel">{`¡Bienvenido ${user?.nombre} ${user?.apellido}!`}</div>
         ) : (
           <Link
             className="logo-system"
@@ -27,11 +23,22 @@ export const Head = ({ login = false, logout }) => {
             <span>Sistema contable</span>
           </Link>
         )}
+        {/* Otro componente? */}
         <div className="div-nav">
           {login ? (
-            <button onClick={() => logout()} className="log-button out">
-              <IoIosLogOut size={36} />
-            </button>
+            <div className="dropdown">
+              <img 
+                src={avatarUsuario} 
+                alt=""
+                className="dropdown-toggle" 
+                id="dropdownMenuButton" 
+                data-bs-toggle="dropdown"
+                aria-expanded="false" 
+                style={ {width: "50px", height: "50px", cursor: "pointer"} } />
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" onClick={() => logout()}>Cerrar Sesión</a></li>
+              </ul>
+            </div>
           ) : (
             <button
               onClick={() => navigate("/login")}

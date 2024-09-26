@@ -8,6 +8,7 @@ import { Preview } from "./pages/Preview";
 import { Home } from "./pages/Home";
 import { useAuth } from "./hooks/useAuth";
 import { Account } from "./pages/Account";
+import { Users } from "./pages/Users";
 
 export const App = () => {
   const { login, handleLogin, handleLogout } = useAuth();
@@ -23,6 +24,7 @@ export const App = () => {
           element={<Home onLogout={handleLogout} auth={login.isAuth} />}
         >
           <Route path="account" element={<Account />} />
+          <Route path="users" element={<Users/>}/>
         </Route>
       </Routes>
     </>
