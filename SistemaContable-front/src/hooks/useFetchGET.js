@@ -8,26 +8,27 @@ export const useFetchGET = (urlGet) => {
         isLoading: true,
         errors: null
     });
+    const fetchGet = async () => {
+        if (!urlGet) return
+        try {
+            const response = await fetch(urlGet);
+            const datas = await response.json();
+            setState({ data: datas, isLoading: false, errors: null });
+        } catch (error) {
+            setState({ data: null, isLoading: false, errors: error.message });
+        }
+    }
 
     useEffect(() => {
         if (state.data) return;
 
-        const fetchGet = async () => {
-            if (!urlGet) return
-            try {
-                const response = await fetch(urlGet);
-                const datas = await response.json();
-                setState({ data: datas, isLoading: false, errors: null });
-            } catch (error) {
-                setState({ data: null, isLoading: false, errors: error.message });
-            }
-        }
 
         fetchGet()
     }, [urlGet])
 
 
     return {
-        state
+        state,
+        fetchGet
     }
 }

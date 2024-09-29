@@ -16,6 +16,9 @@ export const Home = ({ onLogout, auth }) => {
         navigate("/login");
       })
     }
+
+    document.title = 'Inicio'
+    return () => document.title = 'Inicio' 
   }, [auth]);
 
   return (

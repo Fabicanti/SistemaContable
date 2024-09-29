@@ -6,8 +6,15 @@ import { LoginAside } from "../components/Login/LoginAside";
 import avatar from '../assets/login/avatar-login.svg'
 import website from '../assets/login/website-login.svg'
 import "../styles/FormLoginRegister.css"
+import { useEffect } from "react";
 
 export const Login = ({onLogin}) => {
+
+    useEffect(() => {
+        document.title = 'Iniciar sesión'
+        return () => document.title = 'Inicio' 
+    }, [])
+
     return (
         <>
             <Head />

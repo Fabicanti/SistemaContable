@@ -1,10 +1,10 @@
-import { useFetchGET } from '../../hooks/useFetchGET';
+
 import { CustomTable } from '../CustomTable';
+import { useUser } from '../../context/UserProvider';
 
-const urlUsersData = "http://localhost:8080/api/usuarios"; 
+export const UsersTable = ({datas, handleDelete, handleEdit, fetch}) => {
 
-export const UsersTable = () => {
-    const { state } = useFetchGET(urlUsersData);
+    const { user } = useUser()
 
     const columnNames = [
         {field: 'id', header: 'ID'},
@@ -12,27 +12,19 @@ export const UsersTable = () => {
         {field: 'apellido', header: 'APELLIDO'},
         {field: 'email', header: 'EMAIL'},
         {field: 'username', header: 'USERNAME'},
-        {field: 'password', header: 'PASS(NO)'},
         {field: 'roleId', header: 'ROLEID'}
     ];
 
-    const handleEdit = (row) => {
-        console.log(state)
-        console.log('Editando:', row); // Aquí se imprime la fila en la consola
-        // Lógica para editar el registro
-    };
-
-    const handleDelete = (row) => {
-        console.log('Eliminando:', row);
-        // Lógica para eliminar el registro
-    };
+    const filteredData = Array.isArray(datas.data) ? datas.data.filter(element => element.id !== user?.id) : [];
 
     return (
         <CustomTable
+        title={"Tabla de usuarios"}
         columns={columnNames}
-        data={state.data}
+        data={filteredData}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        fetch={fetch}
         />
     );
 };

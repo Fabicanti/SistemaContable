@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 
 export const Account = () => {
-  return (
-    <div>Account</div>
-  )
-}
+
+  useEffect(() => {
+    document.title = "Cuentas";
+    return () => (document.title = "Inicio");
+  }, []);
+
+  return <div>Account</div>;
+};

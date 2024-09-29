@@ -52,7 +52,7 @@ export const LoginForm = ({ avatarLogin, login, form }) => {
                 <img src={avatarLogin} alt="" className="avatarLogin" />
                 <h2>Bienvenido</h2>
 
-                <div className="form-group focus">
+                <div className="form-group">
                     <div className="i">
                         <FaUser className="icon" />
                     </div>
@@ -71,7 +71,7 @@ export const LoginForm = ({ avatarLogin, login, form }) => {
                     </div>
                 </div>
 
-                <div className="form-group focus">
+                <div className="form-group">
                     <div className="i">
                         <FaLock className="icon" />
                     </div>

@@ -1,0 +1,172 @@
+@import url(../themes/colors.css);
+
+.btn-modal-edit {
+    margin: 10px;
+    border: none;
+    padding: 10px;
+    color: white;
+    background-color: var(--color-gradiant_2);
+    border-radius: 5px;
+}
+
+.btn-modal-add {
+    margin: 10px;
+    border: none;
+    padding: 10px;
+    color: white;
+    background-color: var(--color-gradiant_1);
+    border-radius: 5px;
+    transition: all .3s ease;
+}
+
+.btn-modal-add:hover{
+    background-color: var(--color-gradiant_1-h);
+}
+
+.btn-modal-edit:hover{
+    background-color: var(--color-gradiant_2-h);
+}
+
+/* UsersForm*/
+.form-group-modal{
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    border: 2px solid transparent;
+    padding: 5px 0;
+}
+
+
+.form-group-modal .icon{
+    width: 5%;
+    color: gray;
+}
+
+.form-group-modal .form-data{
+    width: 95%;
+}
+
+.form-group-modal > div label{
+    top: -5px;
+    font-size: 14px; 
+    position: absolute;
+    left: 25px;
+    /* top: 50%; */
+    transform: translateY(-50%);
+    /* font-size: 18px; */
+    pointer-events: none;
+    transition: .3s ease all;
+    color: grey;
+    opacity: 0.8;
+}
+
+.form-group-modal .input-modal{
+    width: 100%;
+    outline: none;
+    border: none;
+    height: 100%;
+    padding: 0.5rem;
+}
+
+/* Linea */
+.form-group-modal::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--color-gradiant_1);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.form-group-modal.edit::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--color-gradiant_2);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.form-group-modal::after{
+    content: '';
+    left: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: gray;
+    opacity: 0.8;
+}
+
+.form-group-modal::before {
+    left: 50%; /* Comienza desde el centro */
+    transform: translateX(-50%); /* Ajusta el punto de partida al centro */
+}
+
+.form-group-modal:focus-within::before {
+    width: 100%;
+    left: 50%;
+}
+
+.icon {
+    transition: color 0.3s ease; /* Transición suave para el color */
+    opacity: 0.8;
+}
+
+.form-group-modal:focus-within .icon {
+    color: var(--color-gradiant_1); /* Cambia el color del icono al hacer focus en el input */
+    opacity: 1;
+}
+
+.form-group-modal.edit:focus-within .icon {
+    color: var(--color-gradiant_2); /* Cambia el color del icono al hacer focus en el input */
+    opacity: 1;
+}
+
+
+.form-group-modal:focus-within label{
+    /* top: -5px;
+    font-size: 14px; */
+    color: var(--color-gradiant_1);
+    opacity: 1;
+}
+
+.form-group-modal.edit:focus-within label{
+    /* top: -5px;
+    font-size: 14px; */
+    color: var(--color-gradiant_2);
+    opacity: 1;
+}
+
+/* Botones */
+.btn-modal{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-modal button{
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    transition: all .3s ease;
+    font-weight: bolder;
+}
+
+.register-selection .icon-modal{
+    color: var(--color-gradiant_1);
+}
+
+.register-selection.edit .icon-modal{
+    color: var(--color-gradiant_2);
+}
+
+.register-selection.edit .selection{
+    background-color: var(--color-gradiant_2);
+}

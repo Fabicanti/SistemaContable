@@ -1,5 +1,6 @@
 package com.SistemaContable.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
@@ -51,6 +52,21 @@ public class UsuarioController {
             return ResponseEntity.status(401).body(response);
         }
     }
+    
+    /**
+     * Elimina un usuario
+     * @param usuarioDTO es el objeto del usuario que quiero eliminar.
+     * @return el estado 204 si el usuario se eliminó, caso contrario será el estado 404: NOT FOUND.
+     */
+    @CrossOrigin(origins = "http://localhost:5173")
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<?> eliminarUsuario(@RequestBody UsuarioDTO usuarioDTO){
+        if (usuarioService.eliminarUsuario(usuarioDTO)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+    }
+
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> obtenerUsuarios() {
         List<UsuarioDTO> usuarios = usuarioService.obtenerTodosLosUsuarios();

@@ -5,9 +5,14 @@ import { RegisterAside } from "../components/Register/RegisterAside";
 import websiteSign from '../assets/register/website-register.svg'
 import avatarSign from '../assets/register/avatar-register.svg'
 import "../styles/Register.css"
+import { useEffect } from "react";
 
 export const Register = () => {
-
+    useEffect(() => {
+        document.title = 'Registrarse'
+        return () => document.title = 'Inicio' 
+    }, [])
+    
     return (
         <>
             <Head />

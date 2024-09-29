@@ -104,4 +104,5 @@ public class UsuarioService {
         Optional<Usuario> usuario = usuarioRepository.findByUsername(usuarioDTO.getUsername());
         return this.mapToDTO(usuario.get());
     }
+
 }

@@ -11,7 +11,7 @@ const initialForm = {
     email: "",
     username: "",
     password: "",
-    roleId: "",
+    roleId: "1",
 };
 // url Backend - Spring Boot
 const urlBackendRegister = "http://localhost:8080/api/usuarios/registrar";
@@ -110,6 +110,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                         />
                     </div>
                 </div>
+                {/* Nombre de usuario */}
                 <div className="form-group focus sign">
                     <div className="i">
                         <FaUser className="iconSing" />
@@ -127,7 +128,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                         />
                     </div>
                 </div>
-
+                {/* Contraseña */}
                 <div className="form-group focus sign">
                     <div className="i">
                         <FaLock className="iconSing" />
@@ -148,7 +149,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                     {password && 
                     <span 
                         onClick={togglePasswordVisibility}
-                        className="toggle-password">
+                        className="toggle-password sign">
                         {passwordVisible ? <IoEyeOutline className="icon-pass"/> : <IoEyeOffOutline className="icon-pass"/>}
                     </span>}
 

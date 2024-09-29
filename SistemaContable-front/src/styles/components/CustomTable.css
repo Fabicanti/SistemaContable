@@ -2,131 +2,180 @@
 
 
 .custom-table-wrapper {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 13px 13px 44px -19px rgba(0,0,0,0.73);
+	padding: 20px;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	box-shadow: 13px 13px 44px -19px rgba(0, 0, 0, 0.73);
 }
 
-/* Botones de las filas */
-.action-buttons button{
-  margin: 10px;
-  border: none;
-  padding: 10px;
-  color: white;
-  border-radius: 5px;
+/* header de la tabla*/
+.custom-table-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
-.action-buttons .btn-edit{
-  background-color: var(--color-gradiant_2);
-  transition: all .3s ease;
-}
-
-.action-buttons .btn-edit:hover{
-  background-color: var(--color-gradiant_2-h);
-}
-
-.action-buttons .btn-delete{
-  background-color: var(--color-gradiant_1);
-  transition: all .3s ease;
-}
-
-.action-buttons .btn-delete:hover{
-  background-color: var(--color-gradiant_1-h);
+.custom-table-header .table-title {
+	font-size: 1.6em;
+	font-weight: bolder;
+	margin-bottom: 15px;
 }
 
 /* Busqueda */
 .custom-search-box {
-  margin-bottom: 15px;
+	margin-bottom: 15px;
+	padding: 5px;
+	border: 2px solid transparent;
+	transition: all .3s ease;
+	border-radius: 5px;
+}
+
+.custom-search-box:hover {
+	border-color: var(--color-gradiant_2);
+}
+
+.custom-search-box:focus-within {
+	border-color: var(--color-gradiant_2-h);
 }
 
 .custom-search-input {
-  width: 300px;
-  padding: 5px;
-  font-size: 14px;
+	position: relative;
+	width: 300px;
+	border: none;
+	outline: none;
+	background: none;
+	padding: 0.7rem;
+	font-size: 15px;
 }
 
 .custom-table .p-datatable-header {
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
+	background-color: #007bff;
+	color: white;
+	font-weight: bold;
 }
 
-.custom-table .p-datatable-thead > tr > th {
-  background-color: rgba(0, 0, 0, 0.521);
-  padding: 15px;
-  font-size: 1.3em;
-  
-  color: white;
+.custom-table .p-datatable-thead>tr {
+	background: linear-gradient(27deg, var(--color-gradiant_2) 0%, var(--color-gradiant_1) 100%);
+	background-size: 200%;
 }
 
-.custom-table .p-datatable-tbody > tr > td {
-  padding-left: 15px;
-  font-size: 18px;
+.custom-table .p-datatable-thead>tr>th {
+	padding: 15px;
+	font-size: 1.3em;
+	color: white;
 }
 
-.custom-table .p-datatable-tbody > tr:nth-child(even) {
-  background-color: #f1f1f1;
+.custom-table .p-datatable-tbody>tr>td {
+	padding-left: 15px;
+	font-size: 18px;
+}
+
+/* Botones de las filas */
+.action-buttons button {
+	margin: 10px;
+	border: none;
+	padding: 10px;
+	color: white;
+	border-radius: 5px;
+}
+
+.action-buttons .btn-delete {
+	background-color: var(--color-gradiant_1);
+	transition: all .3s ease;
+}
+
+.action-buttons .btn-delete:hover {
+	background-color: var(--color-gradiant_1-h);
+}
+
+
+/* Estilos a las filas para el rol usuario*/
+.custom-table.user .p-datatable-tbody>tr>td {
+	padding: 15px;
+	font-size: 17px;
+}
+
+.custom-table .p-datatable-tbody>tr:nth-child(even) {
+	background-color: #f1f1f1;
 }
 
 
 /* Estilos de la paginación */
-.p-paginator{
-  margin-top: 10px;
+.p-paginator {
+	margin-top: 10px;
 }
 
 .p-paginator .p-paginator-pages .p-paginator-page {
-  margin: 5px; /* Añade margen entre los botones de las páginas */
-  padding: 5px 10px; /* Añade padding a los botones */
-  border-radius: 50px; /* Bordes redondeados para botones */
-  width: 50px;
-  height: 50px;
-  background-color: rgba(0, 0, 0, 0.1); /* Color de fondo para los botones de paginación */
-  color: black; /* Color del texto */
-  border: none; /* Quita los bordes predeterminados */
-  transition: all 0.3s ease;
+	margin: 5px;
+	/* Añade margen entre los botones de las páginas */
+	padding: 5px 10px;
+	/* Añade padding a los botones */
+	border-radius: 50px;
+	/* Bordes redondeados para botones */
+	width: 50px;
+	height: 50px;
+	background-color: rgba(0, 0, 0, 0.1);
+	/* Color de fondo para los botones de paginación */
+	color: black;
+	/* Color del texto */
+	border: none;
+	/* Quita los bordes predeterminados */
+	transition: all 0.3s ease;
 }
 
-.p-paginator .p-paginator-pages .p-paginator-page:hover{
-  background-color: #ff8099;
+.p-paginator .p-paginator-pages .p-paginator-page:hover {
+	background-color: #ff8099;
 }
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-  background-color: var(--color-gradiant_1); /* Color más oscuro para el botón de la página actual */
-  font-weight: bolder;
-  color: white;
+	background-color: var(--color-gradiant_1);
+	/* Color más oscuro para el botón de la página actual */
+	font-weight: bolder;
+	color: white;
 }
 
 .p-paginator .p-paginator-icon {
-  margin: 5px; /* Añade margen entre los íconos de navegación */
+	margin: 5px;
+	/* Añade margen entre los íconos de navegación */
 }
 
 .p-paginator .p-paginator-prev,
 .p-paginator .p-paginator-next,
 .p-paginator .p-paginator-first,
 .p-paginator .p-paginator-last {
-  margin: 0 10px; /* Añade margen entre los botones de navegación */
-  padding: 5px 10px; /* Añade padding a los íconos de navegación */
-  background-color: #f1f1f1;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+	margin: 0 10px;
+	/* Añade margen entre los botones de navegación */
+	padding: 5px 10px;
+	/* Añade padding a los íconos de navegación */
+	background-color: #f1f1f1;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 .p-paginator .p-paginator-prev:hover,
 .p-paginator .p-paginator-next:hover,
 .p-paginator .p-paginator-first:hover,
 .p-paginator .p-paginator-last:hover {
-  background-color: var(--color-gradiant_2);
-  color: white;
+	background-color: var(--color-gradiant_2);
+	color: white;
 }
 
 /* opciones-pagination = .p-paginator .p-dropdown */
 
 /* Paginación en pantallas pequeñas */
+@media screen and (max-width: 1100px) {
+	.custom-table .p-datatable-tbody>tr>td {
+		padding: 5px;
+	}
+
+}
+
 @media screen and (max-width: 768px) {
-  .p-paginator .p-paginator-pages .p-paginator-page {
-      padding: 3px 6px; /* Ajusta el padding para pantallas más pequeñas */
-  }
+	.p-paginator .p-paginator-pages .p-paginator-page {
+		padding: 3px 6px;
+		/* Ajusta el padding para pantallas más pequeñas */
+	}
 }

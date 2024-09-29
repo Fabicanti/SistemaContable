@@ -52,33 +52,53 @@
     display: flex;
     align-items: center;
     margin: 20px 0;
+    border: 2px solid transparent;
     padding: 5px 0;
-    border-bottom: 2px solid #D9D9D9;
 }
 
 /* icono a la izquierda de los inputs */
 .form-group .i{
-    width: 3%;
+    width: 5%;
+    color: gray;
 }
 
 .form-group .form-input{
-    width: 97%;
+    width: 95%;
 }
 
 /* Subrayado de las partes del login */
 .form-group::after{
     content: '';
+    left: 0;
     position: absolute;
-    bottom: -2px;
+    bottom: 0;
     width: 100%;
     height: 2px;
-    background-color: dodgerblue;
-    transition: .3s;
+    background-color: gray;
+    opacity: 0.8;
 }
 
-.form-group.focus .i .icon{
-    color: dodgerblue;
+.form-group::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--color-gradiant_2);
+    transition: all 0.3s ease;
+    z-index: 10;
 }
+
+.form-group::before{
+    left: 50%; /* Comienza desde el centro */
+    transform: translateX(-50%); /* Ajusta el punto de partida al centro */
+}
+
+.form-group:focus-within::before{
+    width: 100%;
+    left: 50%;
+}
+
 
 .form-group.focus div label{
     top: -5px;
@@ -87,13 +107,25 @@
 
 /* Posicion del label (rebuscado) */
 .form-group > div label{
+    top: -5px;
+    font-size: 14px; 
     position: absolute;
-    left: 10px;
-    top: 50%;
+    left: 25px;
     transform: translateY(-50%);
-    font-size: 18px;
     pointer-events: none;
     transition: .3s ease all;
+    color: grey;
+    opacity: 0.8;
+}
+
+.form-group:focus-within label{
+    color: var(--color-gradiant_2);
+    opacity: 1;
+}
+
+.form-group:focus-within .i{
+    color: var(--color-gradiant_2); /* Cambia el color del icono al hacer focus en el input */
+    opacity: 1;
 }
 
 .form-group div{

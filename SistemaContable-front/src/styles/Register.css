@@ -7,14 +7,47 @@
     align-items: center;
 }
 
-.form-group.sign::after, .form-group.sign::before{
+.form-group.sign::after{
+    content: '';
+    left: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: gray;
+    opacity: 0.8;
+}
+
+.form-group.sign::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 3px;
     background-color: var(--color-gradiant_1);
+    transition: all 0.3s ease;
+    z-index: 10;
 }
 
-.iconSing{
-    color: rgba(252,70,107,1);
+.form-group.sign::before{
+    left: 50%; /* Comienza desde el centro */
+    transform: translateX(-50%); /* Ajusta el punto de partida al centro */
 }
 
+.form-group.sign:focus-within::before{
+    width: 100%;
+    left: 50%;
+}
+
+.form-group.sign:focus-within label{
+    color: var(--color-gradiant_1);
+    opacity: 1;
+}
+
+.form-group.sign .icon{
+    width: 5%;
+    color: gray;
+}
 .register-selection .selection{
     width: 50%;
     height: 30px;
@@ -35,6 +68,6 @@
     background-position: right;
 }
 
-.toggle-password .icon-pass{
+.toggle-password.sign .icon-pass{
     color: var(--color-gradiant_1);
 }
