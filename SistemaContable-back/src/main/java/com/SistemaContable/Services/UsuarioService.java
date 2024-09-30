@@ -105,4 +105,35 @@ public class UsuarioService {
         return this.mapToDTO(usuario.get());
     }
 
+    /**
+     * Actualiza los datos del usuario
+     * @param usuarioDTO es objeto que me envía la página Users.
+     * @return True si se actualizó los datos, False si el usuario no fue encontrado
+     */
+    public boolean actualizarUsuario(UsuarioDTO usuarioDTO) {
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioDTO.getId());
+        if (usuario.isPresent()) {
+            if (usuarioDTO.getNombre() != null) {
+                usuario.get().setNombre(usuarioDTO.getNombre());
+            }
+            if (usuarioDTO.getApellido() != null) {
+                usuario.get().setApellido(usuarioDTO.getApellido());
+            }
+            if (usuarioDTO.getEmail() != null) {
+                usuario.get().setEmail(usuarioDTO.getEmail());
+            }
+            if (usuarioDTO.getUsername() != null) {
+                usuario.get().setUsername(usuarioDTO.getUsername());
+            }
+            if (! usuarioDTO.getRoleId().equals(usuario.get().getRole().getId())) {
+                Rol rol = rolRepository.findById(usuarioDTO.getRoleId())
+                        .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+                usuario.get().setRole(rol);
+            }
+            usuarioRepository.save(usuario.get());
+            return true;
+        }
+        return false;
+    }
+
 }

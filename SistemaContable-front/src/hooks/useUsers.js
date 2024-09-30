@@ -2,7 +2,8 @@ import Swal from "sweetalert2";
 import { AlertModal } from "../utils/AlertModal";
 
 const urlBackendRegister = "http://localhost:8080/api/usuarios/registrar";
-const urlBackendDelete = "http://localhost:8080/api/usuarios/eliminar"
+const urlBackendDelete = "http://localhost:8080/api/usuarios/eliminar";
+const urlBackendUpdate = "http://localhost:8080/api/usuarios/modificar";
 
 export const useUsers = () => {
 
@@ -22,9 +23,19 @@ export const useUsers = () => {
         return
     }
 
-    const handleEditUser = (user) => {
-        console.log(user);
-        console.log("Editando Usuario..");
+    const handleEditUser = async (user, fetchtdata) => {
+        const { id, nombre, apellido, email, username, password, roleId } = user;
+        const response = await fetch(urlBackendUpdate, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({id, nombre, apellido, email, username, password: "null", roleId }),
+        });
+        if (response.ok) {
+            AlertModal("Se modificó exitosamente", "", "success");
+            fetchtdata()
+        }else{
+            AlertModal("Hubo un error en la modificación", "", "error");
+        }
         return
     }
 

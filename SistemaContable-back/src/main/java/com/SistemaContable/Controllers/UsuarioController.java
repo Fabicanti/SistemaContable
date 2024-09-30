@@ -30,7 +30,7 @@ public class UsuarioController {
     }
 
     /**
-     * Se modifico el tipo de retorno de la función de Map<String, String> a ?
+     * Se modifícó el tipo de retorno de la función de Map<String, String> a <?>
      * @param usuarioDTO
      * @return Retorna los datos de usuario logeado si la autenticación es exitosa, caso contrario será un estado HTTP 403: Unauthorized.
      */
@@ -54,7 +54,7 @@ public class UsuarioController {
     }
     
     /**
-     * Elimina un usuario
+     * Elimina un usuario.
      * @param usuarioDTO es el objeto del usuario que quiero eliminar.
      * @return el estado 204 si el usuario se eliminó, caso contrario será el estado 404: NOT FOUND.
      */
@@ -62,6 +62,19 @@ public class UsuarioController {
     @DeleteMapping("/eliminar")
     public ResponseEntity<?> eliminarUsuario(@RequestBody UsuarioDTO usuarioDTO){
         if (usuarioService.eliminarUsuario(usuarioDTO)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+    }
+
+    /**
+     * Modifica los campos de un usuario registrado.
+     * @param usuarioDTO es el objeto con los datos del usuario a modificar (si son distintos a los almacenados)
+     * @return el estado 204 si el usuario se modificó, caso contrario será el estado 404: NOT FOUND
+     */
+    @PatchMapping("/modificar")
+    public ResponseEntity<?> modificarUsuario(@RequestBody UsuarioDTO usuarioDTO){
+        if (usuarioService.actualizarUsuario(usuarioDTO)) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");

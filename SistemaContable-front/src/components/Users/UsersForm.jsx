@@ -31,7 +31,6 @@ export const UsersForm = ({ addHandle, form, closeModal, fetch, dataUsers = {} }
     const onSubmit = (event) => {
         event.preventDefault();
         addHandle(formState, fetch);
-        setFormState(initialForm);
     };
 
     return (

@@ -24,7 +24,7 @@ export const CustomTable = ({
   const actionBodyTemplate = (rowData) => {
     return (
       <div className="action-buttons">
-        <UsersModal sizeButton={36} editMode={true} onHandle={onEdit} dataUser={rowData}/>
+        <UsersModal sizeButton={36} editMode={true} fetch={fetch} onHandle={onEdit} dataUser={rowData}/>
         <button
           className="btn-delete"
           onClick={() => onDelete(rowData, fetch)} // Ejecuta la función de eliminación

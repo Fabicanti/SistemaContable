@@ -48,6 +48,10 @@
     width: 5%;
     color: gray;
 }
+
+.form-group.sign:focus-within .i{
+    color: var(--color-gradiant_1);
+}
 .register-selection .selection{
     width: 50%;
     height: 30px;
