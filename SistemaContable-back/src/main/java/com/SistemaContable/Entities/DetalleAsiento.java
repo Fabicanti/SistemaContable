@@ -1,5 +1,4 @@
 package com.SistemaContable.Entities;
-import java.math.BigDecimal;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,15 +18,15 @@ public class DetalleAsiento {
     private AsientoContable asientoContable;
 
     @Column(nullable = false)
-    private BigDecimal debe;
+    private double debe;
 
     @Column(nullable = false)
-    private BigDecimal haber;
+    private double haber;
 
     public DetalleAsiento() {
     }
 
-    public DetalleAsiento(BigDecimal debe, BigDecimal haber) {
+    public DetalleAsiento(double debe, double haber) {
         this.debe = debe;
         this.haber = haber;
     }
@@ -52,19 +51,19 @@ public class DetalleAsiento {
         this.asientoContable = asientoContable;
     }
 
-    public BigDecimal getDebe() {
+    public double getDebe() {
         return debe;
     }
 
-    public void setDebe(BigDecimal debe) {
+    public void setDebe(double debe) {
         this.debe = debe;
     }
 
-    public BigDecimal getHaber() {
+    public double getHaber() {
         return haber;
     }
 
-    public void setHaber(BigDecimal haber) {
+    public void setHaber(double haber) {
         this.haber = haber;
     }
 

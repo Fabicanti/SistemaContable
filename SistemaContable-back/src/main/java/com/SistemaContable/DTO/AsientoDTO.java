@@ -41,7 +41,7 @@ public class AsientoDTO {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
-    }
+    } 
 
     public String getDescripcion() {
         return descripcion;
