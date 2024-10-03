@@ -1,5 +1,6 @@
 package com.SistemaContable.DTO;
 
+
 public class DetalleAsientoDTO {
     private Long id;
     private Long cuentaId;
