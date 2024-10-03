@@ -1,11 +1,16 @@
 import { useEffect } from "react";
+import { AccountMenu } from "../components/Account/AccountMenu";
+import "../styles/Account.css"
 
 export const Account = () => {
 
-  useEffect(() => {
-    document.title = "Cuentas";
-    return () => (document.title = "Inicio");
-  }, []);
+    useEffect(() => {
+        document.title = "Cuentas";
+    }, []);
 
-  return <div>Account</div>;
+    return (
+        <div className="account-container">
+            <AccountMenu/>
+        </div>
+    )
 };
