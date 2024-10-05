@@ -57,101 +57,111 @@
 
 /* AccountCreate */
 .data-create{
+    margin: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 4em
+}
+
+.data-create .group-data, .group-data-select{
+    padding: 0;
+    position: relative;
+}
+
+.group-data .form-data , .group-data-select .form-data{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 20px;
-    padding: 10px;
+    flex-direction: column;
 }
 
-.group-data{
-    margin: 5px;
-    border: 2px solid var(--color-gradiant_1);
-    border-radius: 3px;
-    display: flex;
-    transition: all .3s ease;
+.input-data{
+    padding: 5px 5px 5px 0px;
 }
 
-.group-data:focus-within{
-    border-color: var(--color-gradiant_1-h);
+.input-data{
+    border: none;
+    outline: none;
+}
+/* Linea de los inputs */
+.group-data::after{
+    content: '';
+    left: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: gray;
+    opacity: 0.8;
 }
 
-.group-data .icon{
-    padding: 5px;
-    background-color: var(--color-gradiant_1);
-    color: white;
-    transition: all .3s ease;
+.group-data::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--color-gradiant_2);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.group-data::before{
+    left: 50%; /* Comienza desde el centro */
+    transform: translateX(-50%); /* Ajusta el punto de partida al centro */
+}
+
+.form-data label{
+    font-size: 11px;
+    font-weight: bold;
+    color: gray;
+}
+
+/* Animaciones */
+.group-data:focus-within::before{
+    width: 100%;
+    left: 50%;
 }
 
 .group-data:focus-within .icon{
-    background-color: var(--color-gradiant_1-h);
-}
-
-.group-data .input-data{
-    padding: 5px;
-    width: 100%;
-    outline: none;
-    border: none;
-}
-
-/* Autocomplete */
-.p-autocomplete-input{
-    padding: 5px;
-    width: 100%;
-    font-weight: 500;
-    border: none;
-    outline: none;
-}
-
-.auto-name .p-autocomplete-dropdown{
-    border: none;
-    background-color: var(--color-gradiant_1);
-    color: white;
-    width: 40px;
-    transition: all .3s ease;
-}
-
-.group-data:focus-within .auto-name .p-autocomplete-dropdown{
-    background-color: var(--color-gradiant_1-h);
-}
-
-.p-autocomplete-panel {
-    background-color: #f8f9fa; /* Fondo claro */
-    border: 2px solid var(--color-gradiant_1-h); /* Borde del panel */
-    border-radius: 5px;
-}
-
-.p-autocomplete-item:hover {
     background-color: var(--color-gradiant_2);
     color: white;
 }
 
-/* Dropdown */
-.p-dropdown{
-    width: 212px;
-}
-.drop-type .p-dropdown-label{
-    padding-left: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: start;
+.group-data:focus-within label{
+    color: var(--color-gradiant_2);
 }
 
-.drop-type .p-dropdown-trigger{
-    background-color: var(--color-gradiant_1);
-    color: white;
-    width: 40px;
-    transition: all 0.3s ease;
-}
-.drop-type .p-dropdown-trigger:hover{
-    background-color: var(--color-gradiant_1-h);
+.selection-data{
+    padding: 2px;
 }
 
-.p-dropdown-item{
-    background-color: white;
-    min-width: 150px;
-    padding-left: 10px;
+/* selection */
+.group-data-select{
+    padding: 5px;
 }
+
+.selection-data{
+    border: 2px solid transparent;
+    border-radius: 4px;
+    outline: none;
+    transition: all .3s ease;
+}
+
+.selection-data option{
+    color: var(--color-gradiant_2);
+}
+
+.selection-data:hover{
+    border-color: var(--color-gradiant_2);
+}
+
+.selection-data:focus{
+    border-color: var(--color-gradiant_2-h);
+}
+
+.group-data-select:focus-within label{
+    color: var(--color-gradiant_2-h);
+}
+
 
 /* Botones */
 .create-buttons{
@@ -187,26 +197,78 @@
     background-color: var(--color-gradiant_1-h);
 }
 
+/* Estilo del contenedor del toggle */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    margin-right: 5px;
+}
 
-@media screen and (max-width: 1200px) {
+.title-toggle{
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+
+.toggle-label {
+    width: 60px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Botón del toggle */
+.toggle-button {
+    content: "";
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Cuando está activado (toggle ON) */
+.toggle-checkbox:checked + .toggle-label{
+    background-color: var(--color-gradiant_2);  
+}
+
+.toggle-checkbox:focus + .title-toggle{
+    color: var(--color-gradiant_2);
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-button {
+    transform: translateX(30px);
+}
+
+@media screen and (max-width: 1100px) {
     .data-create{
-        justify-content: space-between;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1em;
     }
-
-    .create-account{
-        display: block;
-    }
-
 }
 
 @media(max-width: 768px) {
     .data-create{
-        justify-content: center;
+        grid-template-columns: 1fr;
     }
-    .group-data, .p-dropdown{
-        width: 100%;
-    }
+
     .create-buttons{
         justify-content: space-between;
+    }
+
+    .create-buttons button{
+        font-size: 0.9em;
     }
 }

@@ -4,9 +4,7 @@ import { useFetchGET } from "../../hooks/useFetchGET";
 // Prueba - Se puede optimizar
 // const urlCountUsers = "http://localhost:8080/api/userscount"
 
-export const DashboardMenu = () => {
-    // const { state } = useFetchGET(urlCountUsers);
-    // const { data, isLoading, errors} = state
+export const DashboardMenu = ({cantUsuarios, cantMov}) => {
 
   return (
     <>
@@ -14,14 +12,14 @@ export const DashboardMenu = () => {
         <div className="dash-element">
           <div className="dash-data">
             <h3>Usuarios</h3>
-            <h2 className="text-data">3</h2>
+            <h2 className="text-data">{cantUsuarios}</h2>
           </div>
           <FcConferenceCall size={96} />
         </div>
         <div className="dash-element">
           <div className="dash-data">
             <h3>Movimientos</h3>
-            <h2 className="text-data">21</h2>
+            <h2 className="text-data">{cantMov}</h2>
           </div>
           <FcDebt size={96} />
         </div>

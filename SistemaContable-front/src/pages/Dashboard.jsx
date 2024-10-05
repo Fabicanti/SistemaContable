@@ -1,16 +1,16 @@
-import { useFetchGET } from "../hooks/useFetchGET";
 import { DashboardMenu } from "../components/Dashboard/DashboardMenu";
 import "../styles/Dashboard.css";
+import { useDashboard } from "../hooks/useDashboard";
+import { useUser } from "../context/UserProvider";
 
-const urlUsers = "http://localhost:8080/api/usuarios";
 
 export const Dashboard = () => {
-  const { state } = useFetchGET(urlUsers);
-  const { data, isLoading, errors } = state;
+  const {user} = useUser()
+  const { data } = useDashboard(user?.id);
 
   return (
     <div className="dash-container">
-      <DashboardMenu />
+      <DashboardMenu cantUsuarios={data?.cantidadTotalUsuarios} cantMov={data?.cantidadMovimientos}/>
     </div>
   );
 };

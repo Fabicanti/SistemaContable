@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { AccountCreate } from './AccountCreate';
 import { IoMdAdd, IoIosArrowUp  } from "react-icons/io";
-
+import {AccountCreate} from "./AccountCreate"
 
 export const AccountMenu = () => {
 

@@ -27,7 +27,7 @@ export const CustomTable = ({
         <UsersModal sizeButton={36} editMode={true} fetch={fetch} onHandle={onEdit} dataUser={rowData}/>
         <button
           className="btn-delete"
-          onClick={() => onDelete(rowData, fetch)} // Ejecuta la función de eliminación
+          onClick={() => onDelete(rowData, fetch)}
         >
           <CiCircleRemove size={sizeIcon} />
         </button>
