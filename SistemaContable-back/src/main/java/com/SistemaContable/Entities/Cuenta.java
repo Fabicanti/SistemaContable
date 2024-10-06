@@ -13,7 +13,7 @@ public class Cuenta {
     @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(name = "codigo_cuenta", nullable = false)
     private String codigoCuenta;
 
     @ManyToOne

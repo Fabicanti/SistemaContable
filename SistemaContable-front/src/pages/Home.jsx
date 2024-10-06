@@ -17,8 +17,6 @@ export const Home = ({ onLogout, auth }) => {
       })
     }
 
-    document.title = 'Inicio'
-    return () => document.title = 'Inicio' 
   }, [auth]);
 
   return (

@@ -1,10 +1,15 @@
 import { FcConferenceCall, FcDebt, FcReading, FcCurrencyExchange } from "react-icons/fc";
 import { useFetchGET } from "../../hooks/useFetchGET";
+import { useEffect } from "react";
 
 // Prueba - Se puede optimizar
 // const urlCountUsers = "http://localhost:8080/api/userscount"
 
 export const DashboardMenu = ({cantUsuarios, cantMov}) => {
+
+  useEffect(() => {
+    document.title = "Inicio"
+  }, [])
 
   return (
     <>

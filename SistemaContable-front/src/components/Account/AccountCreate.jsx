@@ -19,6 +19,7 @@ export const AccountCreate = () => {
     const onSubmit = (event) => {
         event.preventDefault();
         console.log(formState);
+        onClean()
     }
 
     const onOpenToggle = () => {
@@ -27,6 +28,10 @@ export const AccountCreate = () => {
             ...formState,
             cuenta_padre_id: ""
         })
+    }
+
+    const onClean = () => {
+        setFormState(initialForm);
     }
 
     return (
@@ -104,7 +109,7 @@ export const AccountCreate = () => {
                 </div>
                 
                 <div>
-                    <button className="btn-clean" >Limpiar</button>
+                    <button className="btn-clean" type='button' onClick={onClean}>Limpiar</button>
                     <button className="btn-create" type='submit'>Crear cuenta</button>
                 </div>
             </div>

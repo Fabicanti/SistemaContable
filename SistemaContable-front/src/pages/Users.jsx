@@ -12,8 +12,7 @@ export const Users = () => {
   const { handleAddUser, handleDeleteUser, handleEditUser } = useUsers();
 
   useEffect(() => {
-    document.title = 'Usuarios'
-    return () => document.title = 'Inicio' 
+    document.title = "Usuarios"
   }, [])
   
 

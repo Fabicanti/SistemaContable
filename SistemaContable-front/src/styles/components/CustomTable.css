@@ -41,7 +41,8 @@
 
 .custom-search-input {
 	position: relative;
-	width: 300px;
+	min-width: 50px;
+	width: 265px;
 	border: none;
 	outline: none;
 	background: none;
@@ -177,5 +178,9 @@
 	.p-paginator .p-paginator-pages .p-paginator-page {
 		padding: 3px 6px;
 		/* Ajusta el padding para pantallas más pequeñas */
+	}
+	.custom-search-box{
+		display: flex;
+		align-items: center;
 	}
 }

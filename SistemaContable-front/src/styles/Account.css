@@ -35,7 +35,7 @@
 }
 
 .create-account {
-    margin-top: 5px;
+    margin-top: 10px;
     border-radius: 8px;
     opacity: 0;
     max-height: 0;
@@ -47,6 +47,7 @@
     opacity: 1;
     max-height: 50em;
     background-color: white;
+    margin-bottom: 10px;
 }
 
 .data-account .title-account{

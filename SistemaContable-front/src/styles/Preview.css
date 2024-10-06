@@ -7,7 +7,7 @@
     border-radius: 10px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 2em 2em;
+    margin: 2em;
     box-shadow: 13px 13px 44px -19px rgba(0,0,0,0.73);
 }
 
@@ -18,8 +18,8 @@
 }
 
 .img-view img{
+    min-width: 20em;
     width: 45em;
-    max-width: 45em;
 }
 
 .content-view{
@@ -39,11 +39,7 @@
     color: transparent;
 }
 
-.text-container .description-text{
-    margin-top: 2em;
-}
-
-.text-container .list-text{
+.text-container .description-text, .text-container .list-text{
     margin-top: 2em;
 }
 
@@ -83,4 +79,49 @@
 .button-text button:hover{
     transform: scale(1.05);
     background-position: right;
+}
+
+@media (max-width: 1280px){
+    .container-view{
+        grid-template-columns: 1fr;
+        margin: 1.5em;
+    }
+
+    .img-view img{
+        max-width: 30em;
+    }
+
+    .content-view{
+        margin: 0.7em;
+    }
+}
+
+@media (max-width: 768px){
+
+    .container-view{
+        grid-template-columns: 1fr;
+        margin: 1em;
+    }
+
+    .img-view img{
+        display: none;
+    }
+    .text-container .title-text h1{
+        text-align: center;
+        font-size: 2em;
+    }
+
+    .text-container .list-text h3{
+        font-size: 1em;
+    }
+
+    .button-text button{
+        width: 100%;
+    }
+
+    .text-container .list-text ul li,
+    .text-container .list-text ul li::marker{
+        font-size: 1em;
+    }
+
 }

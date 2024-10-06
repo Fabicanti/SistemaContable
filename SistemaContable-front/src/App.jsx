@@ -22,10 +22,10 @@ export const App = () => {
         <Route path="/register" element={<Register />} />
         <Route
           path="/home"
-          element={<Home onLogout={handleLogout} auth={login.isAuth} />}
+          element={<Home onLogout={handleLogout} auth={login.isAuth}/>}
         >
           <Route path="account" element={<Account />} />
-          <Route path="users" element={<Users/>}/>
+          <Route path="users" element={<Users />}/>
           <Route path="movements" element={<Movements/>} />
         </Route>
       </Routes>

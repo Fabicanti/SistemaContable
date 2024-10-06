@@ -171,3 +171,7 @@ INSERT INTO cuentas (nombre, codigoCuenta, descripcion, tipo_cuenta_id, cuenta_p
 VALUES ('Otros Gastos', '5500', '', (SELECT id FROM tipos_cuenta WHERE nombre = 'RESULTADO NEGATIVO'), NULL);
 INSERT INTO cuentas (nombre, codigoCuenta, descripcion, tipo_cuenta_id, cuenta_padre_id) 
 VALUES ('Gastos por publicidad', '5600', '', (SELECT id FROM tipos_cuenta WHERE nombre = 'RESULTADO NEGATIVO'), NULL);
+
+-- Lo tuve que cambiar por un error en esa columna. Columna "C1_0.CODIGO_CUENTA" no encontrada. (CuentaService) -> obtenerTodasLasCuentas()
+-- JPA convierte nombres en camelCase a snake_case.
+ALTER TABLE cuentas RENAME COLUMN codigoCuenta TO codigo_cuenta;
