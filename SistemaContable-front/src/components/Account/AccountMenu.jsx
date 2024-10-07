@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IoMdAdd, IoIosArrowUp  } from "react-icons/io";
 import {AccountCreate} from "./AccountCreate"
 
-export const AccountMenu = () => {
+export const AccountMenu = ({ roles }) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -16,9 +16,9 @@ export const AccountMenu = () => {
                 <div className='data-account'>
                     <div className='title-account'>Mis Cuentas</div>
                 </div>
-                <button onClick={openCreate}>
+                {roles == 2 ? <button onClick={openCreate}>
                     { !isOpen ? <IoMdAdd size={24}/> : <IoIosArrowUp size={24}/>}
-                </button>
+                </button> : <></>}
             </div>
             
             <div className={`create-account ${isOpen ? 'visible' : ''}`}>

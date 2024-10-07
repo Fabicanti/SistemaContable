@@ -1,7 +1,9 @@
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { useEffect, useState } from "react";
+import { CiCircleRemove } from "react-icons/ci";
 import { IoIosSearch } from "react-icons/io";
+import { useUser } from "../../context/UserProvider";
 
 const columnNames = [
     { field: 'id', header: 'ID' },
@@ -10,17 +12,31 @@ const columnNames = [
     { field: 'tipoCuentaNombre', header: 'TIPO CUENTA' }
 ];
 
+const sizeIcon = 36;
+export const AccountTable = ({ datas, fetchGet, onDelete, roles}) => {
 
-export const AccountTable = ({ datas, fetchGet }) => {
+    const { user } = useUser();
 
     const [globalFilter, setGlobalFilter] = useState(null);
 
     const { data, isLoading, errors } = datas;
 
     useEffect(() => {
-        console.log(data);
         document.title = "Cuentas";
-    }, [data]);
+    }, []);
+
+    const actionTemplateAccount = (rowData) => {
+        return (
+            <div className="action-buttons">
+                <button
+                    className="btn-delete"
+                    onClick={() => onDelete(rowData, fetchGet)}
+                >
+                    <CiCircleRemove size={sizeIcon} />
+                </button>
+            </div>
+        )
+    }
 
     return (
         <div className="custom-table-wrapper">
@@ -47,10 +63,10 @@ export const AccountTable = ({ datas, fetchGet }) => {
                         Sin datos de Cuentas
                     </div>
                     : <DataTable
-                        className="custom-table"
+                        className={`custom-table ${roles === 2 ? "" : "user"}`}
                         value={data}
                         paginator
-                        rows={8}
+                        rows={4}
                         globalFilter={globalFilter}>
 
                         {columnNames.map((col, i) => (
@@ -61,6 +77,16 @@ export const AccountTable = ({ datas, fetchGet }) => {
                                 sortable
                             />
                         ))}
+
+                        {roles === 2 ? (
+                            <Column
+                                header="ACCIONES"
+                                body={actionTemplateAccount} // Cuerpo personalizado con botones
+                                style={{ minWidth: "200px" }}
+                            />
+                        ) : (
+                            <></>
+                        )}
                     </DataTable>)}
         </div>
     )

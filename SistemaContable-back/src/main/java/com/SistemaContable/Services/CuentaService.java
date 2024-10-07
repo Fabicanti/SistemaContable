@@ -5,7 +5,9 @@ import com.SistemaContable.DTO.CuentaDTO;
 import com.SistemaContable.Repositories.CuentaRepository;
 import com.SistemaContable.Repositories.TipoCuentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,12 +67,29 @@ public class CuentaService {
         return mapToDTO(cuenta);
     }
 
-    // Método para eliminar una cuenta por ID
+    /**
+     * Método para eliminar una cuenta por ID
+     * Elimina la cuenta si esta no tiene movimientos (DetalleAsiento) asociados ni es cuenta padre de
+     * otras cuentas.
+     * @param id es el ID de la cuenta a eliminar
+     */
     public void eliminarCuenta(Long id) {
-        if (cuentaRepository.existsById(id)) {
+        Long cantidadMovimientos = cuentaRepository.countMovimientosByCuentaId(id);
+
+        Long cantidadSubCuentas = cuentaRepository.countByCuentaPadreId(id);
+
+        if (cantidadSubCuentas > 0)
+            throw new ResponseStatusException(HttpStatus
+                    .CONFLICT, "No se puede eliminar la cuenta porque tiene cuentas hijas asociadas.");
+
+        if (cantidadMovimientos > 0)
+            throw new ResponseStatusException(HttpStatus
+                    .CONFLICT, "No se puede eliminar la cuenta porque tiene movimientos asociados.");
+
+        try {
             cuentaRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Cuenta no encontrada");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar la cuenta.");
         }
     }
 
