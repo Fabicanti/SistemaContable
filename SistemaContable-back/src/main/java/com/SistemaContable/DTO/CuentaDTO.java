@@ -5,6 +5,7 @@ public class CuentaDTO {
     private Long id;
     private String nombre;
     private String codigoCuenta;
+    private double saldo;
     private Long tipoCuentaId;
     private String tipoCuentaNombre;
     private Long cuentaPadreId;
@@ -13,19 +14,21 @@ public class CuentaDTO {
     public CuentaDTO() {
     }
 
-    public CuentaDTO(Long id, String nombre, String codigoCuenta, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
+    public CuentaDTO(Long id, String nombre, String codigoCuenta, double saldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
         this.id = id;
         this.nombre = nombre;
         this.codigoCuenta = codigoCuenta;
+        this.saldo = saldo;
         this.tipoCuentaId = tipoCuentaId;
         this.tipoCuentaNombre = tipoCuentaNombre;
         this.cuentaPadreId = cuentaPadreId;
         this.subCuentasIds = subCuentasIds;
     }
  
-    public CuentaDTO(String nombre, String codigoCuenta, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
+    public CuentaDTO(String nombre, String codigoCuenta, double saldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
         this.nombre = nombre;
         this.codigoCuenta = codigoCuenta;
+        this.saldo = saldo;
         this.tipoCuentaId = tipoCuentaId;
         this.tipoCuentaNombre = tipoCuentaNombre;
         this.cuentaPadreId = cuentaPadreId;
@@ -54,6 +57,14 @@ public class CuentaDTO {
 
     public void setCodigoCuenta(String codigoCuenta) {
         this.codigoCuenta = codigoCuenta;
+    }
+
+    public double getSaldo(){
+        return saldo;
+    }
+
+    public void setSaldo(double saldo){
+        this.saldo = saldo;
     }
 
     public Long getTipoCuentaId() {

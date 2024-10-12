@@ -27,7 +27,7 @@ CREATE TABLE cuentas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     codigoCuenta VARCHAR(20) NOT NULL,
-    descripcion VARCHAR(500),
+    saldo DECIMAL(15, 2) NOT NULL, --Agrega saldo y saca descripción
     tipo_cuenta_id BIGINT,
     cuenta_padre_id BIGINT NULL,
     FOREIGN KEY (tipo_cuenta_id) REFERENCES tipos_cuenta(id),
@@ -65,6 +65,7 @@ INSERT INTO roles (nombre) VALUES ('USER');
 INSERT INTO roles (nombre) VALUES ('SUPERUSER');
 
 -- Cargar datos en la tabla TipoCuenta
+INSERT INTO tipos_cuenta (nombre) VALUES ('RAIZ');
 INSERT INTO tipos_cuenta (nombre) VALUES ('ACTIVO');
 INSERT INTO tipos_cuenta (nombre) VALUES ('PASIVO');
 INSERT INTO tipos_cuenta (nombre) VALUES ('PATRIMONIO NETO');
@@ -78,6 +79,9 @@ VALUES ('admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720
 INSERT INTO usuarios (username, password_hash, nombre, apellido, email, role_id)
 VALUES ('user1', 'e606e38b0d8c19b24cf0ee3808183162ea7cd63ff7912dbb22b5e803286b4446', 'User1', 'Example', 'user1@example.com', 2);
 
+-- Cuenta raiz: sirve para establecer la estructura de "arbol" en el plan de cuentas y para generar los codigos. El usuario no deberia poder verla ni usarla.
+INSERT INTO cuentas (nombre, codigoCuenta, descripcion, tipo_cuenta_id, cuenta_padre_id) 
+VALUES ('Raiz', '00000', 0, (SELECT id FROM tipos_cuenta WHERE nombre = 'RAIZ'), NULL);
 
 -- Activos
 INSERT INTO cuentas (nombre, codigoCuenta, descripcion, tipo_cuenta_id, cuenta_padre_id) 

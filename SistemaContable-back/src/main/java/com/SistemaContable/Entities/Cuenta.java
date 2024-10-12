@@ -16,6 +16,9 @@ public class Cuenta {
     @Column(name = "codigo_cuenta", nullable = false)
     private String codigoCuenta;
 
+    @Column(name = "saldo", nullable = false)
+    private double saldo;
+
     @ManyToOne
     @JoinColumn(name = "tipo_cuenta_id", nullable = false)
     private TipoCuenta tipoCuenta;
@@ -53,6 +56,14 @@ public class Cuenta {
 
     public String getCodigoCuenta() {
         return codigoCuenta;
+    }
+
+    public double getSaldo(){
+        return saldo;
+    }
+
+    public void setSaldo(double saldo){
+        this.saldo = saldo;
     }
 
     public void setCodigoCuenta(String codigoCuenta) {

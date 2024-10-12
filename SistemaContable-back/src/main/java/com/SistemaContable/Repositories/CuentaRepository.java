@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.SistemaContable.Entities.Cuenta;
 
+
 @Repository
 public interface CuentaRepository  extends JpaRepository<Cuenta, Long>{
 
@@ -17,4 +18,14 @@ public interface CuentaRepository  extends JpaRepository<Cuenta, Long>{
      */
     @Query("SELECT COUNT(m) FROM DetalleAsiento m WHERE m.asientoContable.id = :cuentaId")
     Long countMovimientosByCuentaId(@Param("cuentaId") Long cuentaId);
+
+    @Query("SELECT c FROM Cuenta c WHERE c.id = (SELECT MAX(c2.id) FROM Cuenta c2 WHERE c2.cuentaPadre.id = :cuentaPadreId)")
+    Cuenta findUltimoHijo(@Param("cuentaPadreId") Long cuentaPadreId);
+
+    Cuenta findByCodigoCuenta(String codigoCuenta);
+
+    @Query("SELECT c.id FROM Cuenta c WHERE c.nombre = :nombreCuenta")
+    Long findIdByNombreCuenta(@Param("nombreCuenta") String nombreCuenta);
+
+
 }

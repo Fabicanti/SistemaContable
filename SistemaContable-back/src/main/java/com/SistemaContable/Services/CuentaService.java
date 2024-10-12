@@ -22,10 +22,13 @@ public class CuentaService {
     private TipoCuentaRepository tipoCuentaRepository;
 
     // Método para crear una nueva cuenta
-    public CuentaDTO crearCuenta(CuentaDTO cuentaDTO) {
+    public Cuenta crearCuenta(CuentaDTO cuentaDTO) {
+        generarCodigoCuenta(cuentaDTO);
+        cuentaDTO.setSaldo(0); // Las cuentas arrancan con saldo en 0. Después se modifica mediante los asientos. 
         Cuenta cuenta = mapToEntity(cuentaDTO);
         Cuenta nuevaCuenta = cuentaRepository.save(cuenta);
-        return mapToDTO(nuevaCuenta);
+        mapToDTO(nuevaCuenta);
+        return nuevaCuenta;
     }
 
     // Método para actualizar una cuenta existente
@@ -34,7 +37,6 @@ public class CuentaService {
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
 
         cuenta.setNombre(cuentaDTO.getNombre());
-        cuenta.setCodigoCuenta(cuentaDTO.getCodigoCuenta());
 
         // Actualiza el tipo de cuenta si está presente
         if (cuentaDTO.getTipoCuentaId() != null) {
@@ -55,6 +57,7 @@ public class CuentaService {
     // Método para obtener todas las cuentas
     public List<CuentaDTO> obtenerTodasLasCuentas() {
         List<Cuenta> cuentas = cuentaRepository.findAll();
+        cuentas.remove(cuentaRepository.findByCodigoCuenta("00000")); // Borra del listado la cuenta raíz. 
         return cuentas.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -91,7 +94,7 @@ public class CuentaService {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar la cuenta.");
         }
-    }
+    } //Si las cuentas a borrar tienen movimientos asociados deberiamos "esconder" la cuenta del usuario sin eliminarla realmente. 
 
     // Método privado para mapear de Cuenta a CuentaDTO
     private CuentaDTO mapToDTO(Cuenta cuenta) {
@@ -99,6 +102,7 @@ public class CuentaService {
                 cuenta.getId(),
                 cuenta.getNombre(),
                 cuenta.getCodigoCuenta(),
+                cuenta.getSaldo(),
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getId() : null,
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getNombre() : null,
                 cuenta.getCuentaPadre() != null ? cuenta.getCuentaPadre().getId() : null,
@@ -111,6 +115,7 @@ public class CuentaService {
         Cuenta cuenta = new Cuenta();
         cuenta.setNombre(cuentaDTO.getNombre());
         cuenta.setCodigoCuenta(cuentaDTO.getCodigoCuenta());
+        cuenta.setSaldo(cuentaDTO.getSaldo());
 
         // Asigna el tipo de cuenta si está presente
         if (cuentaDTO.getTipoCuentaId() != null) {
@@ -121,9 +126,69 @@ public class CuentaService {
         // Asigna la cuenta padre si está presente (para subcuentas)
         if (cuentaDTO.getCuentaPadreId() != null) {
             cuentaRepository.findById(cuentaDTO.getCuentaPadreId())
-                    .ifPresent(cuenta::setCuentaPadre);
+                    .ifPresent(cuenta::setCuentaPadre);            
         }
 
         return cuenta;
+    }
+
+    // Método para asignarle el codigo a una cuenta. 
+    // Va "descomponiendo" el codigo del padre o del ultimo hijo del padre para obtener uno nuevo.
+    private void generarCodigoCuenta(CuentaDTO cuentaDTO){
+        Cuenta cuenta_aux;
+        String codigo_aux, nuevoCodigo;
+        int aux;
+        Long cantidadHijos;
+        
+        //Acá entran las unicas 5 cuentas que no tienen padre: activo, pasivo, patrimonio, resultado positivo y resultado negativo. 
+        if(cuentaDTO.getCuentaPadreId() == null){
+            cuentaDTO.setCuentaPadreId(cuentaRepository.findIdByNombreCuenta("Raiz")); 
+            cantidadHijos = cuentaRepository.countByCuentaPadreId(cuentaDTO.getCuentaPadreId());
+
+            if(cantidadHijos == 0){
+                cuenta_aux = cuentaRepository.findById(cuentaDTO.getCuentaPadreId()).get();
+            }
+            else{
+                cuenta_aux = cuentaRepository.findUltimoHijo(cuentaDTO.getCuentaPadreId());
+            }
+            codigo_aux = cuenta_aux.getCodigoCuenta();
+            aux = Integer.parseInt(codigo_aux.substring(0,1)) +1;
+            nuevoCodigo = aux + "";
+        }
+        else{
+            cuenta_aux = cuentaRepository.findById(cuentaDTO.getCuentaPadreId()).get();
+            codigo_aux = cuenta_aux.getCodigoCuenta();
+            nuevoCodigo = codigo_aux.substring(0, 1);
+            cantidadHijos = cuentaRepository.countByCuentaPadreId(cuentaDTO.getCuentaPadreId());
+            int x = 1;
+            int y = 3;
+            if(cantidadHijos == 0){
+                while(!codigo_aux.substring(x, y).equals("00")){
+                    nuevoCodigo += codigo_aux.substring(x, y);
+                    x += 2;
+                    y += 2;
+                }
+            }
+            else{
+                cuenta_aux = cuentaRepository.findUltimoHijo(cuentaDTO.getCuentaPadreId());
+                codigo_aux = cuenta_aux.getCodigoCuenta();
+                while(y+2 <= codigo_aux.length() && !codigo_aux.substring(x+2, y+2).equals("00")){
+                    nuevoCodigo += codigo_aux.substring(x, y);
+                    x += 2;
+                    y += 2;
+                }
+            }
+            aux = Integer.parseInt(codigo_aux.substring(x,y))+1;
+            if(aux <= 9){
+                nuevoCodigo += "0" + aux;
+            }
+            else{
+                nuevoCodigo += aux + "";
+            }
+        }  
+        while(nuevoCodigo.length() < 5){
+            nuevoCodigo+= "0";
+        }
+        cuentaDTO.setCodigoCuenta(nuevoCodigo);
     }
 }
