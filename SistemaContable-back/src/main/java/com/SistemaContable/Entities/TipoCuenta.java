@@ -1,5 +1,8 @@
 package com.SistemaContable.Entities;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +17,7 @@ public class TipoCuenta {
     private String nombre;
 
     @OneToMany(mappedBy = "tipoCuenta")
+    @JsonIgnore
     private List<Cuenta> cuentas;
 
     public TipoCuenta() {

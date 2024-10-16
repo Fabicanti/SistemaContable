@@ -1,6 +1,10 @@
 package com.SistemaContable.Entities;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -19,9 +23,11 @@ public class AsientoContable {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnoreProperties({"passwordHash", "role", "asientos"})
     private Usuario usuario;
     
     @OneToMany(mappedBy = "asientoContable", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<DetalleAsiento> detalles;
 
     public AsientoContable() {

@@ -1,5 +1,8 @@
 package com.SistemaContable.Entities;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +16,7 @@ public class Rol {
     private String nombre;  // "USER" o "SUPERUSER"
 
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private List<Usuario> usuarios;
 
     public Rol() {

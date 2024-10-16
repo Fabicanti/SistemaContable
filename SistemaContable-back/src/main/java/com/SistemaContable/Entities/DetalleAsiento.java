@@ -1,4 +1,7 @@
 package com.SistemaContable.Entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,10 +14,12 @@ public class DetalleAsiento {
 
     @ManyToOne
     @JoinColumn(name = "cuenta_id", nullable = false)
+    @JsonManagedReference
     private Cuenta cuenta;
 
     @ManyToOne
     @JoinColumn(name = "asiento_id", nullable = false)
+    @JsonBackReference
     private AsientoContable asientoContable;
 
     @Column(nullable = false)

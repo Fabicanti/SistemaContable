@@ -1,4 +1,6 @@
 package com.SistemaContable.Entities;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -26,6 +28,7 @@ public class Usuario {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
+    @JsonIgnoreProperties("usuarios")
     private Rol role;
 
     public Usuario() {

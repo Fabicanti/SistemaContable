@@ -1,5 +1,9 @@
 package com.SistemaContable.Entities;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -21,16 +25,20 @@ public class Cuenta {
 
     @ManyToOne
     @JoinColumn(name = "tipo_cuenta_id", nullable = false)
+    @JsonIgnoreProperties("cuentas")
     private TipoCuenta tipoCuenta;
 
     @ManyToOne
     @JoinColumn(name = "cuenta_padre_id")
+    @JsonIgnoreProperties("subCuentas")
     private Cuenta cuentaPadre;  // Relación en árbol
 
     @OneToMany(mappedBy = "cuentaPadre")
+    @JsonIgnoreProperties("cuentaPadre")
     private List<Cuenta> subCuentas;
 
     @OneToMany(mappedBy = "cuenta")
+    @JsonBackReference
     private List<DetalleAsiento> detallesAsientos;
 
     public Cuenta() {
