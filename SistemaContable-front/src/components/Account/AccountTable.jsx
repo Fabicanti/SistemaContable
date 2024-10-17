@@ -3,7 +3,6 @@ import { DataTable } from "primereact/datatable";
 import { useEffect, useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { IoIosSearch } from "react-icons/io";
-import { useUser } from "../../context/UserProvider";
 
 const columnNames = [
     { field: 'id', header: 'ID' },
@@ -13,9 +12,7 @@ const columnNames = [
 ];
 
 const sizeIcon = 36;
-export const AccountTable = ({ datas, fetchGet, onDelete, roles}) => {
-
-    const { user } = useUser();
+export const AccountTable = ({ datas, fetchGet, onDelete, roles, rows = 4}) => {
 
     const [globalFilter, setGlobalFilter] = useState(null);
 
@@ -63,10 +60,10 @@ export const AccountTable = ({ datas, fetchGet, onDelete, roles}) => {
                         Sin datos de Cuentas
                     </div>
                     : <DataTable
-                        className={`custom-table ${roles === 2 ? "" : "user"}`}
+                        className={`custom-table ${roles === 2  ? "" : "user"}`}
                         value={data}
                         paginator
-                        rows={4}
+                        rows={rows}
                         globalFilter={globalFilter}>
 
                         {columnNames.map((col, i) => (
@@ -78,7 +75,7 @@ export const AccountTable = ({ datas, fetchGet, onDelete, roles}) => {
                             />
                         ))}
 
-                        {roles === 2 ? (
+                        {roles === 2 && onDelete ? (
                             <Column
                                 header="ACCIONES"
                                 body={actionTemplateAccount} // Cuerpo personalizado con botones

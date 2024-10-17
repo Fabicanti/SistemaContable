@@ -70,7 +70,7 @@ export const Aside = () => {
           </Link>
         </li>
         <li>
-          <Link className="elem-link">
+          <Link to="/home/movements" className="elem-link">
             <TbReportAnalytics size={sizeIcon} color={colorIcon} />
             <div>Asientos</div>
           </Link>

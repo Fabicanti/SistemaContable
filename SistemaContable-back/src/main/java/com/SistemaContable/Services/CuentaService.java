@@ -132,6 +132,10 @@ public class CuentaService {
         return cuenta;
     }
 
+    public List<String> obtenerNombresCuentas(){
+        return cuentaRepository.findAllNombresCuentas();
+    }
+
     // Método para asignarle el codigo a una cuenta. 
     // Va "descomponiendo" el codigo del padre o del ultimo hijo del padre para obtener uno nuevo.
     private void generarCodigoCuenta(CuentaDTO cuentaDTO){

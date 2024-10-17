@@ -31,7 +31,7 @@ public class DetalleAsientoService {
 
     /**
      * Registra los detalles de un asiento contable.
-     * @param detalleAsientoDTO Lista de detalles del asiento a registrar.
+     * @param detalleAsientoDTOs Lista de detalles del asiento a registrar.
      * @param asientoId ID del asiento contable al que pertenece el detalle.
      * @return Lista de detalles del asiento registrados.
      */
@@ -67,7 +67,7 @@ public class DetalleAsientoService {
     public List<DetalleAsientoDTO> obtenerDetallesPorAsientoId(Long asientoId) {
         List<DetalleAsiento> detallesAsiento = detalleAsientoRepository.findAll().stream()
                 .filter(detalle -> detalle.getAsientoContable().getId().equals(asientoId))
-                .collect(Collectors.toList());
+                .toList();
 
         if (detallesAsiento.isEmpty()) {
             throw new EntityNotFoundException("No se encontraron detalles para el asiento con ID: " + asientoId);

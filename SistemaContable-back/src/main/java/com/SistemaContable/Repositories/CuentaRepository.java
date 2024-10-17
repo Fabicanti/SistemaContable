@@ -6,11 +6,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.SistemaContable.Entities.Cuenta;
 
+import java.util.List;
+
 
 @Repository
 public interface CuentaRepository  extends JpaRepository<Cuenta, Long>{
 
     Long countByCuentaPadreId(Long cuentaPadreId);
+
+    @Query("SELECT c.nombre FROM Cuenta c WHERE c.nombre != 'Raiz' ")
+    List<String> findAllNombresCuentas();
 
     /**
      * @param cuentaId es el ID de la cuenta.

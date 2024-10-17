@@ -21,6 +21,11 @@ public class CuentaController {
         return ResponseEntity.ok(cuentas);
     }
 
+    @GetMapping("/nombres")
+    public ResponseEntity<?> obtenerNombresCuentas(){
+        return ResponseEntity.ok(cuentaService.obtenerNombresCuentas());
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> eliminarCuenta(@PathVariable Long id){
         cuentaService.eliminarCuenta(id);
