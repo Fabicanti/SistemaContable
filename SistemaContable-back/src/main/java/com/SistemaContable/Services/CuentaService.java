@@ -97,7 +97,7 @@ public class CuentaService {
     } //Si las cuentas a borrar tienen movimientos asociados deberiamos "esconder" la cuenta del usuario sin eliminarla realmente. 
 
     // Método privado para mapear de Cuenta a CuentaDTO
-    private CuentaDTO mapToDTO(Cuenta cuenta) {
+    public CuentaDTO mapToDTO(Cuenta cuenta) {
         return new CuentaDTO(
                 cuenta.getId(),
                 cuenta.getNombre(),
