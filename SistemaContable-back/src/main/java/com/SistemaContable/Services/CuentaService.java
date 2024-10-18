@@ -26,11 +26,8 @@ public class CuentaService {
     public CuentaDTO crearCuenta(CuentaDTO cuentaDTO) {
         String nuevoCodigo = generarCodigoCuenta(cuentaDTO);
         cuentaDTO.setCodigoCuenta(nuevoCodigo);
-        if(cuentaDTO.getSaldo() == 0){
-            cuentaDTO.setSaldo(0); // Las cuentas arrancan con saldo en 0. Después se modifica mediante los asientos. 
-        }else{
-            cuentaDTO.setSaldo(cuentaDTO.getSaldo());
-        }
+        controlarTipo(cuentaDTO);
+        //Saqué lo de saldo xq seteaba algo que ya estaba seteado. 
         Cuenta cuenta = mapToEntity(cuentaDTO);
         Cuenta nuevaCuenta = cuentaRepository.save(cuenta);
         return mapToDTO(nuevaCuenta);
@@ -138,11 +135,20 @@ public class CuentaService {
         return cuentaRepository.findAllNombresCuentas();
     }
 
+    //Controla que el tipo de la cuenta coincida con el padre. Si no coincide, le setea el tipo de cuenta del padre.
+    private void controlarTipo(CuentaDTO cuentaDTO){
+        Cuenta padre = cuentaRepository.findById(cuentaDTO.getCuentaPadreId()).get();
+        Long tipoPadre = padre.getTipoCuenta().getId();
+        Long tipoHijo = cuentaDTO.getTipoCuentaId();
+        if(tipoPadre != tipoHijo){
+            cuentaDTO.setTipoCuentaId(tipoPadre);
+            cuentaDTO.setTipoCuentaNombre(padre.getTipoCuenta().getNombre());
+        }
+    }
+
     // Método para asignarle el codigo a una cuenta. 
     // Va "descomponiendo" el codigo del padre o del ultimo hijo del padre para obtener uno nuevo.
     private String generarCodigoCuenta(CuentaDTO cuentaDTO){
-        //verificar si la cuenta es activo, pasivo, patrimonio, resultado positivo o resultado negativo
-
         Cuenta cuenta_aux;
         String codigo_aux, nuevoCodigo;
         int aux;
@@ -199,4 +205,5 @@ public class CuentaService {
         }
         return nuevoCodigo;
     }
+
 }
