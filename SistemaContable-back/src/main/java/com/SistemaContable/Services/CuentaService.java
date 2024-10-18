@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,13 +23,13 @@ public class CuentaService {
     private TipoCuentaRepository tipoCuentaRepository;
 
     // Método para crear una nueva cuenta
-    public Cuenta crearCuenta(CuentaDTO cuentaDTO) {
-        generarCodigoCuenta(cuentaDTO);
+    public CuentaDTO crearCuenta(CuentaDTO cuentaDTO) {
+        String nuevoCodigo = generarCodigoCuenta(cuentaDTO);
+        cuentaDTO.setCodigoCuenta(nuevoCodigo);
         cuentaDTO.setSaldo(0); // Las cuentas arrancan con saldo en 0. Después se modifica mediante los asientos. 
         Cuenta cuenta = mapToEntity(cuentaDTO);
         Cuenta nuevaCuenta = cuentaRepository.save(cuenta);
-        mapToDTO(nuevaCuenta);
-        return nuevaCuenta;
+        return mapToDTO(nuevaCuenta);
     }
 
     // Método para actualizar una cuenta existente
@@ -43,13 +44,11 @@ public class CuentaService {
             tipoCuentaRepository.findById(cuentaDTO.getTipoCuentaId())
                     .ifPresent(cuenta::setTipoCuenta);
         }
-
         // Actualiza la cuenta padre si está presente
         if (cuentaDTO.getCuentaPadreId() != null) {
             cuentaRepository.findById(cuentaDTO.getCuentaPadreId())
                     .ifPresent(cuenta::setCuentaPadre);
         }
-
         Cuenta cuentaActualizada = cuentaRepository.save(cuenta);
         return mapToDTO(cuentaActualizada);
     }
@@ -97,7 +96,7 @@ public class CuentaService {
     } //Si las cuentas a borrar tienen movimientos asociados deberiamos "esconder" la cuenta del usuario sin eliminarla realmente. 
 
     // Método privado para mapear de Cuenta a CuentaDTO
-    public CuentaDTO mapToDTO(Cuenta cuenta) {
+    private CuentaDTO mapToDTO(Cuenta cuenta) {
         return new CuentaDTO(
                 cuenta.getId(),
                 cuenta.getNombre(),
@@ -106,7 +105,7 @@ public class CuentaService {
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getId() : null,
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getNombre() : null,
                 cuenta.getCuentaPadre() != null ? cuenta.getCuentaPadre().getId() : null,
-                cuenta.getSubCuentas().stream().map(Cuenta::getId).collect(Collectors.toList())
+                cuenta.getSubCuentas() != null ? cuenta.getSubCuentas().stream().map(Cuenta::getId).collect(Collectors.toList()) : new ArrayList<>()
         );
     }
 
@@ -128,7 +127,6 @@ public class CuentaService {
             cuentaRepository.findById(cuentaDTO.getCuentaPadreId())
                     .ifPresent(cuenta::setCuentaPadre);            
         }
-
         return cuenta;
     }
 
@@ -138,7 +136,9 @@ public class CuentaService {
 
     // Método para asignarle el codigo a una cuenta. 
     // Va "descomponiendo" el codigo del padre o del ultimo hijo del padre para obtener uno nuevo.
-    private void generarCodigoCuenta(CuentaDTO cuentaDTO){
+    private String generarCodigoCuenta(CuentaDTO cuentaDTO){
+        //verificar si la cuenta es activo, pasivo, patrimonio, resultado positivo o resultado negativo
+        
         Cuenta cuenta_aux;
         String codigo_aux, nuevoCodigo;
         int aux;
@@ -193,6 +193,6 @@ public class CuentaService {
         while(nuevoCodigo.length() < 5){
             nuevoCodigo+= "0";
         }
-        cuentaDTO.setCodigoCuenta(nuevoCodigo);
+        return nuevoCodigo;
     }
 }

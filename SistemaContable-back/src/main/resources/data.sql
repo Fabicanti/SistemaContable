@@ -82,7 +82,7 @@ VALUES ('user1', 'e606e38b0d8c19b24cf0ee3808183162ea7cd63ff7912dbb22b5e803286b44
 -- Cuenta raiz: sirve para establecer la estructura de "arbol" en el plan de cuentas y para generar los codigos. El usuario no deberia poder verla ni usarla.
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id) 
 VALUES ('Raiz', '00000', 0, (SELECT id FROM tipos_cuenta WHERE nombre = 'RAIZ'), NULL);
-
+/*
 -- Activos
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id) 
 VALUES ('Caja', '1100', 0.00, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), NULL);
@@ -179,3 +179,4 @@ VALUES ('Gastos por publicidad', '5600', 0.00, (SELECT id FROM tipos_cuenta WHER
 -- Lo tuve que cambiar por un error en esa columna. Columna "C1_0.CODIGO_CUENTA" no encontrada. (CuentaService) -> obtenerTodasLasCuentas()
 -- JPA convierte nombres en camelCase a snake_case.
 -- ALTER TABLE cuentas RENAME COLUMN codigo_cuenta TO codigo_cuenta;
+*/

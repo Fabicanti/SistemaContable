@@ -14,6 +14,11 @@ public class CuentaDTO {
     public CuentaDTO() {
     }
 
+    public CuentaDTO(Long id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
     public CuentaDTO(Long id, String nombre, String codigoCuenta, double saldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
         this.id = id;
         this.nombre = nombre;

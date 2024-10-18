@@ -1,7 +1,6 @@
 package com.SistemaContable.Controllers;
 
 import com.SistemaContable.DTO.CuentaDTO;
-import com.SistemaContable.Entities.Cuenta;
 import com.SistemaContable.Services.CuentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +16,13 @@ public class CuentaController {
     private CuentaService cuentaService;
 
     @PostMapping("/crear")
-    public ResponseEntity<CuentaDTO> createCuenta(@RequestBody CuentaDTO cuentaDTO) {
-        Cuenta cuentaNueva = cuentaService.crearCuenta(cuentaDTO);
-        CuentaDTO cuentaNuevaDTO = cuentaService.mapToDTO(cuentaNueva);
-        return ResponseEntity.ok(cuentaNuevaDTO);
+    public ResponseEntity<?> createCuenta(@RequestBody CuentaDTO cuentaDTO) {
+        try {
+            CuentaDTO cuentaNueva = cuentaService.crearCuenta(cuentaDTO);
+            return ResponseEntity.ok(cuentaNueva);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error creating account: " + e.getMessage());
+        }
     }
 
     @GetMapping
