@@ -26,7 +26,11 @@ public class CuentaService {
     public CuentaDTO crearCuenta(CuentaDTO cuentaDTO) {
         String nuevoCodigo = generarCodigoCuenta(cuentaDTO);
         cuentaDTO.setCodigoCuenta(nuevoCodigo);
-        cuentaDTO.setSaldo(0); // Las cuentas arrancan con saldo en 0. Después se modifica mediante los asientos. 
+        if(cuentaDTO.getSaldo() == 0){
+            cuentaDTO.setSaldo(0); // Las cuentas arrancan con saldo en 0. Después se modifica mediante los asientos. 
+        }else{
+            cuentaDTO.setSaldo(cuentaDTO.getSaldo());
+        }
         Cuenta cuenta = mapToEntity(cuentaDTO);
         Cuenta nuevaCuenta = cuentaRepository.save(cuenta);
         return mapToDTO(nuevaCuenta);
@@ -138,7 +142,7 @@ public class CuentaService {
     // Va "descomponiendo" el codigo del padre o del ultimo hijo del padre para obtener uno nuevo.
     private String generarCodigoCuenta(CuentaDTO cuentaDTO){
         //verificar si la cuenta es activo, pasivo, patrimonio, resultado positivo o resultado negativo
-        
+
         Cuenta cuenta_aux;
         String codigo_aux, nuevoCodigo;
         int aux;
