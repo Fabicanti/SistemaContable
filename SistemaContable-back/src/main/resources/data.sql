@@ -23,23 +23,23 @@ VALUES ('Raiz', '00000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'RAIZ')
 
 -- Cuentas padres ACTIVO, PASIVO, PATRIMONIO NETO, RESULTADO POSITIVO, RESULTADO NEGATIVO
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
-VALUES ('ACTIVO', '00100', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
+VALUES ('ACTIVO', '10000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '00000'));
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
-VALUES ('PASIVO', '00200', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'PASIVO'), 
+VALUES ('PASIVO', '20000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'PASIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '00000'));
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
-VALUES ('PATRIMONIO NETO', '00300', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'PATRIMONIO NETO'), 
+VALUES ('PATRIMONIO NETO', '30000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'PATRIMONIO NETO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '00000'));
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
-VALUES ('RESULTADO POSITIVO', '00400', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'RESULTADO POSITIVO'), 
+VALUES ('RESULTADO POSITIVO', '40000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'RESULTADO POSITIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '00000'));
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
-VALUES ('RESULTADO NEGATIVO', '00500', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'RESULTADO NEGATIVO'), 
+VALUES ('RESULTADO NEGATIVO', '50000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'RESULTADO NEGATIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '00000'));
 
 /*
