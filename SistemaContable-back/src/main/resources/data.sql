@@ -23,11 +23,11 @@ VALUES ('Raiz', '00000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'RAIZ')
 
 -- Cuentas padres ACTIVO, PASIVO, PATRIMONIO NETO, RESULTADO POSITIVO, RESULTADO NEGATIVO
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
-VALUES ('ACTIVO', '10000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
+VALUES ('ACTIVO', '10000', 1000, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '00000'));
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
-VALUES ('PASIVO', '20000', -1, (SELECT id FROM tipos_cuenta WHERE nombre = 'PASIVO'), 
+VALUES ('PASIVO', '20000', 10000, (SELECT id FROM tipos_cuenta WHERE nombre = 'PASIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '00000'));
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id)
