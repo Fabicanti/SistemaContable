@@ -13,9 +13,9 @@ INSERT INTO tipos_cuenta (nombre) VALUES ('RESULTADO NEGATIVO');
 -- Cargar datos en la tabla Usuario
 -- Las contraseñas user1: user123 ; admin : admin123)
 INSERT INTO usuarios (username, password_hash, nombre, apellido, email, role_id)
-VALUES ('admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Admin', 'Example', 'admin@example.com', 1);
+VALUES ('admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Admin', 'Example', 'admin@example.com', 2);
 INSERT INTO usuarios (username, password_hash, nombre, apellido, email, role_id)
-VALUES ('user1', 'e606e38b0d8c19b24cf0ee3808183162ea7cd63ff7912dbb22b5e803286b4446', 'User1', 'Example', 'user1@example.com', 2);
+VALUES ('user1', 'e606e38b0d8c19b24cf0ee3808183162ea7cd63ff7912dbb22b5e803286b4446', 'User1', 'Example', 'user1@example.com', 1);
 
 -- Cuenta raiz: sirve para establecer la estructura de "arbol" en el plan de cuentas y para generar los codigos. El usuario no deberia poder verla ni usarla.
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, tipo_cuenta_id, cuenta_padre_id) 
