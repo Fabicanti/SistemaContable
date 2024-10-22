@@ -140,7 +140,7 @@ public class CuentaService {
         Cuenta padre = cuentaRepository.findById(cuentaDTO.getCuentaPadreId()).get();
         Long tipoPadre = padre.getTipoCuenta().getId();
         Long tipoHijo = cuentaDTO.getTipoCuentaId();
-        if(tipoPadre != tipoHijo){
+        if(tipoPadre != tipoHijo && tipoPadre != 1){
             cuentaDTO.setTipoCuentaId(tipoPadre);
             cuentaDTO.setTipoCuentaNombre(padre.getTipoCuenta().getNombre());
         }
