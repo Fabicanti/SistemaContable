@@ -123,8 +123,9 @@ public class CuentaService {
                     .ifPresent(cuenta::setTipoCuenta);
         }
 
-        // Asigna la cuenta padre si está presente (para subcuentas)
-        if (cuentaDTO.getCuentaPadreId() != null) {
+        // Asigna la cuenta padre si está presente (para subcuentas) y mientras no reciba saldo. 
+        double saldoPadre = cuentaRepository.findById(cuentaDTO.getCuentaPadreId()).get().getSaldo();
+        if (cuentaDTO.getCuentaPadreId() != null && saldoPadre < 0) {
             cuentaRepository.findById(cuentaDTO.getCuentaPadreId())
                     .ifPresent(cuenta::setCuentaPadre);            
         }

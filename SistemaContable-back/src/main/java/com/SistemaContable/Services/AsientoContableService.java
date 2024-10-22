@@ -15,6 +15,7 @@ import com.SistemaContable.Entities.DetalleAsiento;
 import com.SistemaContable.Entities.Usuario;
 import com.SistemaContable.Exceptions.CuentaNoEncontradaException;
 import com.SistemaContable.Exceptions.CuentaNoValidaException;
+import com.SistemaContable.Exceptions.SaldoNegativoException;
 import com.SistemaContable.Exceptions.UsuarioNoEncontradoException;
 import com.SistemaContable.Repositories.AsientoContableRepository;
 import com.SistemaContable.Repositories.CuentaRepository;
@@ -22,7 +23,10 @@ import com.SistemaContable.Repositories.UsuarioRepository;
 import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class AsientoContableService {
@@ -73,7 +77,9 @@ public class AsientoContableService {
         }
 
         AsientoContable asientoContable = new AsientoContable();
-        asientoContable.setFecha(asientoDTO.getFecha());
+
+        // Se verifica la fecha antes de guardar. 
+        asientoContable.setFecha(controlFecha(asientoDTO.getFecha()));
         asientoContable.setDescripcion(asientoDTO.getDescripcion());
 
         // Buscar y asignar usuario
@@ -84,8 +90,14 @@ public class AsientoContableService {
         // Procesar los detalles del asiento
         List<DetalleAsiento> detalles = asientoDTO.getDetalles().stream().map(detalleDTO -> {
             DetalleAsiento detalleAsiento = new DetalleAsiento();
-            detalleAsiento.setDebe(detalleDTO.getDebe());
-            detalleAsiento.setHaber(detalleDTO.getHaber());
+            // Verifica que no haya debe o haber en negativo, ni que ambos sean cero. 
+            if((detalleDTO.getDebe() > 0 && detalleDTO.getHaber() == 0) || (detalleDTO.getDebe() == 0 && detalleDTO.getHaber() > 0)){
+                detalleAsiento.setDebe(detalleDTO.getDebe());
+                detalleAsiento.setHaber(detalleDTO.getHaber());
+            }
+            else{
+                throw new SaldoNegativoException("No puede ingresar saldo negativo");
+            }
 
             // Buscar y asignar cuenta
             Cuenta cuenta = cuentaRepository.findById(detalleDTO.getCuentaId())
@@ -132,6 +144,20 @@ public class AsientoContableService {
         return asientoContableRepository.save(asientoContable);
     }
 
+    // Verifica que la fecha del nuevo asiento esté entre la fecha del ultimo asiento y hoy. 
+    private Date controlFecha(Date fechaAsiento){
+        LocalDate hoy = new Date().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate fechaUltimoAsiento = asientoContableRepository.findUltimaFecha().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate fechaNuevoAsiento = fechaAsiento.toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+        if(fechaNuevoAsiento.equals(hoy) || (fechaNuevoAsiento.isAfter(fechaUltimoAsiento) && fechaNuevoAsiento.isBefore(hoy))){
+            return fechaAsiento;
+        }
+        else{
+            throw new CuentaNoValidaException("Fecha NO valida");
+        }
+    }
+    
+    // Realiza las verificaciones de saldo y lo actualiza en la cuenta.
     private Cuenta controlSaldo(Cuenta cuenta, char opcion, double monto){
         String tipoCuenta = cuenta.getTipoCuenta().getNombre();
         ActualizadorSaldo actualizadorSaldo;
