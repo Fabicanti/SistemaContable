@@ -143,10 +143,10 @@ public class AsientoContableService {
         // Guardar el asiento contable y los detalles
         return asientoContableRepository.save(asientoContable);
     }
-
     // Verifica que la fecha del nuevo asiento esté entre la fecha del ultimo asiento y hoy. 
     private Date controlFecha(Date fechaAsiento){
         LocalDate hoy = new Date().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+        //agregar validacion cuando no hay asientos anteriores
         LocalDate fechaUltimoAsiento = asientoContableRepository.findUltimaFecha().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
         LocalDate fechaNuevoAsiento = fechaAsiento.toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
         if(fechaNuevoAsiento.equals(hoy) || (fechaNuevoAsiento.isAfter(fechaUltimoAsiento) && fechaNuevoAsiento.isBefore(hoy))){
