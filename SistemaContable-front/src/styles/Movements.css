@@ -258,6 +258,13 @@
     background-color: var(--color-gradiant_2-h);
 }
 
+.btn-delete-mov{
+    border: none;
+    outline: none;
+    background-color: red;
+    border-radius: 2px;
+}
+
 @media (max-width: 992px) {
     .mov-seat .p-autocomplete-input, .mov-seat .p-inputtext{
         width: 140px;

@@ -163,6 +163,17 @@
     color: var(--color-gradiant_2-h);
 }
 
+.form-data .p-inputtext{
+    display: block;
+    border: none;
+    outline: none;
+    margin: 0;
+}
+
+.form-data .label-input{
+    margin-bottom: 5px;
+}
+
 
 /* Botones */
 .create-buttons{

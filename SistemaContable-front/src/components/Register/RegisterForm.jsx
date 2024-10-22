@@ -155,7 +155,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
 
                 </div>
 
-                <div className="register-selection">
+                {/* <div className="register-selection">
                     <div>
                         <TbSelector className="iconSing" size={20} />
                         Tipo de usuario:{" "}
@@ -169,7 +169,7 @@ export const RegisterForm = ({ avatarRegister, form }) => {
                         <option value={1}>Usuario</option>
                         <option value={2}>Administrador</option>
                     </select>
-                </div>
+                </div> */}
 
                 <input
                     type="submit"

@@ -1,5 +1,5 @@
-import { Column } from 'primereact/column';
-import { CiCircleRemove } from 'react-icons/ci';
+
+import { MdDeleteForever } from "react-icons/md";
 
 export const MovementsEntry = ({ datas = [], onDelete }) => {
 
@@ -27,8 +27,8 @@ export const MovementsEntry = ({ datas = [], onDelete }) => {
                                 <td>
                                     <button
                                         type='button'
-                                        className='btn-delete'
-                                        onClick={() => onDelete(element)}><CiCircleRemove size={36} />
+                                        className='btn-delete-mov'
+                                        onClick={() => onDelete(element)}><MdDeleteForever color='white' size={36} />
                                     </button>
                                 </td>
                             </tr>

@@ -7,7 +7,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 2rem;
-    padding: 4rem;
+    padding:  2rem 4rem;
     border-radius: 8px;
     box-shadow: 13px 13px 44px -19px rgba(0,0,0,0.73);
     -webkit-box-shadow: 13px 13px 44px -19px rgba(0,0,0,0.73);
@@ -42,7 +42,7 @@
 
 /* Titulo del registro */
 .componentForm form h2{
-    font-size: 2em;
+    font-size: 1.5em;
     margin-bottom: 2rem;
 }
 
@@ -50,6 +50,7 @@
 .form-group{
     position: relative;
     display: flex;
+    height: 45px;
     align-items: center;
     margin: 20px 0;
     border: 2px solid transparent;

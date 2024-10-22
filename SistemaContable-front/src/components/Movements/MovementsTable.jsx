@@ -5,7 +5,6 @@ import { CiCircleRemove } from 'react-icons/ci';
 
 export const MovementsTable = ({ dataAllAsientos, roles }) => {
 
-    // const { state, fetchGet } = dataAllAsientos();
     const { data, isLoading } = dataAllAsientos;
 
     const [expandedRows, setExpandedRows] = useState(null);
@@ -40,30 +39,11 @@ export const MovementsTable = ({ dataAllAsientos, roles }) => {
         );
     };
 
-    const actionBodyTemplate = (rowData) => {
-        return (
-            <div className="action-buttons">
-                <button
-                    className="btn-delete"
-                    onClick={() => console.log(rowData)}
-                >
-                    <CiCircleRemove size={36} />
-                </button>
-            </div>
-        )
-    }
-
-    // const toggleRow = (rowData) => {
-    //     setExpandedRows((prev) =>
-    //         prev && prev.id === rowData.id ? null : rowData
-    //     );
-    // };
-
     return (
         <div className="custom-table-wrapper">
 
             {isLoading
-                ? <div> Cargando</div>
+                ? <div>Cargando...</div>
                 : (data.length === 0
                     ? <div className="alert alert-light" role="alert">
                         Sin datos de Cuentas
@@ -76,10 +56,7 @@ export const MovementsTable = ({ dataAllAsientos, roles }) => {
                         <Column field="id" header="Nro. Asiento" />
                         <Column field="fecha" header="Fecha" body={(rowData) => formatFecha(rowData.fecha)} />
                         <Column field="descripcion" header="Descripción" />
-                        <Column header="Acciones" body={actionBodyTemplate} />
                     </DataTable>
-
-
                 )
 
             }

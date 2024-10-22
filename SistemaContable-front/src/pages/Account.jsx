@@ -14,15 +14,16 @@ export const Account = () => {
 
     const { state, fetchGet } = useFetchGET(urlAllAccount);
 
-    const { handleDeleteAccount } = useAccount();
+    const { handleDeleteAccount, handleAddAccount } = useAccount();
 
     useEffect(() => {
         document.title = "Cuentas";
+        console.log(state);
     }, []);
 
     return (
         <div className="account-container">
-            <AccountMenu roles={user?.roleId}/>
+            <AccountMenu roles={user?.roleId} addAccount={handleAddAccount} fetchtable={fetchGet}/>
             <AccountTable datas={state} fetchGet={fetchGet} onDelete={handleDeleteAccount} roles={user?.roleId}/>
         </div>
     )

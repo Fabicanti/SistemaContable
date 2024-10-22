@@ -5,6 +5,7 @@ import { AutoComplete } from "primereact/autocomplete";
 import { MovementsModalTable } from "./MovementsModalTable";
 import { MovementsEntry } from "./MovementsEntry";
 import { useUser } from "../../context/UserProvider";
+import { AlertModal } from "../../utils/AlertModal";
 
 const initialForm = () => {
     const date = new Date();
@@ -57,6 +58,11 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
     const [dataMovements, setDataMovements] = useState([]);
 
     const addDataMovements = () => {
+        if (!nroasiento || !descripcion || !saldo || !cuenta){
+            AlertModal("Error", "Algunos campos están vacios", "warning");
+            return
+        }
+
         const nuevoMovimiento = {
             id: ++counter,
             cuenta: tipo === "haber" ? `${'\u00A0'.repeat(8)}${cuenta}` : cuenta,
@@ -168,7 +174,7 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
                         className="input-number"
                         name="saldo"
                         value={saldo}
-                        onChange={onInputChange}
+                        onValueChange={onInputChange}
                         minFractionDigits={2}
                         maxFractionDigits={2}
                         mode="currency"
@@ -211,7 +217,7 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
             <MovementsEntry datas={dataMovements} onDelete={removeDataMovements}/>
             <hr />
             <div className="mov-buttons">
-                <button className="btn-clear-mov">Limpiar</button>
+                <button type="button" onClick={onClean} className="btn-clear-mov">Limpiar</button>
                 <button type="submit" className="btn-add-seat">Agregar Asiento</button>
             </div>
         </form>

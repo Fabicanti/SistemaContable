@@ -63,12 +63,12 @@ export const Aside = () => {
             <div>Libros</div>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link className="elem-link">
             <PiSneakerMove size={sizeIcon} color={colorIcon} />
             <div>Movimientos</div>
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/home/movements" className="elem-link">
             <TbReportAnalytics size={sizeIcon} color={colorIcon} />

@@ -19,7 +19,8 @@
 
 .img-view img{
     min-width: 20em;
-    width: 45em;
+    height: auto;
+    width: 35em;
 }
 
 .content-view{
@@ -32,7 +33,7 @@
 /* PreviewContent*/
 
 .text-container .title-text h1{
-    font-size: 4em;
+    font-size: 3em;
     font-weight: bolder;
     background: linear-gradient(27deg, var(--color-gradiant_1), var(--color-gradiant_2));
     background-clip: text;
@@ -44,13 +45,13 @@
 }
 
 .text-container .list-text h3{
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: bolder;
 }
 
 .text-container .list-text ul li{
     list-style: disc;
-    font-size: 1.3em;
+    font-size: 1em;
 }
 
 .text-container .list-text ul li::marker{

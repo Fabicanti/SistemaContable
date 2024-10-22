@@ -5,7 +5,7 @@ import { CiCircleRemove } from "react-icons/ci";
 import { IoIosSearch } from "react-icons/io";
 
 const columnNames = [
-    { field: 'id', header: 'ID' },
+    // { field: 'id', header: 'ID' },
     { field: 'nombre', header: 'NOMBRE' },
     { field: 'codigoCuenta', header: 'CODIGO CUENTA' },
     { field: 'tipoCuentaNombre', header: 'TIPO CUENTA' }
@@ -79,7 +79,7 @@ export const AccountTable = ({ datas, fetchGet, onDelete, roles, rows = 4}) => {
                             <Column
                                 header="ACCIONES"
                                 body={actionTemplateAccount} // Cuerpo personalizado con botones
-                                style={{ minWidth: "200px" }}
+                                style={{ minWidth: "50px" }}
                             />
                         ) : (
                             <></>

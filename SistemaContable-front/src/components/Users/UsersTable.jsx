@@ -7,7 +7,7 @@ export const UsersTable = ({datas, handleDelete, handleEdit, fetch}) => {
     const { user } = useUser()
 
     const columnNames = [
-        {field: 'id', header: 'ID'},
+        // {field: 'id', header: 'ID'},
         {field: 'nombre', header: 'NOMBRE'},
         {field: 'apellido', header: 'APELLIDO'},
         {field: 'email', header: 'EMAIL'},
