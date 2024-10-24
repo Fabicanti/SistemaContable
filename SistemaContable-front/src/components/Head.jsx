@@ -3,6 +3,7 @@ import { useUser } from "../context/UserProvider";
 import { MdOutlineLogin } from "react-icons/md";
 import logo from "../assets/icono-sistema.png";
 import avatarUsuario from "../assets/avatars/admin-4.png"
+import userUsuario from "../assets/avatars/usuario.png"
 import "../styles/Head.css";
 
 export const Head = ({ login = false, logout }) => {
@@ -29,7 +30,7 @@ export const Head = ({ login = false, logout }) => {
           {login ? (
             <div className="dropdown">
               <img 
-                src={avatarUsuario} 
+                src={user?.roleId === 2 ? avatarUsuario : userUsuario} 
                 alt=""
                 className="dropdown-toggle" 
                 id="dropdownMenuButton" 
@@ -45,7 +46,7 @@ export const Head = ({ login = false, logout }) => {
               onClick={() => navigate("/login")}
               className="log-button in"
             >
-              <MdOutlineLogin size={36}/>
+              Iniciar sesión
             </button>
           )}
         </div>

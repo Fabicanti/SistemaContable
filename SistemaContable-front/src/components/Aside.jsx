@@ -9,7 +9,7 @@ import { BadgeUser } from "./BadgeUser";
 import logo from "../assets/icono-sistema.png";
 import "../styles/Aside.css";
 
-const sizeIcon = 36;
+const sizeIcon = 24;
 const colorIcon = "white";
 
 export const Aside = () => {

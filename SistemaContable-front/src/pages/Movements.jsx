@@ -13,6 +13,9 @@ export const Movements = () => {
     const { dataAllAccount, dataNameAccounts, handleAddAsientos, dataAllAsientos } = useMovements()
     const { state, fetchGet } = dataAllAsientos()
     
+    useEffect(() => {
+        document.title = "Asientos y Movimientos";
+    }, []);
 
     return (
         <div className='mov-container'>

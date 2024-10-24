@@ -17,6 +17,12 @@
     border-radius: 8px;
 }
 
+.options-account.visible{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 3px solid var(--color-gradiant_1);
+}
+
 .options-account button{
     background: linear-gradient(27deg, var(--color-gradiant_1), var(--color-gradiant_2));
     background-size: 200%;
@@ -44,6 +50,9 @@
 }
 
 .create-account.visible {
+    margin-top: 0px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     opacity: 1;
     max-height: 50em;
     background-color: white;

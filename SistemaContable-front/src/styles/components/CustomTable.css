@@ -2,7 +2,7 @@
 
 
 .custom-table-wrapper {
-	padding: 20px;
+	padding: 15px;
 	background-color: #f9f9f9;
 	border-radius: 8px;
 }
@@ -16,7 +16,7 @@
 }
 
 .custom-table-header .table-title {
-	font-size: 1.6em;
+	font-size: 1.4em;
 	font-weight: bolder;
 	margin-bottom: 15px;
 }
@@ -24,7 +24,7 @@
 /* Busqueda */
 .custom-search-box {
 	margin-bottom: 15px;
-	padding: 5px;
+	padding: 2px;
 	border: 2px solid transparent;
 	transition: all .3s ease;
 	border-radius: 5px;
@@ -62,22 +62,22 @@
 
 .custom-table .p-datatable-thead>tr>th {
 	padding: 5px;
-	font-size: 1.3em;
+	font-size: 1.1em;
 	color: white;
 }
 
 .custom-table .p-datatable-tbody>tr>td {
 	padding-left: 15px;
-	font-size: 18px;
+	font-size: 1em;
 }
 
 /* Botones de las filas */
 .action-buttons button {
-	margin: 6px;
+	margin: 6px 0 6px 6px;
 	border: none;
-	padding: 6px;
+	padding: 2px;
 	color: white;
-	border-radius: 5px;
+	border-radius: 3px;
 }
 
 .action-buttons .btn-delete {
@@ -108,19 +108,14 @@
 
 .p-paginator .p-paginator-pages .p-paginator-page {
 	margin: 5px;
-	/* Añade margen entre los botones de las páginas */
 	padding: 5px 10px;
-	/* Añade padding a los botones */
 	border-radius: 50px;
 	/* Bordes redondeados para botones */
-	width: 50px;
-	height: 50px;
+	width: 30px;
+	height: 30px;
 	background-color: rgba(0, 0, 0, 0.1);
-	/* Color de fondo para los botones de paginación */
 	color: black;
-	/* Color del texto */
 	border: none;
-	/* Quita los bordes predeterminados */
 	transition: all 0.3s ease;
 }
 

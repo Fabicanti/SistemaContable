@@ -47,14 +47,13 @@
 
 /* Estilo para el botón de sesión */
 .log-button {
-    padding: 0.6em;
+    padding: 12px;
     color: #fff;
-    font-size: 1.2rem;
-    font-weight: bolder;
+    font-size: 1rem;
     text-decoration: none;
     outline: none;
     border: none;
-    border-radius: 10px;
+    border-radius: 6px;
     transition: all .5s;
     margin: 0 10px;
 }
@@ -82,11 +81,12 @@
 }
 
 .log-button.in {
-    background-color: var(--color-gradiant_2-h);
+    background-color: transparent;
 }
 
 .log-button:hover{
-    background-color: var(--color-gradiant_2);
+    background-color: var(--color-gradiant_2-h);
+    font-weight: bold;
 }
 
 /* Estilos para pantallas pequeñas */

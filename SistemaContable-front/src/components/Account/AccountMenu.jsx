@@ -12,7 +12,7 @@ export const AccountMenu = ({ roles, addAccount, fetchtable }) => {
 
     return (
         <div className="menu-account">
-            <div className='options-account'>
+            <div className={`options-account ${isOpen ? 'visible' : ''}`}>
                 <div className='data-account'>
                     <div className='title-account'>Mis Cuentas</div>
                 </div>

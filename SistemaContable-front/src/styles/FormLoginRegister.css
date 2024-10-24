@@ -24,7 +24,7 @@
 
 /* Awatar arriba del login o registro */
 .avatarLogin{
-    width: 100px;
+    width: 120px;
     margin-bottom: 1rem;
 }
 
@@ -141,7 +141,7 @@
     border: none;
     outline: none;
     background: none;
-    padding: 0.5rem 0.7rem;
+    padding: 0.5rem 0rem;
     font-size: 1rem;
 }
 
@@ -233,5 +233,9 @@
 
     .componentForm {
         justify-content: center;
+    }
+
+    .form-input{
+        padding: 0.5rem 0.3rem;
     }
 }

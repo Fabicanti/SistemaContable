@@ -125,6 +125,7 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
                         type="date"
                         name="fecha"
                         value={fecha}
+                        min={"2024-10-10"}
                         onChange={onInputChange}
                     />
                 </div>

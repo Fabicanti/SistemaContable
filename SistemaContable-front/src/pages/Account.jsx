@@ -18,7 +18,6 @@ export const Account = () => {
 
     useEffect(() => {
         document.title = "Cuentas";
-        console.log(state);
     }, []);
 
     return (

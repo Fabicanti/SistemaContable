@@ -265,6 +265,71 @@
     border-radius: 2px;
 }
 
+/* Tabla de Asientos */
+
+.options-mov-table{
+    margin-bottom: 10px;
+}
+
+.options-mov-table, .filter-date{
+    display: flex;
+    align-items: end;
+    justify-content: start;
+}
+
+.input-date{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.input-date input[type="date"]{
+    font-size: 16px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    /* background-color: #f9f9f9 */
+}
+
+.input-date label{
+    font-size: 11px;
+    font-weight: bold;
+    color: gray;
+}
+
+.input-date:focus-within .since,.input-date:focus-within .input-sin{
+    color: var(--color-gradiant_2);
+}
+
+.input-date:focus-within .until,.input-date:focus-within .input-unt{
+    color: var(--color-gradiant_1);
+}
+
+.button-filter{
+    padding: 5px;
+}
+
+.button-filter button{
+    margin-right: 1em;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.button-filter .btn-clear{
+    background-color: rgb(168, 168, 168);
+}
+
+.button-filter .btn-apply{
+    background-color: var(--color-gradiant_2);
+}
+
 @media (max-width: 992px) {
     .mov-seat .p-autocomplete-input, .mov-seat .p-inputtext{
         width: 140px;
@@ -287,5 +352,21 @@
 
     .mov-form:nth-child(3) {
         grid-column: 1;
+    }
+
+    .options-mov-table{
+        display: block;
+    }
+    .filter-date{
+        justify-content: space-between;
+    }
+    .button-filter{
+        display: flex;
+        justify-content: end;
+    }
+
+    .button-filter button{
+        margin-right: 0;
+        margin-left: 1em;
     }
 }

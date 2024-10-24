@@ -2,6 +2,7 @@ import React from 'react'
 import { UsersModal } from './UsersModal'
 import { useUser } from '../../context/UserProvider'
 import avatar from "../../assets/avatars/admin-4.png"
+import userUsuario from "../../assets/avatars/usuario.png"
 
 export const UsersMenu = ({onAdd, fetch}) => {
     const {user} = useUser();
@@ -19,8 +20,8 @@ export const UsersMenu = ({onAdd, fetch}) => {
             </div>
             <div className='option-user'>
                 {/* Imagen de */}
-                <img src={avatar} alt={user?.nombre + " " + user?.apellido} style={ {height: '100px', width: '100px'} }/>
-                <UsersModal sizeButton={36} onHandle={onAdd} fetch={fetch}/>
+                <img src={user?.roleId === 2 ? avatar : userUsuario} alt={user?.nombre + " " + user?.apellido} style={ {height: '100px', width: '100px'} }/>
+                { user?.roleId === 2 ? <UsersModal sizeButton={36} onHandle={onAdd} fetch={fetch}/> : <></>}
             </div>
 
         </div>
