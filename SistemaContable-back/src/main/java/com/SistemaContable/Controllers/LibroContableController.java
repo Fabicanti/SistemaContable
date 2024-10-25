@@ -1,7 +1,6 @@
 package com.SistemaContable.Controllers;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.SistemaContable.DTO.AsientoDTO;
 import com.SistemaContable.DTO.DetalleAsientoDTO;
 import com.SistemaContable.Services.LibroContableService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,20 +21,8 @@ public class LibroContableController {
     @Autowired
     private LibroContableService libroContableService;
 
-    @GetMapping("/diario")
-    public ResponseEntity<List<AsientoDTO>> obtenerLibroDiario(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
-        try {
-            List<AsientoDTO> libroDiario = libroContableService.obtenerLibroDiario(fechaInicio, fechaFin);
-            return ResponseEntity.ok(libroDiario);
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(null); // excepción de fechas inválidas
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // otras excepciones
-        }
-    }
-
+    // fechas en formato (yyyy-MM-dd) y cuenta en requestbody en formato JSON
+    
     @GetMapping("/mayor")
     public ResponseEntity<Map<String, List<DetalleAsientoDTO>>> obtenerLibroMayor(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,

@@ -2,14 +2,12 @@ package com.SistemaContable.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.SistemaContable.DTO.AsientoDTO;
 import com.SistemaContable.DTO.DetalleAsientoDTO;
 import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 import com.SistemaContable.Entities.AsientoContable;
 import com.SistemaContable.Entities.DetalleAsiento;
@@ -24,13 +22,6 @@ public class LibroContableService {
     @Autowired
     private ModelMapper modelMapper;  // Se utiliza para mapear entidades a DTO
 
-    public List<AsientoDTO> obtenerLibroDiario(LocalDate fechaInicio, LocalDate fechaFin) {
-        validarFechas(fechaInicio, fechaFin);  // Validación de fechas
-        List<AsientoContable> asientos = asientoContableRepository.findByFechaBetween(fechaInicio, fechaFin);
-        return asientos.stream()
-                .map(this::convertirADTO)
-                .collect(Collectors.toList());
-    }
 
     public Map<String, List<DetalleAsientoDTO>> obtenerLibroMayor(LocalDate fechaInicio, LocalDate fechaFin) {
         validarFechas(fechaInicio, fechaFin);  // Validación de fechas
@@ -46,9 +37,6 @@ public class LibroContableService {
         return libroMayor;
     }
 
-    private AsientoDTO convertirADTO(AsientoContable asiento) {
-        return modelMapper.map(asiento, AsientoDTO.class);
-    }
 
     private DetalleAsientoDTO convertirDetalleADTO(DetalleAsiento detalle) {
         return modelMapper.map(detalle, DetalleAsientoDTO.class);
