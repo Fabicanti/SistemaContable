@@ -4,7 +4,7 @@ import { InputNumber } from 'primereact/inputnumber';
 
 const initialForm = {
     nombre: "",
-    saldo: -1,
+    saldo: 0,
     tipoCuentaId: 1,
     cuentaPadreId: ""
 };
@@ -86,7 +86,7 @@ export const AccountCreate = ({ addAccount, fetchtable }) => {
                 </div>
                 }
 
-                {openToggle &&
+                {/* {openToggle &&
                 <div className="group-data">
                     <div className="form-data">
                         <label htmlFor="" className='label-input'>Saldo Inicial</label>
@@ -103,7 +103,7 @@ export const AccountCreate = ({ addAccount, fetchtable }) => {
                         />
                     </div>
                 </div>
-                }
+                } */}
 
             </div>
             <hr />

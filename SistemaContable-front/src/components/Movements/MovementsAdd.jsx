@@ -7,13 +7,13 @@ import { MovementsEntry } from "./MovementsEntry";
 import { useUser } from "../../context/UserProvider";
 import { AlertModal } from "../../utils/AlertModal";
 
-const initialForm = () => {
+const initialForm = (countAsiento) => {
     const date = new Date();
     const formattedDate = date.toISOString().split("T")[0];
 
     return {
         fecha: formattedDate,
-        nroasiento: "",
+        nroasiento: countAsiento,
         descripcion: "",
         saldo: "",
         cuenta: "",
@@ -28,8 +28,8 @@ const obtenerIdCuenta = (nombreCuenta, tableAccount) => {
 
 let counter = 0;
 
-export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsientos, dataAllAccount}) => {
-    const { formState, onInputChange, setFormState } = useForm(initialForm);
+export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsientos, dataAllAccount, countAsiento}) => {
+    const { formState, onInputChange, setFormState } = useForm(initialForm(countAsiento.data?.length + 1));
     const { fecha, nroasiento, descripcion, saldo, cuenta, tipo } = formState;
 
     const [cuentas, setCuentas] = useState([]);
@@ -40,6 +40,7 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
     const { state: allAccount, fetchGet: fetchAccountsGet} = dataAllAccount();
     const { data, isLoading } = state;
     const [nombresCuentas, setNombresCuentas] = useState([]);
+
     useEffect(() => {
         if (data && !isLoading) {
             setNombresCuentas(data);
@@ -86,8 +87,8 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
     };
 
     const onClean = () => {
-        setFormState(initialForm)
         fetchGet()
+        setFormState(initialForm(countAsiento.data?.length + 1))
         setDataMovements([])
         counter = 0
     }
@@ -113,7 +114,8 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
             detalles: movimientosPreparados
         }
         handleAddAsientos(asiento, fetchget);
-        onClean()
+        console.log(asiento);
+        onClean();
     };
 
     return (
@@ -135,7 +137,7 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
                         type="number"
                         name="nroasiento"
                         value={nroasiento}
-                        onChange={onInputChange}
+                        disabled
                     />
                 </div>
                 <div className="mov-form">

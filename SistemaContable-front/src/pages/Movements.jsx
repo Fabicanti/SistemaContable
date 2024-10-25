@@ -5,6 +5,7 @@ import { useUser } from '../context/UserProvider';
 import { useMovements } from '../hooks/useMovements';
 import "../styles/Movements.css"
 
+let countAsientos = 10000;
 
 export const Movements = () => {
 
@@ -26,10 +27,12 @@ export const Movements = () => {
                 handleAddAsientos={handleAddAsientos}
                 dataAllAsientos={dataAllAsientos}
                 dataAllAccount={dataAllAccount}
+                countAsiento={state}
             />
             <MovementsTable
                 dataAllAsientos={state}
                 roles={user?.roleId}
+                dataAllAccount={dataAllAccount}
             />
         </div>
     )

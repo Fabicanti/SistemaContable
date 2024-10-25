@@ -3,7 +3,7 @@ import { IoAddOutline } from 'react-icons/io5';
 import { MovementsAdd } from './MovementsAdd';
 
 
-export const MovementsModal = ({ roles, fetchGet, dataNamesAccount, handleAddAsientos, dataAllAccount}) => {
+export const MovementsModal = ({ roles, fetchGet, dataNamesAccount, handleAddAsientos, dataAllAccount, countAsiento}) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -53,6 +53,7 @@ export const MovementsModal = ({ roles, fetchGet, dataNamesAccount, handleAddAsi
                                     dataAllAccount={dataAllAccount}
                                     dataNamesAccount={dataNamesAccount}
                                     handleAddAsientos={handleAddAsientos}
+                                    countAsiento={countAsiento}
                                 />
                             </div>
                         </div>
