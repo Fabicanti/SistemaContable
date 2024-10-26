@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IoMdAdd, IoIosArrowUp  } from "react-icons/io";
 import {AccountCreate} from "./AccountCreate"
 
-export const AccountMenu = ({ roles, addAccount, fetchtable }) => {
+export const AccountMenu = ({ roles, addAccount, fetchtable, accountTable }) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -22,7 +22,7 @@ export const AccountMenu = ({ roles, addAccount, fetchtable }) => {
             </div>
             
             <div className={`create-account ${isOpen ? 'visible' : ''}`}>
-                <AccountCreate addAccount={addAccount} fetchtable={fetchtable}/>
+                <AccountCreate addAccount={addAccount} fetchtable={fetchtable} accountTable={accountTable}/>
             </div>
             
         </div>

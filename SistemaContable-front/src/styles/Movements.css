@@ -326,8 +326,21 @@
     background-color: rgb(168, 168, 168);
 }
 
+.button-filter .btn-clear:hover{
+    background-color: grey;
+}
+
 .button-filter .btn-apply{
     background-color: var(--color-gradiant_2);
+}
+
+.button-filter .btn-apply:hover{
+    background-color: var(--color-gradiant_2-h);
+}
+
+.button-filter .btn-apply.app{
+    pointer-events: none;
+    background-color: var(--color-gradiant_1-h);
 }
 
 @media (max-width: 992px) {

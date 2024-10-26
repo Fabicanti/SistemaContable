@@ -1,6 +1,8 @@
 package com.SistemaContable.Actualizadores;
 import com.SistemaContable.Entities.Cuenta;
 import com.SistemaContable.Exceptions.SaldoInsuficienteException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 public abstract class ActualizadorSaldo
 {
@@ -18,7 +20,8 @@ public abstract class ActualizadorSaldo
             cuenta.setSaldo(saldoActual - monto);
         }
         else{
-            throw new SaldoInsuficienteException("La cuenta no tiene saldo suficiente");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "La cuenta " + cuenta.getNombre() +" no tiene saldo suficiente");
         }
         return cuenta;
     }

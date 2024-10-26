@@ -12,16 +12,20 @@ export const UsersTable = ({datas, handleDelete, handleEdit, fetch}) => {
         {field: 'apellido', header: 'APELLIDO'},
         {field: 'email', header: 'EMAIL'},
         {field: 'username', header: 'USERNAME'},
-        {field: 'roleId', header: 'ROLEID'}
+        {field: 'role', header: 'ROL'}
     ];
 
     const filteredData = Array.isArray(datas.data) ? datas.data.filter(element => element.id !== user?.id) : [];
+    const updatedUsers = filteredData.map(user => ({
+        ...user,
+        role: user.roleId === 2 ? "ADMINISTRADOR" : "USUARIO"
+    }))
 
     return (
         <CustomTable
         title={"Tabla de usuarios"}
         columns={columnNames}
-        data={filteredData}
+        data={updatedUsers}
         onEdit={handleEdit}
         onDelete={handleDelete}
         fetch={fetch}

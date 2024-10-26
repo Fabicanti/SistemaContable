@@ -6,6 +6,9 @@ import { MovementsModalTable } from "./MovementsModalTable";
 import { MovementsEntry } from "./MovementsEntry";
 import { useUser } from "../../context/UserProvider";
 import { AlertModal } from "../../utils/AlertModal";
+import { AccountCreate } from "../Account/AccountCreate";
+import { useAccount } from "../../hooks/useAccount";
+import { MovementsAddAccount } from "./MovementsAddAccount";
 
 const initialForm = (countAsiento) => {
     const date = new Date();
@@ -35,11 +38,16 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
     const [cuentas, setCuentas] = useState([]);
     const { user } = useUser()
 
+    // Despues BORRAR.
+    const { handleAddAccount } = useAccount()
+
     // Nombres para el autocompletado.
     const { state, fetchGet } = dataNamesAccount();
     const { state: allAccount, fetchGet: fetchAccountsGet} = dataAllAccount();
     const { data, isLoading } = state;
     const [nombresCuentas, setNombresCuentas] = useState([]);
+
+    const [openAddAccount, setOpenAddAccount] = useState(false)
 
     useEffect(() => {
         if (data && !isLoading) {
@@ -55,11 +63,16 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
         setCuentas(filtrarNombre);
     };
 
+    // Agregar Cuenta.
+    const openCreate = () => {
+        setOpenAddAccount(!openAddAccount);
+    }
+
     // Los movimientos
     const [dataMovements, setDataMovements] = useState([]);
 
     const addDataMovements = () => {
-        if (!nroasiento || !descripcion || !saldo || !cuenta){
+        if (!nroasiento || !saldo || !cuenta){
             AlertModal("Error", "Algunos campos están vacios", "warning");
             return
         }
@@ -113,9 +126,9 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
             usuarioId: user?.id,
             detalles: movimientosPreparados
         }
-        handleAddAsientos(asiento, fetchget);
+        handleAddAsientos(asiento, fetchget, onClean);
         console.log(asiento);
-        onClean();
+        // onClean();
     };
 
     return (
@@ -211,11 +224,18 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
 
                 <div className="mov-seat">
                     <button type="button" className="btn-mov-seat add" onClick={addDataMovements}>Agregar Movimiento</button>
-                    <button type="button" className="btn-mov-seat">Agregar Cuenta</button>
+                    {user?.roleId === 2 ? 
+                        <button type="button" className="btn-mov-seat" onClick={openCreate}>Agregar Cuenta</button>
+                        : <></>
+                    }
                     <MovementsModalTable roles={roles} datas={allAccount} fetchGet={fetchAccountsGet}/>
                 </div>
             </div>
-            
+
+            <div className={`create-account ${openAddAccount ? 'visible' : ''}`}>
+                <MovementsAddAccount addAccount={handleAddAccount} fetchtable={fetchAccountsGet} accountTable={allAccount}/>
+            </div>
+
             <hr />
             <MovementsEntry datas={dataMovements} onDelete={removeDataMovements}/>
             <hr />

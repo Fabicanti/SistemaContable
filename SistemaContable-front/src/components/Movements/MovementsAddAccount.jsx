@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useForm } from '../../hooks/useForm'
+import React, { useState } from 'react'
+import { useForm } from '../../hooks/useForm';
 
 const initialForm = {
     nombre: "",
@@ -8,21 +8,20 @@ const initialForm = {
     cuentaPadreId: ""
 };
 
-export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
-
+export const MovementsAddAccount = ({ addAccount, fetchtable, accountTable }) => {
+    // Hay que recargar la página para que aparezcan los datos de la cuenta!! - Problema
     const [openToggle, setOpenToggle] = useState(false);
     const { data: accounts } = accountTable;
 
     const { formState, setFormState, onInputChange } = useForm(initialForm);
     const { nombre, saldo, tipoCuentaId, cuentaPadreId } = formState;
-    
+
     const findByAccountCode = (codigoCuenta) => {
         const data = accounts.find( element => element.codigoCuenta === codigoCuenta );
         return data ? data.id : null;
     }
 
-    const onSubmit = (event) => {
-        event.preventDefault();
+    const onSubmit = () => {
         let value = findByAccountCode(cuentaPadreId);
         const row = {
             nombre: nombre,
@@ -31,6 +30,7 @@ export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
             cuentaPadreId: value
         };
         addAccount(row, fetchtable)
+        fetchtable()
         onClean()
     }
 
@@ -48,7 +48,8 @@ export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
     }
 
     return (
-        <form onSubmit={onSubmit}>
+        <>
+            <hr />
             <div className="data-create">
                 <div className="group-data">
                     <div className="form-data">
@@ -131,9 +132,9 @@ export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
 
                 <div>
                     <button className="btn-clean" type='button' onClick={onClean}>Limpiar</button>
-                    <button className="btn-create" type='submit'>Crear cuenta</button>
+                    <button className="btn-create" type='submit'onClick={onSubmit}>Crear cuenta</button>
                 </div>
             </div>
-        </form>
+        </>
     )
 }

@@ -22,7 +22,7 @@ export const Account = () => {
 
     return (
         <div className="account-container">
-            <AccountMenu roles={user?.roleId} addAccount={handleAddAccount} fetchtable={fetchGet}/>
+            <AccountMenu roles={user?.roleId} addAccount={handleAddAccount} fetchtable={fetchGet} accountTable={state}/>
             <AccountTable datas={state} fetchGet={fetchGet} onDelete={handleDeleteAccount} roles={user?.roleId}/>
         </div>
     )

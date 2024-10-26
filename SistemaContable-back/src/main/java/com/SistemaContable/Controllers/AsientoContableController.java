@@ -22,12 +22,8 @@ public class AsientoContableController {
 
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarAsiento(@RequestBody AsientoDTO asientoDTO) {
-        try {
-            AsientoContable nuevoAsiento = asientoContableService.registrarAsiento(asientoDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoAsiento);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        AsientoContable nuevoAsiento = asientoContableService.registrarAsiento(asientoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoAsiento);
     }
 
     @GetMapping("/listar")

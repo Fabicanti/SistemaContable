@@ -30,7 +30,7 @@ export const useMovements = () => {
         }
     }
 
-    const handleAddAsientos = async ( asientos, fetchget ) => {
+    const handleAddAsientos = async ( asientos, fetchget, clean ) => {
         const response = await fetch(urlAddAsientos, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -40,9 +40,12 @@ export const useMovements = () => {
         if (response.ok) {
             AlertModal("Se registro exitosamente", "", "success");
             fetchget()
+            clean()
             console.log(asientos);
         }else{
-            AlertModal("Error en el registro de asientos", "", "error");
+            const data = await response.json();
+            console.log(data);
+            AlertModal("Error en el registro de asientos", data.message || "", "error");
         }
         return
     }
