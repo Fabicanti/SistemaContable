@@ -14,7 +14,7 @@ public interface CuentaRepository  extends JpaRepository<Cuenta, Long>{
 
     Long countByCuentaPadreId(Long cuentaPadreId);
 
-    @Query("SELECT c.nombre FROM Cuenta c WHERE c.nombre != 'Raiz' ")
+    @Query("SELECT c.nombre FROM Cuenta c WHERE c.recibeSaldo = true")
     List<String> findAllNombresCuentas();
 
     /**

@@ -8,7 +8,8 @@ const columnNames = [
     // { field: 'id', header: 'ID' },
     { field: 'nombre', header: 'NOMBRE' },
     { field: 'codigoCuenta', header: 'CODIGO CUENTA' },
-    { field: 'tipoCuentaNombre', header: 'TIPO CUENTA' }
+    { field: 'tipoCuentaNombre', header: 'TIPO CUENTA' },
+    { field: 'recibeSaldo', header: 'RECIBE SALDO'}
 ];
 
 const sizeIcon = 36;
@@ -17,6 +18,10 @@ export const AccountTable = ({ datas, fetchGet, onDelete, roles, rows = 4}) => {
     const [globalFilter, setGlobalFilter] = useState(null);
 
     const { data, isLoading, errors } = datas;
+    const dataAccount = data?.map( element => ({
+        ...element,
+        recibeSaldo: element.recibeSaldo ? "SI" : "NO"
+    }) )
 
     useEffect(() => {
         document.title = "Cuentas";
@@ -61,7 +66,7 @@ export const AccountTable = ({ datas, fetchGet, onDelete, roles, rows = 4}) => {
                     </div>
                     : <DataTable
                         className={`custom-table ${roles === 2  ? "" : "user"}`}
-                        value={data}
+                        value={dataAccount}
                         paginator
                         rows={rows}
                         globalFilter={globalFilter}>

@@ -6,7 +6,6 @@ import { MovementsModalTable } from "./MovementsModalTable";
 import { MovementsEntry } from "./MovementsEntry";
 import { useUser } from "../../context/UserProvider";
 import { AlertModal } from "../../utils/AlertModal";
-import { AccountCreate } from "../Account/AccountCreate";
 import { useAccount } from "../../hooks/useAccount";
 import { MovementsAddAccount } from "./MovementsAddAccount";
 
@@ -31,7 +30,14 @@ const obtenerIdCuenta = (nombreCuenta, tableAccount) => {
 
 let counter = 0;
 
-export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsientos, dataAllAccount, countAsiento}) => {
+export const MovementsAdd = ({ 
+    roles, 
+    fetchget, 
+    dataNamesAccount, 
+    handleAddAsientos, 
+    dataAllAccount, 
+    countAsiento
+}) => {
     const { formState, onInputChange, setFormState } = useForm(initialForm(countAsiento.data?.length + 1));
     const { fecha, nroasiento, descripcion, saldo, cuenta, tipo } = formState;
 
@@ -42,9 +48,10 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
     const { handleAddAccount } = useAccount()
 
     // Nombres para el autocompletado.
-    const { state, fetchGet } = dataNamesAccount();
-    const { state: allAccount, fetchGet: fetchAccountsGet} = dataAllAccount();
-    const { data, isLoading } = state;
+    const { state: nameAccountsState, fetch: fetchNameAccounts } = dataNamesAccount();
+    // const { allAccountState: allAccount, fetchAllAccount: fetchAccountsGet} = dataAllAccount();
+    const { state: allAccountState, fetch: fetchAllAccount }= dataAllAccount();
+    const { data, isLoading } = nameAccountsState;
     const [nombresCuentas, setNombresCuentas] = useState([]);
 
     const [openAddAccount, setOpenAddAccount] = useState(false)
@@ -100,7 +107,7 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
     };
 
     const onClean = () => {
-        fetchGet()
+        fetchNameAccounts()
         setFormState(initialForm(countAsiento.data?.length + 1))
         setDataMovements([])
         counter = 0
@@ -109,7 +116,7 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
     const onSumbit = (event) => {
         event.preventDefault();
 
-        const { data } = allAccount;
+        const { data } = allAccountState;
 
         const movimientosPreparados = dataMovements.map(mov => {
             // Saco el nombre de la cuenta y el id (Para el Backend)
@@ -225,15 +232,16 @@ export const MovementsAdd = ({ roles, fetchget, dataNamesAccount, handleAddAsien
                 <div className="mov-seat">
                     <button type="button" className="btn-mov-seat add" onClick={addDataMovements}>Agregar Movimiento</button>
                     {user?.roleId === 2 ? 
-                        <button type="button" className="btn-mov-seat" onClick={openCreate}>Agregar Cuenta</button>
+                        <button type="button" className="btn-mov-seat" onClick={openCreate}>
+                            {!openAddAccount ? 'Agregar Cuenta': 'Agregando...'}</button>
                         : <></>
                     }
-                    <MovementsModalTable roles={roles} datas={allAccount} fetchGet={fetchAccountsGet}/>
+                    <MovementsModalTable roles={roles} datas={allAccountState} fetchGet={fetchAllAccount}/>
                 </div>
             </div>
 
             <div className={`create-account ${openAddAccount ? 'visible' : ''}`}>
-                <MovementsAddAccount addAccount={handleAddAccount} fetchtable={fetchAccountsGet} accountTable={allAccount}/>
+                <MovementsAddAccount addAccount={handleAddAccount} fetchtable={fetchAllAccount} accountTable={allAccountState}/>
             </div>
 
             <hr />

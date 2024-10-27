@@ -11,9 +11,11 @@ export const useFetchGET = (urlGet) => {
     const fetchGet = async () => {
         if (!urlGet) return
         try {
-            const response = await fetch(urlGet);
-            const datas = await response.json();
-            setState({ data: datas, isLoading: false, errors: null });
+            
+                const response = await fetch(urlGet);
+                const datas = await response.json();
+                setState({ data: datas, isLoading: false, errors: null });
+            
         } catch (error) {
             setState({ data: null, isLoading: false, errors: error.message });
         }

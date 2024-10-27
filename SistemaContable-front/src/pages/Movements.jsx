@@ -12,7 +12,7 @@ export const Movements = () => {
     const { user } = useUser()
 
     const { dataAllAccount, dataNameAccounts, handleAddAsientos, dataAllAsientos } = useMovements()
-    const { state, fetchGet } = dataAllAsientos()
+    const { state: allAsientosState, fetch: fetchAllAsientos } = dataAllAsientos();
     
     useEffect(() => {
         document.title = "Asientos y Movimientos";
@@ -22,15 +22,15 @@ export const Movements = () => {
         <div className='mov-container'>
             <MovementsMenu 
                 roles={user?.roleId}
-                fetchGet={fetchGet} 
+                fetchGet={fetchAllAsientos} 
                 dataNamesAccount={dataNameAccounts}
                 handleAddAsientos={handleAddAsientos}
                 dataAllAsientos={dataAllAsientos}
                 dataAllAccount={dataAllAccount}
-                countAsiento={state}
+                countAsiento={allAsientosState}
             />
             <MovementsTable
-                dataAllAsientos={state}
+                dataAllAsientos={allAsientosState}
                 roles={user?.roleId}
                 dataAllAccount={dataAllAccount}
             />

@@ -5,6 +5,7 @@ const initialForm = {
     nombre: "",
     saldo: 0,
     tipoCuentaId: 1,
+    recibeSaldo: false,
     cuentaPadreId: ""
 };
 
@@ -28,7 +29,8 @@ export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
             nombre: nombre,
             saldo: saldo,
             tipoCuentaId: tipoCuentaId,
-            cuentaPadreId: value
+            cuentaPadreId: value,
+            recibeSaldo: openToggle
         };
         addAccount(row, fetchtable)
         onClean()

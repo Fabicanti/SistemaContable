@@ -1,7 +1,8 @@
+import React, { useEffect, useState } from 'react'
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable'
-import React, { useEffect, useState } from 'react'
 import { useForm } from '../../hooks/useForm';
+import { BiSolidFilePdf } from "react-icons/bi";
 
 const fechaFilter  = () => {
     const date = new Date();
@@ -17,8 +18,8 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
     
     const { data , isLoading } = dataAllAsientos;
     const [expandedRows, setExpandedRows] = useState(null);
-    const { state: allAccount } = dataAllAccount();
-    const { data: accounts } = allAccount;
+    const { state: allAccountState, fetch: fetchAllAccount } = dataAllAccount();
+    const { data: accounts } = allAccountState;
 
     const { formState, onInputChange, setFormState } = useForm(fechaFilter);
     const { desde, hasta } = formState;
@@ -94,37 +95,43 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
     return (
         <div className="custom-table-wrapper">
             <div className='options-mov-table'>
-                <div className='filter-date'>
-                    <div className='input-date'>
-                        <label htmlFor="desde" className='since'>Desde</label>
-                        <input 
-                            type="date" 
-                            className='input-sin' 
-                            disabled={data?.length === 0}
-                            name='desde'
-                            value={desde}
-                            onChange={onInputChange}/>
+                <div className="mov-data-one">
+                    <div className='filter-date'>
+                        <div className='input-date'>
+                            <label htmlFor="desde" className='since'>Desde</label>
+                            <input 
+                                type="date" 
+                                className='input-sin' 
+                                disabled={data?.length === 0}
+                                name='desde'
+                                value={desde}
+                                onChange={onInputChange}/>
+                        </div>
+                        <div className='input-date'>
+                            <label htmlFor="hasta" className='until'>Hasta</label>
+                            <input 
+                                type="date" 
+                                className='input-unt' 
+                                disabled={data?.length === 0}
+                                name='hasta'
+                                value={hasta}
+                                onChange={onInputChange}/>
+                        </div>
                     </div>
-                    <div className='input-date'>
-                        <label htmlFor="hasta" className='until'>Hasta</label>
-                        <input 
-                            type="date" 
-                            className='input-unt' 
-                            disabled={data?.length === 0}
-                            name='hasta'
-                            value={hasta}
-                            onChange={onInputChange}/>
+
+                    <div className='button-filter'>
+                        <button type='button' className='btn-clear' onClick={handleClearFilters}>Limpiar</button>
+                        <button 
+                            type='button' 
+                            className={`btn-apply ${applyFilter ? 'app' : ''}`}
+                            onClick={handleApplyFilters}>
+                                {applyFilter ? "Aplicado" : "Aplicar Filtros"}
+                        </button>
                     </div>
                 </div>
 
-                <div className='button-filter'>
-                    <button type='button' className='btn-clear' onClick={handleClearFilters}>Limpiar</button>
-                    <button 
-                        type='button' 
-                        className={`btn-apply ${applyFilter ? 'app' : ''}`}
-                        onClick={handleApplyFilters}>
-                            {applyFilter ? "Aplicado" : "Aplicar Filtros"}
-                    </button>
+                <div className="mov-data-two">
+                    <button type='button' className='btn-pdf'><BiSolidFilePdf size={36}/></button>
                 </div>
             </div>
 

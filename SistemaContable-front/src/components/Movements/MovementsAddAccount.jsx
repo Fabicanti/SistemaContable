@@ -5,7 +5,8 @@ const initialForm = {
     nombre: "",
     saldo: 0,
     tipoCuentaId: 1,
-    cuentaPadreId: ""
+    cuentaPadreId: "",
+    recibeSaldo: false,
 };
 
 export const MovementsAddAccount = ({ addAccount, fetchtable, accountTable }) => {
@@ -21,13 +22,14 @@ export const MovementsAddAccount = ({ addAccount, fetchtable, accountTable }) =>
         return data ? data.id : null;
     }
 
-    const onSubmit = () => {
+    const onSubmitAccount = () => {
         let value = findByAccountCode(cuentaPadreId);
         const row = {
             nombre: nombre,
             saldo: saldo,
             tipoCuentaId: tipoCuentaId,
-            cuentaPadreId: value
+            cuentaPadreId: value,
+            recibeSaldo: openToggle
         };
         addAccount(row, fetchtable)
         fetchtable()
@@ -132,7 +134,7 @@ export const MovementsAddAccount = ({ addAccount, fetchtable, accountTable }) =>
 
                 <div>
                     <button className="btn-clean" type='button' onClick={onClean}>Limpiar</button>
-                    <button className="btn-create" type='submit'onClick={onSubmit}>Crear cuenta</button>
+                    <button className="btn-create" type='button' onClick={onSubmitAccount}>Crear cuenta</button>
                 </div>
             </div>
         </>

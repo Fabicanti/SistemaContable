@@ -1,4 +1,5 @@
 
+import { useCallback } from 'react';
 import { AlertModal } from '../utils/AlertModal';
 import { useFetchGET } from './useFetchGET';
 
@@ -9,26 +10,30 @@ const urlAllAsientos = "http://localhost:8080/api/asientos/listar";
 
 export const useMovements = () => {
 
-    const dataAllAsientos = () => {
-        const { state, fetchGet } = useFetchGET(urlAllAsientos);
-        return { state, fetchGet}
-    }
+    const { state: allAsientosState, fetchGet: fetchAllAsientos } = useFetchGET(urlAllAsientos);
+    const { state: allAccountState, fetchGet: fetchAllAccount } = useFetchGET(urlAllAccount);
+    const { state: nameAccountsState, fetchGet: fetchNameAccounts } = useFetchGET(urlNamesAccount);
 
-    const dataAllAccount = () => {
-        const { state, fetchGet } = useFetchGET(urlAllAccount);
+    const dataAllAsientos = useCallback(() => {
         return {
-            state,
-            fetchGet
-        }
-    }
+            state: allAsientosState,
+            fetch: fetchAllAsientos
+        };
+    }, [allAsientosState, fetchAllAsientos]);
 
-    const dataNameAccounts = () => {
-        const { state, fetchGet } = useFetchGET(urlNamesAccount);
+    const dataAllAccount = useCallback(() => {
         return {
-            state,
-            fetchGet
-        }
-    }
+            state: allAccountState,
+            fetch: fetchAllAccount
+        };
+    }, [allAccountState, fetchAllAccount]);
+
+    const dataNameAccounts = useCallback(() => {
+        return {
+            state: nameAccountsState,
+            fetch: fetchNameAccounts
+        };
+    }, [nameAccountsState, fetchNameAccounts]);
 
     const handleAddAsientos = async ( asientos, fetchget, clean ) => {
         const response = await fetch(urlAddAsientos, {

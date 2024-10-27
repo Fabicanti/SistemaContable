@@ -49,6 +49,10 @@ export const useAccount = () => {
         });
     }
 
+    const handlePDFData = () => {
+        
+    }
+
     return {
         handleDeleteAccount,
         handleAddAccount
