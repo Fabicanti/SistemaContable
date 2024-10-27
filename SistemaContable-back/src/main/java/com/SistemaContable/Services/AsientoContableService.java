@@ -14,9 +14,6 @@ import com.SistemaContable.Entities.AsientoContable;
 import com.SistemaContable.Entities.Cuenta;
 import com.SistemaContable.Entities.DetalleAsiento;
 import com.SistemaContable.Entities.Usuario;
-import com.SistemaContable.Exceptions.CuentaNoEncontradaException;
-import com.SistemaContable.Exceptions.CuentaNoValidaException;
-import com.SistemaContable.Exceptions.SaldoNegativoException;
 import com.SistemaContable.Exceptions.UsuarioNoEncontradoException;
 import com.SistemaContable.Repositories.AsientoContableRepository;
 import com.SistemaContable.Repositories.CuentaRepository;
@@ -161,7 +158,7 @@ public class AsientoContableService {
     // Modifique el método para que la fecha del nuevo asiento esté después de la fecha del último asiento.
     private Date controlFecha(Date fechaAsiento){
         long cantAsientos = asientoContableRepository.count();
-        LocalDate hoy = LocalDate.now(ZoneId.of("UTC"));
+        //LocalDate hoy = LocalDate.now(ZoneId.of("UTC"));
         LocalDate fechaNuevoAsiento = fechaAsiento.toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
 
         if (cantAsientos == 0) {

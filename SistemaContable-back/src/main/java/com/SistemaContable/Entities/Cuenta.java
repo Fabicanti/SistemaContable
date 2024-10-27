@@ -23,6 +23,9 @@ public class Cuenta {
     @Column(name = "saldo", nullable = false)
     private double saldo;
 
+    @Column(name = "recibe_saldo", nullable = false)
+    private boolean recibeSaldo;
+
     @ManyToOne
     @JoinColumn(name = "tipo_cuenta_id", nullable = false)
     @JsonIgnoreProperties("cuentas")
@@ -72,6 +75,14 @@ public class Cuenta {
 
     public void setSaldo(double saldo){
         this.saldo = saldo;
+    }
+
+    public boolean getRecibeSaldo(){
+        return recibeSaldo;
+    }
+
+    public void setRecibeSaldo(boolean recibeSaldo){
+        this.recibeSaldo = recibeSaldo;
     }
 
     public void setCodigoCuenta(String codigoCuenta) {

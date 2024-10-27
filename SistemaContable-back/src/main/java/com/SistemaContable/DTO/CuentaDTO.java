@@ -6,6 +6,7 @@ public class CuentaDTO {
     private String nombre;
     private String codigoCuenta;
     private double saldo;
+    private boolean recibeSaldo;
     private Long tipoCuentaId;
     private String tipoCuentaNombre;
     private Long cuentaPadreId;
@@ -19,21 +20,23 @@ public class CuentaDTO {
         this.nombre = nombre;
     }
 
-    public CuentaDTO(Long id, String nombre, String codigoCuenta, double saldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
+    public CuentaDTO(Long id, String nombre, String codigoCuenta, double saldo, boolean recibeSaldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
         this.id = id;
         this.nombre = nombre;
         this.codigoCuenta = codigoCuenta;
         this.saldo = saldo;
+        this.recibeSaldo = recibeSaldo;
         this.tipoCuentaId = tipoCuentaId;
         this.tipoCuentaNombre = tipoCuentaNombre;
         this.cuentaPadreId = cuentaPadreId;
         this.subCuentasIds = subCuentasIds;
     }
  
-    public CuentaDTO(String nombre, String codigoCuenta, double saldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
+    public CuentaDTO(String nombre, String codigoCuenta, double saldo,  boolean recibeSaldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
         this.nombre = nombre;
         this.codigoCuenta = codigoCuenta;
         this.saldo = saldo;
+        this.recibeSaldo = recibeSaldo;
         this.tipoCuentaId = tipoCuentaId;
         this.tipoCuentaNombre = tipoCuentaNombre;
         this.cuentaPadreId = cuentaPadreId;
@@ -70,6 +73,14 @@ public class CuentaDTO {
 
     public void setSaldo(double saldo){
         this.saldo = saldo;
+    }
+
+    public boolean getRecibeSaldo(){
+        return recibeSaldo;
+    }
+
+    public void setRecibeSaldo(boolean recibeSaldo){
+        this.recibeSaldo = recibeSaldo;
     }
 
     public Long getTipoCuentaId() {
