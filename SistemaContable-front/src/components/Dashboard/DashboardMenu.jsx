@@ -1,11 +1,10 @@
 import { FcConferenceCall, FcDebt, FcReading, FcCurrencyExchange } from "react-icons/fc";
-import { FaUsers } from "react-icons/fa";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const sizeIcon = 96;
 
-export const DashboardMenu = ({ cantUsuarios, cantMov }) => {
+export const DashboardMenu = ({ cantUsuarios, cantMov, cantAstos }) => {
 
   const navigate = useNavigate();
 
@@ -28,9 +27,9 @@ export const DashboardMenu = ({ cantUsuarios, cantMov }) => {
             <h4>Movimientos</h4>
             <h2 className="text-data">{cantMov}</h2>
           </div>
-          <FcDebt size={sizeIcon} className="icon-dash" />
+          <FcCurrencyExchange size={sizeIcon} className="icon-dash" />
         </div>
-        <div className="dash-element" >
+        <div className="dash-element" onClick={() => navigate("/home/books")}>
           <div className="dash-data">
             <h4>Libro Mayor</h4>
           </div>
@@ -39,9 +38,9 @@ export const DashboardMenu = ({ cantUsuarios, cantMov }) => {
         <div className="dash-element"  onClick={() => navigate("/home/movements")}>
           <div className="dash-data">
             <h4>Asientos</h4>
-            <h2 className="text-data">{' $1500.00'}</h2>
+            <h2 className="text-data">{cantAstos}</h2>
           </div>
-          <FcCurrencyExchange size={sizeIcon} className="icon-dash" />
+          <FcDebt size={sizeIcon} className="icon-dash" />
         </div>
       </div>
     </>

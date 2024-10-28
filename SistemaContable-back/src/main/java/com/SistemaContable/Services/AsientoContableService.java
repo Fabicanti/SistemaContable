@@ -41,6 +41,7 @@ public class AsientoContableService {
         asientoDTO.setId(asientoContable.getId());
         asientoDTO.setFecha(asientoContable.getFecha());
         asientoDTO.setDescripcion(asientoContable.getDescripcion());
+        asientoDTO.setUsuarioId(asientoContable.getUsuario().getId());
         List<DetalleAsientoDTO> detalleDTOs = new ArrayList<>();
         for (DetalleAsiento detalle : asientoContable.getDetalles()) {
             DetalleAsientoDTO detalleDTO = new DetalleAsientoDTO();
