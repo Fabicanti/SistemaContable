@@ -1,10 +1,11 @@
 package com.SistemaContable.DTO;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class AsientoDTO {
     private Long id;
-    private Date fecha;
+    private LocalDate fecha;
     private String descripcion;
     private Long usuarioId;
     private List<DetalleAsientoDTO> detalles;
@@ -12,14 +13,14 @@ public class AsientoDTO {
     public AsientoDTO() {
     }
 
-    public AsientoDTO(Date fecha, String descripcion, Long usuarioId, List<DetalleAsientoDTO> detalles) {
+    public AsientoDTO(LocalDate fecha, String descripcion, Long usuarioId, List<DetalleAsientoDTO> detalles) {
         this.fecha = fecha;
         this.descripcion = descripcion;
         this.usuarioId = usuarioId;
         this.detalles = detalles;
     }
 
-    public AsientoDTO(Long id, Date fecha, String descripcion, Long usuarioId, List<DetalleAsientoDTO> detalles) {
+    public AsientoDTO(Long id, LocalDate fecha, String descripcion, Long usuarioId, List<DetalleAsientoDTO> detalles) {
         this.id = id;
         this.fecha = fecha;
         this.descripcion = descripcion;
@@ -35,11 +36,11 @@ public class AsientoDTO {
         this.id = id;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     } 
 

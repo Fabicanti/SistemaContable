@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.SistemaContable.Actualizadores.ActualizadorSaldo;
 import com.SistemaContable.Actualizadores.SumaDebeRestaHaber;
 import com.SistemaContable.Actualizadores.SumaHaberRestaDebe;
@@ -14,22 +13,16 @@ import com.SistemaContable.Entities.AsientoContable;
 import com.SistemaContable.Entities.Cuenta;
 import com.SistemaContable.Entities.DetalleAsiento;
 import com.SistemaContable.Entities.Usuario;
-import com.SistemaContable.Exceptions.CuentaNoEncontradaException;
-import com.SistemaContable.Exceptions.CuentaNoValidaException;
-import com.SistemaContable.Exceptions.SaldoNegativoException;
 import com.SistemaContable.Exceptions.UsuarioNoEncontradoException;
 import com.SistemaContable.Repositories.AsientoContableRepository;
 import com.SistemaContable.Repositories.CuentaRepository;
 import com.SistemaContable.Repositories.UsuarioRepository;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.List;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Service
 public class AsientoContableService {
@@ -159,16 +152,15 @@ public class AsientoContableService {
 
     // Verifica que la fecha del nuevo asiento esté entre la fecha del ultimo asiento y hoy.
     // Modifique el método para que la fecha del nuevo asiento esté después de la fecha del último asiento.
-    private Date controlFecha(Date fechaAsiento){
+    private LocalDate controlFecha(LocalDate fechaAsiento){
         long cantAsientos = asientoContableRepository.count();
-        LocalDate hoy = LocalDate.now(ZoneId.of("UTC"));
-        LocalDate fechaNuevoAsiento = fechaAsiento.toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate fechaNuevoAsiento = fechaAsiento;
 
         if (cantAsientos == 0) {
             return fechaAsiento;
         } else {
-            Date ultimaFecha = asientoContableRepository.findUltimaFecha();
-            LocalDate fechaUltimoAsiento = ultimaFecha.toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+            LocalDate ultimaFecha = asientoContableRepository.findUltimaFecha();
+            LocalDate fechaUltimoAsiento = ultimaFecha;
 
             if (fechaNuevoAsiento.isEqual(fechaUltimoAsiento) || fechaNuevoAsiento.isAfter(fechaUltimoAsiento)) {
                 return fechaAsiento;

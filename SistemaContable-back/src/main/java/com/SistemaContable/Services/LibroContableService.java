@@ -2,14 +2,11 @@ package com.SistemaContable.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.SistemaContable.DTO.DetalleAsientoDTO;
-import org.modelmapper.ModelMapper;
+import com.SistemaContable.DTO.LibroMayorRequestDTO;
+import com.SistemaContable.DTO.LibroMayorResponseDTO;
 import java.util.List;
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
-import com.SistemaContable.Entities.AsientoContable;
 import com.SistemaContable.Entities.DetalleAsiento;
 import com.SistemaContable.Repositories.AsientoContableRepository;
 
@@ -19,27 +16,21 @@ public class LibroContableService {
     @Autowired
     private AsientoContableRepository asientoContableRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;  // Se utiliza para mapear entidades a DTO
-
-
-    public Map<String, List<DetalleAsientoDTO>> obtenerLibroMayor(LocalDate fechaInicio, LocalDate fechaFin) {
-        validarFechas(fechaInicio, fechaFin);  // Validación de fechas
-        List<AsientoContable> asientos = asientoContableRepository.findByFechaBetween(fechaInicio, fechaFin);
-        Map<String, List<DetalleAsientoDTO>> libroMayor = new HashMap<>();
-        for (AsientoContable asiento : asientos) {
-            for (DetalleAsiento detalle : asiento.getDetalles()) {
-                String cuenta = detalle.getCuenta().getNombre();
-                libroMayor.computeIfAbsent(cuenta, k -> new ArrayList<>())
-                          .add(convertirDetalleADTO(detalle));
-            }
+    public List<LibroMayorResponseDTO> obtenerMovimientosLibroMayor(LibroMayorRequestDTO request) {
+        validarFechas(request.getFechaInicio(), request.getFechaFin());
+        List<DetalleAsiento> detalles = asientoContableRepository
+            .findByFechaBetweenAndCuentaId(request.getFechaInicio(), request.getFechaFin(), request.getcuentaId());
+        
+        List<LibroMayorResponseDTO> respuesta = new ArrayList<>();
+        for (DetalleAsiento detalle : detalles) {
+            LibroMayorResponseDTO dto = new LibroMayorResponseDTO();
+            dto.setFecha(detalle.getAsientoContable().getFecha());
+            dto.setDescripcion(detalle.getAsientoContable().getDescripcion());
+            dto.setDebe(detalle.getDebe());
+            dto.setHaber(detalle.getHaber());
+            respuesta.add(dto);
         }
-        return libroMayor;
-    }
-
-
-    private DetalleAsientoDTO convertirDetalleADTO(DetalleAsiento detalle) {
-        return modelMapper.map(detalle, DetalleAsientoDTO.class);
+        return respuesta;
     }
 
     private void validarFechas(LocalDate fechaInicio, LocalDate fechaFin) {

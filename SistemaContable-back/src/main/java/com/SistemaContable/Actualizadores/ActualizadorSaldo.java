@@ -1,6 +1,5 @@
 package com.SistemaContable.Actualizadores;
 import com.SistemaContable.Entities.Cuenta;
-import com.SistemaContable.Exceptions.SaldoInsuficienteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 

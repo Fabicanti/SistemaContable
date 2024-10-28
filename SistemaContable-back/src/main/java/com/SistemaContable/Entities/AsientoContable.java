@@ -1,5 +1,5 @@
 package com.SistemaContable.Entities;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,7 +17,7 @@ public class AsientoContable {
     private Long id;
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date fecha;
+    private LocalDate fecha;
 
     @Column(nullable = false)
     private String descripcion;
@@ -33,7 +33,7 @@ public class AsientoContable {
 
     public AsientoContable() {
     }
-    public AsientoContable(Date fecha, String descripcion, Usuario usuario) {
+    public AsientoContable(LocalDate fecha, String descripcion, Usuario usuario) {
         this.fecha = fecha;
         this.descripcion = descripcion;
         this.usuario = usuario;
@@ -42,10 +42,10 @@ public class AsientoContable {
     public Long getId() {
         return id;
     }
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
     public String getDescripcion() {
