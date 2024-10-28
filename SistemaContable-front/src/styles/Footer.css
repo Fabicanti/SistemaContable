@@ -1,0 +1,40 @@
+@import url(./themes/colors.css);
+
+.container-footer{
+    background-color: rgb(0, 0, 0, 0.7);
+    /* margin-left: 0; */
+}
+
+.content-footer{
+    margin: 0 10%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* background-color: rgb(0, 0, 0, 0.7); */
+    height: 85px;
+}
+
+.content-footer-one{
+    grid-column: 1;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content-footer-one .text-logo-foot{
+    color: white;
+    font-size: 1rem;
+    font-weight: bolder;
+}
+
+.content-footer-one .marg-footer{
+    color: white;
+    font-size: 0.8rem;
+}
+.content-footer-two{
+    grid-column: span 3;
+    /* grid-row: 2; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

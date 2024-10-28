@@ -58,7 +58,7 @@ export const Aside = () => {
 
         <h4>Avanzado</h4>
         <li>
-          <Link className="elem-link">
+          <Link to="/home/books" className="elem-link">
             <IoBookOutline size={sizeIcon} color={colorIcon} />
             <div>Libros</div>
           </Link>

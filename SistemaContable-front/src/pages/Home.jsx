@@ -5,6 +5,7 @@ import { Dashboard } from "./Dashboard";
 import { Aside } from "../components/Aside";
 import { AlertModal } from "../utils/AlertModal";
 import "../styles/Home.css";
+import { Footer } from "../components/Footer";
 
 export const Home = ({ onLogout, auth }) => {
   const isAccountPage = useLocation().pathname === "/home";
@@ -29,6 +30,7 @@ export const Home = ({ onLogout, auth }) => {
           {isAccountPage && <Dashboard />}
           <Outlet />
         </main>
+        {/* <Footer auth={auth} /> */}
       </div>
     </>
   );

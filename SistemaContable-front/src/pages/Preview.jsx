@@ -19,6 +19,7 @@ export const Preview = () => {
         <PreviewAside frontPage={frontPage} />
         <PreviewContent />
       </div>
+      {/* <Footer/> */}
     </>
   );
 };

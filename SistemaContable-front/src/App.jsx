@@ -10,6 +10,7 @@ import { useAuth } from "./hooks/useAuth";
 import { Account } from "./pages/Account";
 import { Users } from "./pages/Users";
 import { Movements } from "./pages/Movements";
+import { Books } from "./pages/Books";
 
 export const App = () => {
   const { login, handleLogin, handleLogout } = useAuth();
@@ -27,6 +28,7 @@ export const App = () => {
           <Route path="account" element={<Account />} />
           <Route path="users" element={<Users />}/>
           <Route path="movements" element={<Movements/>} />
+          <Route path="books" element={<Books/>} />
         </Route>
       </Routes>
     </>

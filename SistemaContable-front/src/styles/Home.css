@@ -3,12 +3,20 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .main-content{
     display: flex;
     flex-direction: column;
     margin-left: 14%;
+    flex: 1;
+}
+
+@media (min-width: 1080px) {
+    .container-footer{
+        margin-left: 14%;
+    }
 }
 
 @media (max-width: 1080px) {
@@ -23,5 +31,9 @@
     .text-wel{
         opacity: 0;
         visibility: visible;
+    }
+
+    .container-footer{
+        margin-left: 0;
     }
 }
