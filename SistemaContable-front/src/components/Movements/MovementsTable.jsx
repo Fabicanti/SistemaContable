@@ -17,19 +17,38 @@ const fechaFilter  = () => {
 export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
     
     const { data , isLoading } = dataAllAsientos;
+
+    const [dataTable, setDataTable] = useState([])
+    // const dataTable = data?.map( item => {
+    //     const [year, month, day] = item.fecha;
+    //     item.fecha = new Date(year, month - 1, day).getTime();
+    // });
+
     const [expandedRows, setExpandedRows] = useState(null);
     const { state: allAccountState, fetch: fetchAllAccount } = dataAllAccount();
     const { data: accounts } = allAccountState;
 
     const { formState, onInputChange, setFormState } = useForm(fechaFilter);
     const { desde, hasta } = formState;
-    const [filteredData, setFilteredData] = useState(data);
+    const [filteredData, setFilteredData] = useState(dataTable);
 
     const [applyFilter, setApplyFilter] = useState(false)
 
     useEffect(() => {
-        setFilteredData(data);
-    }, [data]);
+        if (data && !isLoading) {
+            // Convierto las fechas de arreglos a Timestamp
+            const arregloConTimestamps = data.map(item => {
+                const [year, month, day] = item.fecha;
+                return {
+                    ...item,
+                    fecha: Date.UTC(year, month - 1, day)
+                };
+            });
+            setDataTable(arregloConTimestamps);
+            setFilteredData(arregloConTimestamps);
+        }
+        console.log(dataTable)
+    }, [data, isLoading]);
 
     const formatFecha = (timestamp) => {
         const date = new Date(timestamp + (24 * 60 * 60 * 1000));
@@ -43,7 +62,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
 
     const handleApplyFilters = () => {
         setApplyFilter(true)
-        const filtered = data.filter((item) => {
+        const filtered = dataTable.filter((item) => {
             const fechaItem = new Date(item.fecha);
             const desdeFecha = desde ? new Date(desde) : null;
             const hastaFecha = hasta ? new Date(hasta) : null;
@@ -63,7 +82,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
 
     const handleClearFilters = () => {
         setFormState(fechaFilter);
-        setFilteredData(data);
+        setFilteredData(dataTable);
         setApplyFilter(false)
     };
 
@@ -102,7 +121,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
                             <input 
                                 type="date" 
                                 className='input-sin' 
-                                disabled={data?.length === 0}
+                                disabled={dataTable?.length === 0}
                                 name='desde'
                                 value={desde}
                                 onChange={onInputChange}/>
@@ -112,7 +131,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
                             <input 
                                 type="date" 
                                 className='input-unt' 
-                                disabled={data?.length === 0}
+                                disabled={dataTable?.length === 0}
                                 name='hasta'
                                 value={hasta}
                                 onChange={onInputChange}/>
@@ -137,7 +156,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
 
             {isLoading
                 ? <div>Cargando...</div>
-                : (data?.length === 0 || filteredData?.length === 0
+                : (dataTable?.length === 0 || filteredData?.length === 0
                     ? <div className="alert alert-light" role="alert">
                         Sin datos de Asientos
                     </div>
