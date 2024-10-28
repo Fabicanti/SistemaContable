@@ -8,15 +8,17 @@ public class LibroMayorResponseDTO {
     private String descripcion;
     private Double debe;
     private Double haber;
+    private Double saldo;
 
     public LibroMayorResponseDTO() {
     }
 
-    public LibroMayorResponseDTO(LocalDate fecha, String descripcion, Double debe, Double haber) {
+    public LibroMayorResponseDTO(LocalDate fecha, String descripcion, Double debe, Double haber, Double saldo) {
         this.fecha = fecha;
         this.descripcion = descripcion;
         this.debe = debe;
         this.haber = haber;
+        this.saldo = saldo;
     }
 
     public LocalDate getFecha() {
@@ -49,6 +51,14 @@ public class LibroMayorResponseDTO {
 
     public void setHaber(Double haber) {
         this.haber = haber;
+    }
+
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
     }
 
 }

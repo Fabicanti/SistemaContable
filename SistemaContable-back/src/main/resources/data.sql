@@ -139,6 +139,10 @@ INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id,
 VALUES ('Banco cta cte', '10103', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '10100'));
 
+INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id, cuenta_padre_id)
+VALUES ('Banco Galicia', '10104', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
+        (SELECT id FROM cuentas WHERE codigo_cuenta = '10100'));
+
 -- Cuentas hijas de Creditos
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id, cuenta_padre_id)
@@ -173,6 +177,10 @@ INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id,
 VALUES ('Instalaciones', '10403', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '10400'));
 
+INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id, cuenta_padre_id)
+VALUES ('Muebles y Utiles', '10404', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
+        (SELECT id FROM cuentas WHERE codigo_cuenta = '10400'));
+
 ---------------------------------------------------------------------------------------------------------------------
 
 -- Cuentas hijas de Deudas Comerciales
@@ -183,6 +191,10 @@ VALUES ('Proveedores', '20101', 0, true, (SELECT id FROM tipos_cuenta WHERE nomb
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id, cuenta_padre_id)
 VALUES ('Sueldos a Pagar', '20102', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'PASIVO'), 
+        (SELECT id FROM cuentas WHERE codigo_cuenta = '20100'));
+
+INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id, cuenta_padre_id)
+VALUES ('Documentos a Pagar', '20103', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'PASIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '20100'));
 
 -- Cuentas hijas de Deudas Fiscales

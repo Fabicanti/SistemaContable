@@ -21,6 +21,11 @@ public interface AsientoContableRepository extends JpaRepository<AsientoContable
         @Param("cuentaId") Long cuentaId
     );
 
-    // Method to find AsientoContable between two dates
     List<AsientoContable> findByFechaBetween(LocalDate fechaInicio, LocalDate fechaFin);
+    
+    @Query("SELECT d FROM DetalleAsiento d JOIN d.asientoContable a WHERE a.fecha < :fecha AND d.cuenta.id = :cuentaId")
+    List<DetalleAsiento> findByFechaBeforeAndCuentaId(
+        @Param("fecha") LocalDate fecha,
+        @Param("cuentaId") Long cuentaId
+    );
 }

@@ -2,10 +2,8 @@ package com.SistemaContable.Controllers;
 
 import java.io.IOException;
 import java.util.List;
-
 import com.SistemaContable.Services.PdfGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,13 +42,11 @@ public class AsientoContableController {
     @GetMapping("/pdf")
     public ResponseEntity<?> obtenerAsientoPdf() throws IOException {
         List<AsientoDTO> asientosContables = asientoContableService.obtenerTodosLosAsientos();
-        byte[] pdfBytes = pdfGeneratorService.generarPdfLibroDiario(asientosContables);
-
+        byte[] pdfBytes = pdfGeneratorService.generarPdfAsiento(asientosContables);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("inline", "LibroDiario.pdf");
+        headers.setContentDispositionFormData("inline", "Asientos.pdf");
         headers.setContentLength(pdfBytes.length);
-
         return ResponseEntity.ok().headers(headers).body(pdfBytes);
     }
 }
