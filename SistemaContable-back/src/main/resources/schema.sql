@@ -28,6 +28,7 @@ CREATE TABLE cuentas (
     nombre VARCHAR(255) NOT NULL,
     codigo_cuenta VARCHAR(20) NOT NULL,
     saldo DECIMAL(15, 2) NOT NULL, -- Agrega saldo y saca descripción
+    recibe_saldo BOOLEAN NOT NULL, 
     tipo_cuenta_id BIGINT,
     cuenta_padre_id BIGINT NULL,
     FOREIGN KEY (tipo_cuenta_id) REFERENCES tipos_cuenta(id),

@@ -27,7 +27,7 @@ public class CuentaService {
         String nuevoCodigo = generarCodigoCuenta(cuentaDTO);
         cuentaDTO.setCodigoCuenta(nuevoCodigo);
         controlarTipo(cuentaDTO);
-        //Saqué lo de saldo xq seteaba algo que ya estaba seteado. 
+        setearSaldo(cuentaDTO);
         Cuenta cuenta = mapToEntity(cuentaDTO);
         Cuenta nuevaCuenta = cuentaRepository.save(cuenta);
         return mapToDTO(nuevaCuenta);
@@ -103,6 +103,7 @@ public class CuentaService {
                 cuenta.getNombre(),
                 cuenta.getCodigoCuenta(),
                 cuenta.getSaldo(),
+                cuenta.getRecibeSaldo(),
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getId() : null,
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getNombre() : null,
                 cuenta.getCuentaPadre() != null ? cuenta.getCuentaPadre().getId() : null,
@@ -116,6 +117,7 @@ public class CuentaService {
         cuenta.setNombre(cuentaDTO.getNombre());
         cuenta.setCodigoCuenta(cuentaDTO.getCodigoCuenta());
         cuenta.setSaldo(cuentaDTO.getSaldo());
+        cuenta.setRecibeSaldo(cuentaDTO.getRecibeSaldo());
 
         // Asigna el tipo de cuenta si está presente
         if (cuentaDTO.getTipoCuentaId() != null) {
@@ -124,8 +126,8 @@ public class CuentaService {
         }
 
         // Asigna la cuenta padre si está presente (para subcuentas) y mientras no reciba saldo. 
-        double saldoPadre = cuentaRepository.findById(cuentaDTO.getCuentaPadreId()).get().getSaldo();
-        if (cuentaDTO.getCuentaPadreId() != null && saldoPadre < 0) {
+        boolean recibeSaldoPadre = cuentaRepository.findById(cuentaDTO.getCuentaPadreId()).get().getRecibeSaldo();
+        if (cuentaDTO.getCuentaPadreId() != null && recibeSaldoPadre == false) {
             cuentaRepository.findById(cuentaDTO.getCuentaPadreId())
                     .ifPresent(cuenta::setCuentaPadre);            
         }
@@ -134,6 +136,16 @@ public class CuentaService {
 
     public List<String> obtenerNombresCuentas(){
         return cuentaRepository.findAllNombresCuentas();
+    }
+
+    private void setearSaldo(CuentaDTO cuentaDTO){
+        if(cuentaDTO.getRecibeSaldo()){
+            cuentaDTO.setSaldo(0);
+        }
+        else{
+            cuentaDTO.setSaldo(-1);
+        }
+
     }
 
     //Controla que el tipo de la cuenta coincida con el padre. Si no coincide, le setea el tipo de cuenta del padre.

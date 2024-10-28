@@ -150,7 +150,7 @@ public class AsientoContableService {
 //        return asientoContableRepository.save(asientoContable);
     }
 
-    // Verifica que la fecha del nuevo asiento esté entre la fecha del ultimo asiento y hoy.
+    // Verifica que la fecha del nuevo asiento esté entre la fecha del ultimo asiento (incluida) y hoy (incluida).
     // Modifique el método para que la fecha del nuevo asiento esté después de la fecha del último asiento.
     private LocalDate controlFecha(LocalDate fechaAsiento){
         long cantAsientos = asientoContableRepository.count();
@@ -165,8 +165,9 @@ public class AsientoContableService {
             if (fechaNuevoAsiento.isEqual(fechaUltimoAsiento) || fechaNuevoAsiento.isAfter(fechaUltimoAsiento)) {
                 return fechaAsiento;
             } else {
+                LocalDate hoy = LocalDate.now();
                 throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST, "La fecha debe ser igual o posterior a la del último asiento: " + fechaUltimoAsiento);
+                        HttpStatus.BAD_REQUEST, "La fecha debe estar entre la fecha del ultimo asiento y la fecha actual: " + fechaUltimoAsiento + " al " + hoy);
             }
         }
     }
