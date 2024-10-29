@@ -26,21 +26,21 @@ public class Cuenta {
     @Column(name = "recibe_saldo", nullable = false)
     private boolean recibeSaldo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_cuenta_id", nullable = false)
     @JsonIgnoreProperties("cuentas")
     private TipoCuenta tipoCuenta;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cuenta_padre_id")
     @JsonIgnoreProperties("subCuentas")
     private Cuenta cuentaPadre;  // Relación en árbol
 
-    @OneToMany(mappedBy = "cuentaPadre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cuentaPadre", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("cuentaPadre")
     private List<Cuenta> subCuentas= new ArrayList<>();
 
-    @OneToMany(mappedBy = "cuenta")
+    @OneToMany(mappedBy = "cuenta", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<DetalleAsiento> detallesAsientos;
 

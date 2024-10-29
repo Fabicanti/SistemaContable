@@ -29,7 +29,7 @@ public class PdfGeneratorService {
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
-        document.add(new Paragraph("Asiento Contable").setBold().setFontSize(18));
+        document.add(new Paragraph("Asientos Contables").setBold().setFontSize(18));
 
         // Define columnas: Fecha, Descripción, Debe, Haber
         float[] columnWidths = { 100F, 200F, 100F, 100F };
@@ -70,14 +70,14 @@ public class PdfGeneratorService {
         return baos.toByteArray();
     }
 
-    public byte[] generarPdfLibroMayor(List<LibroMayorResponseDTO> movimientos, double saldoInicial)
+    public byte[] generarPdfLibroMayor(List<LibroMayorResponseDTO> movimientos, double saldoInicial, String nombreCuenta)
             throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
-        document.add(new Paragraph("Mayor de Cuenta").setBold().setFontSize(18));
+        document.add(new Paragraph("Mayor de Cuenta: "+ nombreCuenta).setBold().setFontSize(18));
 
         // Crear la tabla con columnas: Fecha, Operación, Debe, Haber, Saldo
         float[] columnWidths = { 100F, 200F, 100F, 100F, 100F };

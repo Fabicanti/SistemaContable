@@ -1,6 +1,5 @@
 package com.SistemaContable.Services;
 
-import com.SistemaContable.DTO.CuentaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.SistemaContable.Actualizadores.ActivoLibroMayor;
@@ -8,13 +7,11 @@ import com.SistemaContable.Actualizadores.PasivoLibroMayor;
 import com.SistemaContable.Actualizadores.SaldoLibroMayor;
 import com.SistemaContable.DTO.LibroMayorRequestDTO;
 import com.SistemaContable.DTO.LibroMayorResponseDTO;
-
 import java.util.HashMap;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
-
 import com.SistemaContable.Entities.Cuenta;
 import com.SistemaContable.Entities.DetalleAsiento;
 import com.SistemaContable.Repositories.AsientoContableRepository;
@@ -93,6 +90,12 @@ public class LibroContableService {
             saldoInicial += detalle.getDebe() - detalle.getHaber();
         }
         return saldoInicial;
+    }
+
+    public String obtenerNombreCuenta(Long cuentaId) {
+        Cuenta cuenta = cuentaRepository.findById(cuentaId)
+            .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        return cuenta.getNombre();
     }
 
     public List<?> nombresCuentasMovimientos(){

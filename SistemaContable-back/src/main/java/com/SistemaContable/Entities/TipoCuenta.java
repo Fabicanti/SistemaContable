@@ -16,7 +16,7 @@ public class TipoCuenta {
     @Column(nullable = false, unique = true)
     private String nombre;
 
-    @OneToMany(mappedBy = "tipoCuenta")
+    @OneToMany(mappedBy = "tipoCuenta", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Cuenta> cuentas;
 

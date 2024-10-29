@@ -41,14 +41,14 @@ public class LibroContableController {
 
         // Obtener el saldo inicial para el PDF
         double saldoInicial = libroContableService.obtenerSaldoInicial(request.getcuentaId(), request.getFechaInicio());
-
+        String nombreCuenta = libroContableService.obtenerNombreCuenta(request.getcuentaId());
         // Generar el PDF con el GeneradorPDFService
-        byte[] pdfBytes = pdfGeneratorService.generarPdfLibroMayor(movimientos, saldoInicial);
+        byte[] pdfBytes = pdfGeneratorService.generarPdfLibroMayor(movimientos, saldoInicial, nombreCuenta);
 
         // Configurar la respuesta del PDF
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("inline", "LibroMayor.pdf");
+        headers.setContentDispositionFormData("inline", "Mayor"+nombreCuenta+".pdf");
         headers.setContentLength(pdfBytes.length);
 
         return ResponseEntity.ok().headers(headers).body(pdfBytes);

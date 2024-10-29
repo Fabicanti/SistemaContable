@@ -157,6 +157,10 @@ INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id,
 VALUES ('Valores a Depositar', '10203', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '10200'));
 
+INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id, cuenta_padre_id)
+VALUES ('Cheques a Cobrar', '10204', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'ACTIVO'), 
+        (SELECT id FROM cuentas WHERE codigo_cuenta = '10200'));
+
 -- Cuentas hijas de Bienes de cambio
 
 INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id, cuenta_padre_id)

@@ -22,12 +22,12 @@ public class AsientoContable {
     @Column(nullable = false)
     private String descripcion;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     @JsonIgnoreProperties({"passwordHash", "role", "asientos"})
     private Usuario usuario;
     
-    @OneToMany(mappedBy = "asientoContable", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "asientoContable", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<DetalleAsiento> detalles;
 

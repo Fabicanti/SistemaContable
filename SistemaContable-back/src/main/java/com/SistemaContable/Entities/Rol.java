@@ -15,7 +15,7 @@ public class Rol {
     @Column(nullable = false, unique = true)
     private String nombre;  // "USER" o "SUPERUSER"
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Usuario> usuarios;
 

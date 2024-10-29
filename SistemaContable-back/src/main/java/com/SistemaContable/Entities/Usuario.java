@@ -26,7 +26,7 @@ public class Usuario {
     @Column(nullable = false)
     private String password_hash;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     @JsonIgnoreProperties("usuarios")
     private Rol role;
