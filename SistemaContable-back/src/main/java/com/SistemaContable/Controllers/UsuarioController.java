@@ -61,10 +61,8 @@ public class UsuarioController {
     @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping("/eliminar")
     public ResponseEntity<?> eliminarUsuario(@RequestBody UsuarioDTO usuarioDTO){
-        if (usuarioService.eliminarUsuario(usuarioDTO)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        usuarioService.eliminarUsuario(usuarioDTO);
+        return ResponseEntity.noContent().build();
     }
 
     /**

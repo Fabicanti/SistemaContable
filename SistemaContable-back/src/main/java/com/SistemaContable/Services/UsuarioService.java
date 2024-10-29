@@ -4,7 +4,10 @@ import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Entities.*;
 import com.SistemaContable.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -40,13 +43,18 @@ public class UsuarioService {
         return nuevoUsuario;
     }
 
-    public boolean eliminarUsuario(UsuarioDTO usuarioDTO) {
+    public void eliminarUsuario(UsuarioDTO usuarioDTO) {
         Optional<Usuario> usuario = usuarioRepository.findByUsername(usuarioDTO.getUsername());
         if (usuario.isPresent()) {
-            usuarioRepository.deleteById(usuario.get().getId());
-            return true;
-        } else {
-            return false;
+            if (usuarioRepository.countAsientosUsuarios(usuario.get().getId()) > 0)
+                throw new ResponseStatusException(HttpStatus
+                        .CONFLICT, "Este usuario tienen asientos asociados.");
+
+            try{
+                usuarioRepository.deleteById(usuario.get().getId());
+            }catch (Exception e){
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar el usuario.");
+            }
         }
     }
 

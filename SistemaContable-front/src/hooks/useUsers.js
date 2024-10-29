@@ -62,7 +62,9 @@ export const useUsers = () => {
                     fetchtdata()
                     
                 }else{
-                    AlertModal("Hubo un error", "", "error")
+                    const data = await response.json();
+                    // console.log(data)
+                    AlertModal("Hubo un error", data.message || "", "error")
                 }
                 
             }
