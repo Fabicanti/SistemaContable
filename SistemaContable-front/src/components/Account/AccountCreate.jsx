@@ -83,7 +83,7 @@ export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
                         </select>
                     </div>
                 </div>
-                {openToggle && 
+                {/* {openToggle &&  */}
                 <div className="group-data">
                     <div className="form-data">
                         <label htmlFor="">Codigo de cuenta padre</label>
@@ -97,7 +97,7 @@ export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
                         />
                     </div>
                 </div>
-                }
+                {/* } */}
 
                 {/* {openToggle &&
                 <div className="group-data">

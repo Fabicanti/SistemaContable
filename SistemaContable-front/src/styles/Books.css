@@ -1,0 +1,44 @@
+@import url(./themes/colors.css);
+
+.container-book{
+    margin: 10px;
+}
+
+.content-book{
+    background-color: white;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.content-book .title-book{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.content-book .title-book h3{
+    font-weight: 600;
+}
+
+.mov-data-one .input-selection{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.input-selection label{
+    font-size: 11px;
+}
+
+.input-selection .select-book{
+    font-size: 16px;
+    padding: 5px;
+    border: none;
+    outline: none;
+}
+
+.col-table{
+    background-color: var(--color-gradiant_1) !important;
+    color: white !important;
+}

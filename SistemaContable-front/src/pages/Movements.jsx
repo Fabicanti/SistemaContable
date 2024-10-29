@@ -11,7 +11,7 @@ export const Movements = () => {
 
     const { user } = useUser()
 
-    const { dataAllAccount, dataNameAccounts, handleAddAsientos, dataAllAsientos } = useMovements()
+    const { dataAllAccount, dataNameAccounts, handleAddAsientos, dataAllAsientos, downloadPDFAsientos } = useMovements()
     const { state: allAsientosState, fetch: fetchAllAsientos } = dataAllAsientos();
     
     useEffect(() => {
@@ -33,6 +33,7 @@ export const Movements = () => {
                 dataAllAsientos={allAsientosState}
                 roles={user?.roleId}
                 dataAllAccount={dataAllAccount}
+                downloadPDFAsientos={downloadPDFAsientos}
             />
         </div>
     )

@@ -7,6 +7,7 @@ const urlAllAccount = "http://localhost:8080/api/cuentas";
 const urlNamesAccount = "http://localhost:8080/api/cuentas/nombres";
 const urlAddAsientos = "http://localhost:8080/api/asientos/registrar";
 const urlAllAsientos = "http://localhost:8080/api/asientos/listar";
+const urlDownloadPDFAsientos = "http://localhost:8080/api/asientos/pdf";
 
 export const useMovements = () => {
 
@@ -55,11 +56,41 @@ export const useMovements = () => {
         return
     }
 
+    const downloadPDFAsientos = async () => {
+        try {
+            const response = await fetch( urlDownloadPDFAsientos, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/pdf",
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al generar el PDF");
+            }
+    
+            const blob = await response.blob(); // Convierte la respuesta en un blob
+    
+            // Crea una URL de descarga desde el blob
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "Asientos.pdf"; // Nombre del archivo
+            link.click();
+    
+            // Limpia la URL después de la descarga
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            AlertModal("Error", "Hubo un error en el PDF", "error");
+        }
+    }
+
 
     return {
         dataAllAsientos,
         dataAllAccount,
         dataNameAccounts,
         handleAddAsientos,
+        downloadPDFAsientos,
     }
 }

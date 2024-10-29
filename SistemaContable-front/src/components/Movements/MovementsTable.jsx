@@ -14,7 +14,7 @@ const fechaFilter  = () => {
     }
 };
 
-export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
+export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloadPDFAsientos }) => {
     
     const { data , isLoading } = dataAllAsientos;
 
@@ -86,10 +86,14 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
         setApplyFilter(false)
     };
 
+    const downloadPDF = () => {
+        downloadPDFAsientos()
+    }
+
     const rowExpansionTemplate = (data) => {
         return (
             <div>
-                <table className="table table-striped">
+                <table className="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Cuenta ID</th>
@@ -150,7 +154,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount }) => {
                 </div>
 
                 <div className="mov-data-two">
-                    <button type='button' className='btn-pdf'><BiSolidFilePdf size={36}/></button>
+                    <button type='button' className='btn-pdf' onClick={downloadPDF}><BiSolidFilePdf size={36}/></button>
                 </div>
             </div>
 

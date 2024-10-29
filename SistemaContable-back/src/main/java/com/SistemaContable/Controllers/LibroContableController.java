@@ -34,7 +34,7 @@ public class LibroContableController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/pdf")
+    @PostMapping("/pdf")
     public ResponseEntity<byte[]> obtenerLibroMayorPdf(@RequestBody LibroMayorRequestDTO request) throws IOException {
         // Obtener los movimientos del libro mayor
         List<LibroMayorResponseDTO> movimientos = libroContableService.obtenerMovimientosLibroMayor(request);
@@ -52,6 +52,11 @@ public class LibroContableController {
         headers.setContentLength(pdfBytes.length);
 
         return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
+
+    @GetMapping("/nombresMov")
+    public ResponseEntity<?> obtenerNombresCuentas(){
+        return ResponseEntity.ok(libroContableService.nombresCuentasMovimientos());
     }
 
 }
