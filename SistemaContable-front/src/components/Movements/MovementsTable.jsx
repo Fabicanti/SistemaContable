@@ -14,15 +14,11 @@ const fechaFilter  = () => {
     }
 };
 
-export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloadPDFAsientos }) => {
+export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloadPDFAsientos, dataAllUsers }) => {
     
     const { data , isLoading } = dataAllAsientos;
 
     const [dataTable, setDataTable] = useState([])
-    // const dataTable = data?.map( item => {
-    //     const [year, month, day] = item.fecha;
-    //     item.fecha = new Date(year, month - 1, day).getTime();
-    // });
 
     const [expandedRows, setExpandedRows] = useState(null);
     const { state: allAccountState, fetch: fetchAllAccount } = dataAllAccount();
@@ -32,23 +28,28 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloa
     const { desde, hasta } = formState;
     const [filteredData, setFilteredData] = useState(dataTable);
 
+    const { state: allDataUsers, fetch: fetchAllDataUsers } = dataAllUsers();
+    const { data: users } = allDataUsers;
+
     const [applyFilter, setApplyFilter] = useState(false)
 
     useEffect(() => {
-        if (data && !isLoading) {
+        if (data && !isLoading && users) {
             // Convierto las fechas de arreglos a Timestamp
             const arregloConTimestamps = data.map(item => {
                 const [year, month, day] = item.fecha;
+                const usuario = users.find(user => user.id === item.usuarioId);
                 return {
                     ...item,
-                    fecha: Date.UTC(year, month - 1, day)
+                    fecha: Date.UTC(year, month - 1, day),
+                    usuarioName: usuario ? `${usuario.nombre} ${usuario.apellido}` : "Usuario desconocido"
                 };
             });
             setDataTable(arregloConTimestamps);
             setFilteredData(arregloConTimestamps);
         }
-        console.log(dataTable)
-    }, [data, isLoading]);
+        
+    }, [data, isLoading, users]);
 
     const formatFecha = (timestamp) => {
         const date = new Date(timestamp + (24 * 60 * 60 * 1000));
@@ -77,7 +78,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloa
             return true;
         });
         setFilteredData(filtered);
-        console.log(filteredData)
+        
     };
 
     const handleClearFilters = () => {
@@ -172,6 +173,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloa
                         <Column field="id" header="Nro. Asiento" />
                         <Column field="fecha" header="Fecha" body={(rowData) => formatFecha(rowData.fecha)} />
                         <Column field="descripcion" header="Descripción" />
+                        <Column field="usuarioName" header="Usuario" />
                     </DataTable>
                 )
             }

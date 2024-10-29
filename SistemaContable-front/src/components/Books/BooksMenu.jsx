@@ -25,9 +25,9 @@ export const BooksMenu = ({ dataNameAccountsMov, dataTableBook, downloadPDFBooks
 
     const [bookTableAccount, setBookTableAccount] = useState([])
 
-    useEffect(() => {
-        console.log(namesAccountData);
-    }, [namesAccountData])
+    // useEffect(() => {
+    //     console.log(namesAccountData);
+    // }, [namesAccountData])
 
 
     const handleApplyFilters = () => {
@@ -41,9 +41,9 @@ export const BooksMenu = ({ dataNameAccountsMov, dataTableBook, downloadPDFBooks
             fechaFin: hasta
 
         }
-        // setBookTableAccount(dataTableBook(datos));
+        
         dataTableBook(datos).then((result) => {
-            setBookTableAccount(result); // Aquí debería mostrar los datos correctamente
+            setBookTableAccount(result);
         });
     };
 
@@ -62,7 +62,11 @@ export const BooksMenu = ({ dataNameAccountsMov, dataTableBook, downloadPDFBooks
             fechaFin: hasta
 
         }
-        downloadPDFBooks(datos)
+        if (namesAccountData && !isLoading){
+            const name = namesAccountData.find( (element) => Number(element.id) === Number(datos.cuentaId) );
+            downloadPDFBooks(datos, name.nombre)
+
+        }
     }
 
 

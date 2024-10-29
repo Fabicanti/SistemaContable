@@ -5,13 +5,18 @@ import { useUser } from '../context/UserProvider';
 import { useMovements } from '../hooks/useMovements';
 import "../styles/Movements.css"
 
-let countAsientos = 10000;
-
 export const Movements = () => {
 
     const { user } = useUser()
 
-    const { dataAllAccount, dataNameAccounts, handleAddAsientos, dataAllAsientos, downloadPDFAsientos } = useMovements()
+    const { 
+        dataAllAccount, 
+        dataNameAccounts, 
+        handleAddAsientos, 
+        dataAllAsientos, 
+        downloadPDFAsientos, 
+        dataAllUsers } = useMovements();
+
     const { state: allAsientosState, fetch: fetchAllAsientos } = dataAllAsientos();
     
     useEffect(() => {
@@ -34,6 +39,7 @@ export const Movements = () => {
                 roles={user?.roleId}
                 dataAllAccount={dataAllAccount}
                 downloadPDFAsientos={downloadPDFAsientos}
+                dataAllUsers={dataAllUsers}
             />
         </div>
     )

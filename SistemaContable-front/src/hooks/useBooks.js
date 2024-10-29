@@ -17,7 +17,7 @@ export const useBooks = () => {
 
     }, [namesAccountMov, fetchNamesAccountMov]) 
 
-    const downloadPDFBooks = async (data) => {
+    const downloadPDFBooks = async (data, nameAccount) => {
         try {
             const response = await fetch( urlPDFBooks, {
                 method: "POST",
@@ -31,16 +31,14 @@ export const useBooks = () => {
                 throw new Error("Error al generar el PDF");
             }
     
-            const blob = await response.blob(); // Convierte la respuesta en un blob
+            const blob = await response.blob();
     
-            // Crea una URL de descarga desde el blob
             const url = window.URL.createObjectURL(new Blob([blob]));
             const link = document.createElement("a");
             link.href = url;
-            link.download = "LibroMayor.pdf"; // Nombre del archivo
+            link.download = `Mayor${nameAccount}.pdf`;
             link.click();
-    
-            // Limpia la URL después de la descarga
+ 
             window.URL.revokeObjectURL(url);
         } catch (error) {
             AlertModal("Error", "Hubo un error en el PDF", "error");

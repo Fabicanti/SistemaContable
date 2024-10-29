@@ -8,12 +8,21 @@ const urlNamesAccount = "http://localhost:8080/api/cuentas/nombres";
 const urlAddAsientos = "http://localhost:8080/api/asientos/registrar";
 const urlAllAsientos = "http://localhost:8080/api/asientos/listar";
 const urlDownloadPDFAsientos = "http://localhost:8080/api/asientos/pdf";
+const urlUsersData = "http://localhost:8080/api/usuarios";
 
 export const useMovements = () => {
 
     const { state: allAsientosState, fetchGet: fetchAllAsientos } = useFetchGET(urlAllAsientos);
     const { state: allAccountState, fetchGet: fetchAllAccount } = useFetchGET(urlAllAccount);
     const { state: nameAccountsState, fetchGet: fetchNameAccounts } = useFetchGET(urlNamesAccount);
+    const { state: allDataUsers, fetchGet: fetchAllDataUsers } = useFetchGET(urlUsersData);
+
+    const dataAllUsers = useCallback(() => {
+        return {
+            state: allDataUsers,
+            fetch: fetchAllDataUsers
+        }
+    }, [allDataUsers, fetchAllDataUsers])
 
     const dataAllAsientos = useCallback(() => {
         return {
@@ -69,16 +78,14 @@ export const useMovements = () => {
                 throw new Error("Error al generar el PDF");
             }
     
-            const blob = await response.blob(); // Convierte la respuesta en un blob
+            const blob = await response.blob();
     
-            // Crea una URL de descarga desde el blob
             const url = window.URL.createObjectURL(new Blob([blob]));
             const link = document.createElement("a");
             link.href = url;
-            link.download = "Asientos.pdf"; // Nombre del archivo
+            link.download = "Asientos.pdf";
             link.click();
     
-            // Limpia la URL después de la descarga
             window.URL.revokeObjectURL(url);
         } catch (error) {
             AlertModal("Error", "Hubo un error en el PDF", "error");
@@ -92,5 +99,6 @@ export const useMovements = () => {
         dataNameAccounts,
         handleAddAsientos,
         downloadPDFAsientos,
+        dataAllUsers,
     }
 }
