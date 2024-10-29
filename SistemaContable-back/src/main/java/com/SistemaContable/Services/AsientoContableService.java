@@ -155,17 +155,23 @@ public class AsientoContableService {
     private LocalDate controlFecha(LocalDate fechaAsiento){
         long cantAsientos = asientoContableRepository.count();
         LocalDate fechaNuevoAsiento = fechaAsiento;
+        LocalDate hoy = LocalDate.now();
 
-        if (cantAsientos == 0) {
-            return fechaAsiento;
+        if(cantAsientos == 0){
+            if(fechaNuevoAsiento.equals(hoy) || fechaNuevoAsiento.isBefore(hoy)){
+                return fechaAsiento;
+            } else{
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "La fecha debe ser igual o anterior a la fecha de hoy: " + hoy);
+            }
         } else {
             LocalDate ultimaFecha = asientoContableRepository.findUltimaFecha();
             LocalDate fechaUltimoAsiento = ultimaFecha;
 
-            if (fechaNuevoAsiento.isEqual(fechaUltimoAsiento) || fechaNuevoAsiento.isAfter(fechaUltimoAsiento)) {
+            if(fechaNuevoAsiento.isEqual(fechaUltimoAsiento) || (fechaNuevoAsiento.isAfter(fechaUltimoAsiento) && fechaNuevoAsiento.isBefore(hoy)) || fechaNuevoAsiento.equals(hoy)){
                 return fechaAsiento;
-            } else {
-                LocalDate hoy = LocalDate.now();
+            }
+            else{
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST, "La fecha debe estar entre la fecha del ultimo asiento y la fecha actual: " + fechaUltimoAsiento + " al " + hoy);
             }
