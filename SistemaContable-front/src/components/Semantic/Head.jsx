@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserProvider";
-import { MdOutlineLogin } from "react-icons/md";
-import logo from "../assets/icono-sistema.png";
-import avatarUsuario from "../assets/avatars/admin-4.png"
-import userUsuario from "../assets/avatars/usuario.png"
-import "../styles/Head.css";
+import { useUser } from "../../context/UserProvider";
+import logo from "../../assets/icono-sistema.png";
+import avatarUsuario from "../../assets/avatars/admin-4.png"
+import userUsuario from "../../assets/avatars/usuario.png"
+import "../../styles/Head.css";
+import { AsideToggle } from "./AsideToggle";
 
 export const Head = ({ login = false, logout }) => {
   const navigate = useNavigate();
@@ -13,8 +13,10 @@ export const Head = ({ login = false, logout }) => {
   return (
     <>
       <header className="cabecera" style={ {background: ` ${login ? "rgba(255, 255, 255, 0.2)" : "rgb(0, 0, 0, 0.6)"}`} }>
-        {login ? (
+        {login ? (<>
           <div className="text-wel">{`¡Bienvenido ${user?.nombre} ${user?.apellido}!`}</div>
+          <AsideToggle/>
+        </>
         ) : (
           <Link
             className="logo-system"

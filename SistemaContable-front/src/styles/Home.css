@@ -17,18 +17,30 @@
     .container-footer{
         margin-left: 14%;
     }
+    .navbar-toggler{
+        display: none !important;
+    }
 }
 
 @media (max-width: 1080px) {
 
     /* Cuando se despliega el menú, el contenido principal ocupa toda la página*/
-    .main-content, .side-bar.open{
+    .main-content{
         margin-left: 0;
+    }
+
+    .side-bar.open{
+        display: none;
+    }
+
+    .navbar-toggler{
+        display: block !important;
     }
 
 
     /* Estilo del Head - El div de texto desaparece cuando se despliega el menu*/
     .text-wel{
+        display: none;
         opacity: 0;
         visibility: visible;
     }

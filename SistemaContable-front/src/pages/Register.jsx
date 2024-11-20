@@ -1,5 +1,5 @@
 import { useForm } from "../hooks/useForm";
-import { Head } from "../components/Head";
+import { Head } from "../components/Semantic/Head";
 import { RegisterForm } from "../components/Register/RegisterForm";
 import { RegisterAside } from "../components/Register/RegisterAside";
 import websiteSign from '../assets/register/website-register.svg'

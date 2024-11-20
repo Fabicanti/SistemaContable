@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Head } from "../components/Head";
+import { Head } from "../components/Semantic/Head";
 import frontPage from "../assets/preview/front-preview.png";
 import "../styles/Preview.css";
 import { PreviewContent } from "../components/Preview/PreviewContent";

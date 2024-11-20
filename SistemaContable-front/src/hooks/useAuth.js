@@ -23,7 +23,7 @@ export const useAuth = () => {
       user
     }));
     setUser(user);
-    navigate("/home");
+    navigate("/");
   };
 
   const handleLogout = () => {

@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 export const BooksTable = ({ datasTable }) => {
 
     useEffect(() => {
-      console.log(datasTable)
     }, [datasTable])
     
     // De timestamp a Date "yyyy-mm-dd"
@@ -13,7 +12,7 @@ export const BooksTable = ({ datasTable }) => {
     };
 
     return (
-        <div className="table-book">
+        <div className="table-book table-responsive">
             {datasTable?.length === 0
                 ?
                 <div className="alert alert-light" role="alert">

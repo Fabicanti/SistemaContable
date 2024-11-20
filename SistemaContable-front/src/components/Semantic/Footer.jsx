@@ -1,5 +1,5 @@
 import React from 'react'
-import "../styles/Footer.css"
+import "../../styles/Footer.css"
 
 // style={ { marginLeft : ` ${auth ? "14%" : "0"}  `}
 export const Footer = ({auth = false}) => {

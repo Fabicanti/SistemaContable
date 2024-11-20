@@ -3,6 +3,8 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable'
 import { useForm } from '../../hooks/useForm';
 import { BiSolidFilePdf } from "react-icons/bi";
+import { IoIosArrowDown } from "react-icons/io";
+
 
 const fechaFilter  = () => {
     const date = new Date();
@@ -116,6 +118,10 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloa
         );
     };
 
+    const toggleAllRows = () => {
+        setExpandedRows(null)
+    };
+
     return (
         <div className="custom-table-wrapper">
             <div className='options-mov-table'>
@@ -155,6 +161,7 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloa
                 </div>
 
                 <div className="mov-data-two">
+                    {expandedRows && <button onClick={toggleAllRows}><IoIosArrowDown size={24}/></button>}
                     <button type='button' className='btn-pdf' onClick={downloadPDF}><BiSolidFilePdf size={36}/></button>
                 </div>
             </div>

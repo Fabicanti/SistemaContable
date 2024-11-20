@@ -18,18 +18,24 @@ export const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Preview />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/home"
-          element={<Home onLogout={handleLogout} auth={login.isAuth}/>}
-        >
-          <Route path="account" element={<Account />} />
-          <Route path="users" element={<Users />}/>
-          <Route path="movements" element={<Movements/>} />
-          <Route path="books" element={<Books/>} />
-        </Route>
+        { login.isAuth 
+        ?  
+          <Route
+            path="/"
+            element={<Home onLogout={handleLogout} auth={login.isAuth}/>}
+          >
+            <Route path="account" element={<Account />} />
+            <Route path="users" element={<Users />}/>
+            <Route path="movements" element={<Movements/>} />
+            <Route path="books" element={<Books/>} />
+          </Route>
+
+          : <>
+          <Route path="/" element={<Preview />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register />} />
+        </> 
+        }
       </Routes>
     </>
   );

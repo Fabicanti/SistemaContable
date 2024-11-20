@@ -22,12 +22,8 @@
     width: 100%;
 }
 
-.side-bar.open{
-    min-width: 16%;
-    z-index: 1;
-}
 
-.side-bar .links-aside h4{
+.links-aside h4{
     font-size: 1.2em;
     font-weight: 700;
     color: #fff;
@@ -52,7 +48,7 @@
     margin-left: 10px;
 }
 
-.side-bar .links-aside {
+.links-aside {
     list-style: none;
     margin-top: 1.2em;
     padding: 5px;
@@ -138,8 +134,7 @@
 
 @media (max-width: 1080px) {
     .side-bar {
-        min-width: 85px; /* Reducir el ancho del sidebar */
-        height: 85px;
+        display: none;
     }
 
     .side-bar .roles{
@@ -149,32 +144,25 @@
     .side-bar .logo-aside .text-logo {
       display: none; /* Ocultar el nombre del logo en pantallas pequeñas */
     }
-  
-    .side-bar.open {
-        min-width: 300px; /* Mostrar el menú completo cuando se hace clic */
-        height: 100vh;
-        border-end-end-radius: 10px;
-    }
 
-
-    .side-bar .links-aside li{
+    /* .side-bar .links-aside li{
         justify-content: start;
-    }
+    } */
 
-    .side-bar .links-aside h4, 
+    /* .side-bar .links-aside h4, 
     .side-bar .links-aside li .elem-link {
-        display: none; /* Ocultar el contenido del menú */
+        display: none;
     }
 
     .side-bar.open .links-aside h4,
     .side-bar.open .links-aside li .elem-link,
     .side-bar.open .roles {
-        display: flex; /* Mostrar el contenido del menú cuando está abierto */
+        display: flex; 
     }
 
     .side-bar .links-aside li .elem-link div{
         display: block;
-    }
+    } */
 
     .links-aside h4{
         text-align: start;

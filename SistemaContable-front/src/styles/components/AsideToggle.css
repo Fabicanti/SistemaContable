@@ -1,0 +1,41 @@
+@import url(../themes/colors.css);
+
+.offcanvas {
+    width: 300px !important;
+    background: rgb(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(17px) !important;
+    --webkit-backdrop-filter: blur(17px) !important;
+}
+
+.offcanvas-header.toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-toggle {
+    margin-top: 7px;
+}
+
+.title-toggle h5 {
+    font-size: 3em;
+    font-weight: bolder;
+    background: linear-gradient(27deg, var(--color-gradiant_1), var(--color-gradiant_2));
+    background-clip: text;
+    color: transparent;
+}
+
+.offcanvas-body hr {
+    border-color: #ffffff79;
+    margin-top: 10px 8px;
+}
+
+.offcanvas-body {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+}
+  
+.offcanvas-body::-webkit-scrollbar-button {
+    display: none; /* Oculta los botones (flechas) */
+  }

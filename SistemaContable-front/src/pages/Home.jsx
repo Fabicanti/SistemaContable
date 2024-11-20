@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Head } from "../components/Head";
+import { Head } from "../components/Semantic/Head";
 import { Dashboard } from "./Dashboard";
-import { Aside } from "../components/Aside";
+import { Aside } from "../components/Semantic/Aside";
 import { AlertModal } from "../utils/AlertModal";
 import "../styles/Home.css";
-import { Footer } from "../components/Footer";
+import { Footer } from "../components/Semantic/Footer";
 
 export const Home = ({ onLogout, auth }) => {
-  const isAccountPage = useLocation().pathname === "/home";
+  const isAccountPage = useLocation().pathname === "/";
   const navigate = useNavigate();
 
   useEffect(() => {

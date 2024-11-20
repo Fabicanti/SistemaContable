@@ -56,7 +56,6 @@ export const useMovements = () => {
             AlertModal("Se registro exitosamente", "", "success");
             fetchget()
             clean()
-            console.log(asientos);
         }else{
             const data = await response.json();
             console.log(data);
