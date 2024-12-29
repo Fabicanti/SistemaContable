@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from '../../hooks/useForm'
 
 const initialForm = {
@@ -97,31 +97,10 @@ export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
                         />
                     </div>
                 </div>
-                {/* } */}
-
-                {/* {openToggle &&
-                <div className="group-data">
-                    <div className="form-data">
-                        <label htmlFor="" className='label-input'>Saldo Inicial</label>
-                        <InputNumber
-                            placeholder='Ingrese saldo...'
-                            name="saldo"
-                            value={saldo}
-                            onValueChange={onInputChange}
-                            minFractionDigits={2}
-                            maxFractionDigits={2}
-                            mode="currency"
-                            currency="ARS"
-                            locale="es-AR"
-                        />
-                    </div>
-                </div>
-                } */}
 
             </div>
             <hr />
 
-            {/* Botones para Limpiar y Crear cuenta */}
             <div className="create-buttons">
                 <div className="toggle-container">
                     <input type="checkbox" id="toggle" className="toggle-checkbox" onClick={onOpenToggle} />

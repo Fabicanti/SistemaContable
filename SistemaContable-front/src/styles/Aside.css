@@ -68,7 +68,7 @@
 
 .links-aside li:hover{
     background: rgba(255, 255, 255, 0.514);
-    transform: scale(1.03);
+    /* transform: scale(1.01); */
 }
 
 .links-aside li .elem-link {
@@ -144,25 +144,6 @@
     .side-bar .logo-aside .text-logo {
       display: none; /* Ocultar el nombre del logo en pantallas pequeñas */
     }
-
-    /* .side-bar .links-aside li{
-        justify-content: start;
-    } */
-
-    /* .side-bar .links-aside h4, 
-    .side-bar .links-aside li .elem-link {
-        display: none;
-    }
-
-    .side-bar.open .links-aside h4,
-    .side-bar.open .links-aside li .elem-link,
-    .side-bar.open .roles {
-        display: flex; 
-    }
-
-    .side-bar .links-aside li .elem-link div{
-        display: block;
-    } */
 
     .links-aside h4{
         text-align: start;

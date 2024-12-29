@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserProvider";
-import logo from "../../assets/icono-sistema.png";
-import avatarUsuario from "../../assets/avatars/admin-4.png"
-import userUsuario from "../../assets/avatars/usuario.png"
-import "../../styles/Head.css";
-import { AsideToggle } from "./AsideToggle";
+import logo from "@assets/icono-sistema.png";
+import avatarUsuario from "@assets/avatars/admin-4.png"
+import userUsuario from "@assets/avatars/usuario.png"
+import "@styles/Head.css";
+import { AsideToggle } from "./Aside/AsideToggle";
 
 export const Head = ({ login = false, logout }) => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export const Head = ({ login = false, logout }) => {
                 className="dropdown-toggle" 
                 id="dropdownMenuButton" 
                 data-bs-toggle="dropdown"
-                aria-expanded="false" 
+                aria-expanded="false"
                 style={ {width: "50px", height: "50px", cursor: "pointer"} } />
               <ul className="dropdown-menu">
                 <li><a className="dropdown-item" onClick={() => logout()}>Cerrar Sesión</a></li>

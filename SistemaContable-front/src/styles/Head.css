@@ -53,8 +53,8 @@
     text-decoration: none;
     outline: none;
     border: none;
-    border-radius: 6px;
-    transition: all .5s;
+    border-radius: 5px;
+    transition: all .3s;
     margin: 0 10px;
 }
 
@@ -76,17 +76,12 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.log-button:hover {
-    transform: scale(1.05);
-}
-
 .log-button.in {
     background-color: transparent;
 }
 
 .log-button:hover{
     background-color: var(--color-gradiant_2-h);
-    font-weight: bold;
 }
 
 /* Estilos para pantallas pequeñas */

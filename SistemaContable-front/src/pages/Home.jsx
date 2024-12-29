@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Head } from "../components/Semantic/Head";
 import { Dashboard } from "./Dashboard";
-import { Aside } from "../components/Semantic/Aside";
+import { Aside } from "../components/Semantic/Aside/Aside";
 import { AlertModal } from "../utils/AlertModal";
 import "../styles/Home.css";
 import { Footer } from "../components/Semantic/Footer";
