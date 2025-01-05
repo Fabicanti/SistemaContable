@@ -28,12 +28,16 @@ const obtenerIdCuenta = (nombreCuenta, tableAccount) => {
     return cuenta ? cuenta.id : null; // Devuelve el ID o null si no encuentra la cuenta
 };
 
+const obtenerNombreCuentas = (tableAccount) => {
+    return tableAccount.filter( cuenta => cuenta.recibeSaldo ).map(cuenta => cuenta.nombre);
+}
+
 let counter = 0;
 
 export const MovementsAdd = ({ 
     roles, 
     fetchget, 
-    dataNamesAccount, 
+    // dataNamesAccount, 
     handleAddAsientos, 
     dataAllAccount, 
     countAsiento
@@ -48,19 +52,26 @@ export const MovementsAdd = ({
     const { handleAddAccount } = useAccount()
 
     // Nombres para el autocompletado.
-    const { state: nameAccountsState, fetch: fetchNameAccounts } = dataNamesAccount();
+    // const { state: nameAccountsState, fetch: fetchNameAccounts } = dataNamesAccount();
+
     // const { allAccountState: allAccount, fetchAllAccount: fetchAccountsGet} = dataAllAccount();
-    const { state: allAccountState, fetch: fetchAllAccount }= dataAllAccount();
-    const { data, isLoading } = nameAccountsState;
+    const { accounts: allAccountState, fetchGetAccounts: fetchAllAccount, isLoading }= dataAllAccount ;
+    // const { data, isLoading } = nameAccountsState;
     const [nombresCuentas, setNombresCuentas] = useState([]);
 
     const [openAddAccount, setOpenAddAccount] = useState(false)
 
+    // useEffect(() => {
+    //     if (data && !isLoading) {
+    //         setNombresCuentas(data);
+    //     }
+    // }, [data, isLoading]);
+
     useEffect(() => {
-        if (data && !isLoading) {
-            setNombresCuentas(data);
-        }
-    }, [data, isLoading]);
+        
+        setNombresCuentas(obtenerNombreCuentas(allAccountState));
+
+    }, [allAccountState]);
 
     const buscarNombre = (event) => {
         const query = event.query.toLowerCase();
@@ -116,14 +127,14 @@ export const MovementsAdd = ({
     const onSumbit = (event) => {
         event.preventDefault();
 
-        const { data } = allAccountState;
+        // const { data } = allAccountState;
 
         const movimientosPreparados = dataMovements.map(mov => {
             // Saco el nombre de la cuenta y el id (Para el Backend)
             const { cuenta, id, ...resto } = mov;
             return {
                 ...resto,
-                cuentaId: obtenerIdCuenta(cuenta.trim(), data), // Agrego cuentaId en lugar de cuenta
+                cuentaId: obtenerIdCuenta(cuenta.trim(), allAccountState), // Agrego cuentaId en lugar de cuenta
             };
         });
 

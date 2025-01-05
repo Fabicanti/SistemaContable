@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react'
 import { MovementsModal } from './MovementsModal'
 
-export const MovementsMenu = ({ roles, fetchGet, dataNamesAccount, handleAddAsientos, dataAllAccount, countAsiento }) => {
+export const MovementsMenu = ({ 
+  roles, 
+  fetchGet, 
+  // dataNamesAccount, 
+  handleAddAsientos, 
+  dataAllAccount, 
+  countAsiento 
+}) => {
 
   return (
     <div className='mov-menu'>
@@ -10,7 +17,7 @@ export const MovementsMenu = ({ roles, fetchGet, dataNamesAccount, handleAddAsie
         <MovementsModal
           roles={roles}
           fetchGet={fetchGet}
-          dataNamesAccount={dataNamesAccount}
+          // dataNamesAccount={dataNamesAccount}
           handleAddAsientos={handleAddAsientos}
           dataAllAccount={dataAllAccount}
           countAsiento={countAsiento}

@@ -16,6 +16,11 @@ const fechaFilter  = () => {
     }
 };
 
+const formatFecha = (timestamp) => {
+    const date = new Date(timestamp + (24 * 60 * 60 * 1000));
+    return date.toLocaleDateString('es-ES');
+};
+
 export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloadPDFAsientos, dataAllUsers }) => {
     
     const { data , isLoading } = dataAllAsientos;
@@ -23,8 +28,8 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloa
     const [dataTable, setDataTable] = useState([])
 
     const [expandedRows, setExpandedRows] = useState(null);
-    const { state: allAccountState, fetch: fetchAllAccount } = dataAllAccount();
-    const { data: accounts } = allAccountState;
+    const { accounts: allAccountState, fetchGetAccounts: fetchAllAccount, isLoading: loadingAccount } = dataAllAccount;
+    // const { data: accounts } = allAccountState;
 
     const { formState, onInputChange, setFormState } = useForm(fechaFilter);
     const { desde, hasta } = formState;
@@ -53,13 +58,16 @@ export const MovementsTable = ({ dataAllAsientos, roles, dataAllAccount, downloa
         
     }, [data, isLoading, users]);
 
-    const formatFecha = (timestamp) => {
-        const date = new Date(timestamp + (24 * 60 * 60 * 1000));
-        return date.toLocaleDateString('es-ES');
-    };
+    useEffect(() => {
+    }, [allAccountState]);
+
+    // const formatFecha = (timestamp) => {
+    //     const date = new Date(timestamp + (24 * 60 * 60 * 1000));
+    //     return date.toLocaleDateString('es-ES');
+    // };
 
     const findByAccountId = (cuentaId) => {
-        let data = accounts.find((element) => element.id === cuentaId);
+        let data = allAccountState.find((element) => element.id === cuentaId);
         return data ? data.nombre : "Cuenta desconocida";
     };
 

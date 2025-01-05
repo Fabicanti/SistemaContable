@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import { loginReducer } from "../reducer/loginReducer"
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserProvider";
+import { useAccounts } from "../context/AccountProvider";
 
 const initialLogin = JSON.parse(sessionStorage.getItem('login')) || {
   isAuth: false,
@@ -10,8 +11,11 @@ const initialLogin = JSON.parse(sessionStorage.getItem('login')) || {
 
 export const useAuth = () => {
   const [login, dispatch] = useReducer(loginReducer, initialLogin);
-  const { setUser } = useUser();
   const navigate = useNavigate();
+
+  // Contexts.
+  const { setUser } = useUser();
+  const { fetchGetAccounts } = useAccounts();
 
   const handleLogin = (user) => {
     dispatch({
@@ -23,6 +27,7 @@ export const useAuth = () => {
       user
     }));
     setUser(user);
+    fetchGetAccounts();
     navigate("/");
   };
 
@@ -33,6 +38,7 @@ export const useAuth = () => {
     setUser(null);
     navigate('/login');
     sessionStorage.removeItem('login');
+    localStorage.removeItem('accounts');
   };
 
   return {

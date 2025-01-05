@@ -4,21 +4,22 @@ import { MovementsMenu } from '../components/Movements/MovementsMenu'
 import { useUser } from '../context/UserProvider';
 import { useMovements } from '../hooks/useMovements';
 import "../styles/Movements.css"
+import { useAccounts } from '../context/AccountProvider';
 
 export const Movements = () => {
 
-    const { user } = useUser()
+    const { accounts, fetchGetAccounts, isLoading } = useAccounts();
+    const { user } = useUser();
 
-    const { 
-        dataAllAccount, 
-        dataNameAccounts, 
+    const {
+        // dataNameAccounts, 
         handleAddAsientos, 
         dataAllAsientos, 
         downloadPDFAsientos, 
         dataAllUsers } = useMovements();
 
     const { state: allAsientosState, fetch: fetchAllAsientos } = dataAllAsientos();
-    
+
     useEffect(() => {
         document.title = "Asientos y Movimientos";
     }, []);
@@ -28,16 +29,16 @@ export const Movements = () => {
             <MovementsMenu 
                 roles={user?.roleId}
                 fetchGet={fetchAllAsientos} 
-                dataNamesAccount={dataNameAccounts}
+                // dataNamesAccount={dataNameAccounts}
                 handleAddAsientos={handleAddAsientos}
                 dataAllAsientos={dataAllAsientos}
-                dataAllAccount={dataAllAccount}
+                dataAllAccount={{ accounts, fetchGetAccounts, isLoading }}
                 countAsiento={allAsientosState}
             />
             <MovementsTable
                 dataAllAsientos={allAsientosState}
                 roles={user?.roleId}
-                dataAllAccount={dataAllAccount}
+                dataAllAccount={{ accounts, fetchGetAccounts, isLoading }}
                 downloadPDFAsientos={downloadPDFAsientos}
                 dataAllUsers={dataAllUsers}
             />

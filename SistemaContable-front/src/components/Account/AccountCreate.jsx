@@ -12,13 +12,13 @@ const initialForm = {
 export const AccountCreate = ({ addAccount, fetchtable, accountTable }) => {
 
     const [openToggle, setOpenToggle] = useState(false);
-    const { data: accounts } = accountTable;
+    // const { data: accounts } = accountTable;
 
     const { formState, setFormState, onInputChange } = useForm(initialForm);
     const { nombre, saldo, tipoCuentaId, cuentaPadreId } = formState;
     
     const findByAccountCode = (codigoCuenta) => {
-        const data = accounts.find( element => element.codigoCuenta === codigoCuenta );
+        const data = accountTable.find( element => element.codigoCuenta === codigoCuenta );
         return data ? data.id : null;
     }
 

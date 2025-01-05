@@ -13,12 +13,12 @@ const columnNames = [
 ];
 
 const sizeIcon = 36;
-export const AccountTable = ({ datas, fetchGet, onDelete, roles, rows = 4}) => {
+export const AccountTable = ({ datas, fetchGet, onDelete, roles, rows = 4, isLoading}) => {
 
     const [globalFilter, setGlobalFilter] = useState(null);
 
-    const { data, isLoading, errors } = datas;
-    const dataAccount = data?.map( element => ({
+    // const { data, isLoading, errors } = datas;
+    const dataAccount = datas?.map( element => ({
         ...element,
         recibeSaldo: element.recibeSaldo ? "SI" : "NO"
     }) )
@@ -60,7 +60,7 @@ export const AccountTable = ({ datas, fetchGet, onDelete, roles, rows = 4}) => {
 
             {isLoading
                 ? <div>Cargando..</div>
-                : (data.length === 0
+                : (datas.length === 0
                     ? <div className="alert alert-light" role="alert">
                         Sin datos de Cuentas
                     </div>

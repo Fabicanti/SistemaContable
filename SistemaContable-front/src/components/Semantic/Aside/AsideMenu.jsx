@@ -56,7 +56,7 @@ export const AsideMenu = () => {
             
             <h4>Sueldos</h4>
             <li>
-                <Link to="/employeers" className='elem-link'>
+                <Link to="/employees" className='elem-link'>
                     <IoPeopleOutline  size={sizeIcon} color={colorIcon}/>
                     <div>Empleados</div>
                 </Link>

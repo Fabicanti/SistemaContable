@@ -51,7 +51,7 @@ export const MovementsModal = ({ roles, fetchGet, dataNamesAccount, handleAddAsi
                                     fetchget={fetchGet} 
                                     roles={roles}
                                     dataAllAccount={dataAllAccount}
-                                    dataNamesAccount={dataNamesAccount}
+                                    // dataNamesAccount={dataNamesAccount}
                                     handleAddAsientos={handleAddAsientos}
                                     countAsiento={countAsiento}
                                 />

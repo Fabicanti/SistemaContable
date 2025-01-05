@@ -223,7 +223,7 @@
 @media screen and (max-width: 768px) {
     .containerLogin {
         grid-template-columns: 1fr;
-        margin: 2em 1em;
+        margin: 2em auto;
         padding: 2rem;
     }
 
