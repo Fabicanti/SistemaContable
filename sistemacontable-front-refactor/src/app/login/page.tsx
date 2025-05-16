@@ -1,8 +1,16 @@
+import { Metadata } from "next";
+import LoginForm from "./ui/login-form";
+import LoginView from "./ui/login-view";
 
-import React from 'react'
+export const metadata: Metadata = {
+  title: "Iniciar sesión",
+};
 
 export default function LoginPage() {
   return (
-    <div>LoginPage</div>
+    <div className="w-full min-h-screen flex">
+      <LoginForm />
+      <LoginView />
+    </div>
   )
 }

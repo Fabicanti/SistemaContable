@@ -1,12 +1,10 @@
 
+import React from 'react'
+import Image from 'next/image'
 import Navbar from '@/components/semantic/navbar'
 import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import React from 'react'
 
-type Props = {}
-
-export default function HomePage({ }: Props) {
+export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-theme-gradient">
       <Navbar />
