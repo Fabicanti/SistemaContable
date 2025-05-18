@@ -20,8 +20,8 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        violet: "text-secondary text-base font-semibold bg-violet-500 hover:bg-violet-400 dark:bg-violet-700 dark:hover:bg-violet-600",
-        pink: "text-secondary text-lg font-normal bg-pink-600 hover:bg-pink-500 dark:bg-pink-800 dark:hover:bg-pink-700",
+        violet: "text-white text-sm font-semibold bg-violet-600 hover:bg-violet-500 dark:bg-violet-900 dark:hover:bg-violet-800",
+        pink: "text-white text-sm font-semibold bg-pink-600 hover:bg-pink-500 dark:bg-fuchsia-900 dark:hover:bg-fuchsia-800",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

@@ -17,7 +17,7 @@ export default function HomePage() {
             Organiza asientos, controla usuarios, maneja cuentas y mucho más con una plataforma pensada para vos.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Button >Empezar ahora</Button>
+            <Button variant={'pink'} >Empezar ahora</Button>
             <Button variant="outline">Ver documentación</Button>
           </div>
         </section>

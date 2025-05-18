@@ -10,7 +10,7 @@ export default function Navbar() {
   const router = useRouter();
 
   return (
-    <header className="py-4 px-6 bg-background backdrop-blur-md shadow-md z-50">
+    <header className="py-4 px-6 bg-background dark:bg-gray-900 backdrop-blur-md shadow-md z-50">
       <div className="max-w-6xl mx-auto flex sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2">
           <GradientIcon Icon={BadgeDollarSign} fromColorHex="7f22fe" toColorHex="ff6900" size={24} />
@@ -29,6 +29,7 @@ export default function Navbar() {
           </Button>
           <Button
             type="button"
+            variant={"violet"}
             className="hidden sm:inline-flex"
             onClick={() => router.push('/register')}
           >
