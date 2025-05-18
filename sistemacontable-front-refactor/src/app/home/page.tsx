@@ -1,5 +1,4 @@
 
-import React from 'react'
 import Image from 'next/image'
 import Navbar from '@/components/semantic/navbar'
 import { Button } from '@/components/ui/button'

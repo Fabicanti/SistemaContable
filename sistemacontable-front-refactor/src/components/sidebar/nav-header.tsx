@@ -1,11 +1,8 @@
 
-import React from 'react'
-import { SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar'
 import { BadgeDollarSign } from 'lucide-react'
 
-type Props = {}
-
-export default function NavHeader({ }: Props) {
+export default function NavHeader() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>

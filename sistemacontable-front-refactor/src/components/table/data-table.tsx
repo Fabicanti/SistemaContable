@@ -1,0 +1,305 @@
+"use client"
+
+import { useState } from "react"
+
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
+  getPaginationRowModel,
+} from "@tanstack/react-table"
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Payment } from "./payment.data"
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
+import { createGlobalFilter } from "./utils/columns-utils"
+
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  filterableColumns?: string[]
+}
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  filterableColumns = ["name", "category"],
+}: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  )
+  const [currentStatus, setCurrentStatus] = useState('all')
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
+  const [globalFilter, setGlobalFilter] = useState<string>("")
+
+  const hasRowSelection = Object.keys(rowSelection).length > 0
+
+  const table = useReactTable({
+    data,
+    columns,
+    getPaginationRowModel: getPaginationRowModel(),
+    getCoreRowModel: getCoreRowModel(),
+    // onSortingChange: setSorting // sirve para actualizar el estado de la tabla
+    // getSortedRowModel: getSortedRowModel() // es una función que devuelve el modelo de fila ordenada
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    globalFilterFn: createGlobalFilter(filterableColumns),
+
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+      globalFilter
+    },
+  })
+
+  return (
+    <div>
+      <div className="flex items-center justify-between py-4 gap-3">
+        <Input
+          placeholder="Filter anything..."
+          // value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={globalFilter ?? ""}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          className="max-w-sm"
+        />
+
+        {/* <Select
+          value={currentStatus}
+          onValueChange={(value) => {
+
+            if (value === "all") {
+              setCurrentStatus(value)
+              table.getColumn("status")?.setFilterValue(undefined)
+              return;
+            }
+
+            setCurrentStatus(value)
+            table.getColumn("status")?.setFilterValue(value)
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Status - All" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Status</SelectLabel>
+              <SelectItem value={"all"}>All</SelectItem>
+              <SelectItem value={"pending"}>Pending</SelectItem>
+              <SelectItem value={"success"}>Success</SelectItem>
+              <SelectItem value={"failed"}>Failed</SelectItem>
+              <SelectItem value={"processing"}>Processing</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select> */}
+
+        {
+          hasRowSelection && (
+            <Button
+              variant={"destructive"}
+              onClick={() => {
+                const ids = table.getSelectedRowModel().rows.map((row) => {
+                  return (row.original as Payment).clientName
+                })
+                console.log(ids)
+              }}
+            >
+              Delete
+            </Button>
+          )
+        }
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columnas
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter(
+                (column) => column.getCanHide()
+              )
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    </TableHead>
+                  )
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No hay resultados
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+
+        <div className="space-x-2 py-4 mx-2 flex justify-between items-center">
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} de{" "}
+            {table.getFilteredRowModel().rows.length} filas(s) seleccionadas.
+          </div>
+
+
+          <div className="flex items-center justify-end gap-4">
+            <div className="hidden md:block">
+              <Select
+                onValueChange={(value) => {
+                  // Esto lo transforma a number
+                  table.setPageSize(+value)
+                }}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filas por páginas" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Filas por páginas</SelectLabel>
+                    <SelectItem value="5">5</SelectItem>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size={"sm"}
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+                title="Ir al principio"
+              >
+                <ChevronsLeft />
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                title="Anterior"
+              >
+                <ChevronLeft />
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                title="Siguiente"
+              >
+                <ChevronRight />
+              </Button>
+
+              <Button
+                variant="outline"
+                size={"sm"}
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+                title="Ir al final"
+              >
+                <ChevronsRight />
+              </Button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  )
+}
