@@ -1,21 +1,18 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
-import { ColumnDef, FilterFn, Row, SortDirection } from "@tanstack/react-table"
-import { ChevronDownIcon, ChevronUpIcon, MoreHorizontal } from "lucide-react"
+import { ColumnDef, FilterFn, Row } from "@tanstack/react-table"
+import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
-import { toast } from "sonner"
-import { Payment } from "../payment.data"
-import { sortableHeader } from "../utils/columns-utils"
+import { Payment } from "@/components/table/payment.data"
+import { sortableHeader } from "@/components/table/utils/columns-utils"
+import Content from "../ui/content"
 
 const myCustomFilterFn: FilterFn<Payment> = (row: Row<Payment>, columnId: string, filterValue: string, addMeta: (meta: any) => void) => {
   filterValue = filterValue.toLowerCase()
@@ -90,8 +87,6 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: "email",
     header: sortableHeader("Email"),
-    // filterFn: myCustomFilterFn,
-    // filterFn: "includesString",
   },
   {
     id: "actions",
@@ -107,18 +102,7 @@ export const columns: ColumnDef<Payment>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => {
-                navigator.clipboard.writeText(payment.id);
-                toast("Payment ID copied to clipboard");
-              }}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <Content row={payment}/>
           </DropdownMenuContent>
         </DropdownMenu>
       )

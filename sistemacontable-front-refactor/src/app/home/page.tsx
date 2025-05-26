@@ -27,6 +27,7 @@ export default function HomePage() {
             alt=""
             height={300}
             width={400}
+            priority
           />
         </div>
       </main>

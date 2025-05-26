@@ -19,9 +19,9 @@ export default function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => onSubmit(data))}
-          className="px-10 py-13 max-md:px-7 max-md:py-10 rounded-3xl shadow-2xl w-md xl:w-[600px] max-md:w-[350px]  bg-background dark:bg-gray-900 space-y-3"
+          className="px-10 py-13 max-md:px-7 max-md:py-10 rounded-3xl shadow-2xl w-md xl:w-[600px] max-md:w-[350px] bg-background dark:bg-gray-900 space-y-3"
         >
-          <h1 className='text-3xl mb-4 font-semibold text-center bg-theme-gradient bg-clip-text text-transparent'>
+          <h1 className='text-3xl mb-4 font-semibold text-center bg-gradient-to-tr from-violet-600 via-pink-600 to-orange-500 bg-clip-text text-transparent dark:text-fuchsia-700'>
             Sistema contable
           </h1>
           <p className='text-gray-500 text-sm'>Accedé con tus credenciales para gestionar asientos, movimientos, cuentas y liquidaciones.</p>

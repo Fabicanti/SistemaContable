@@ -30,7 +30,7 @@ export default function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.firstName} />
-                <AvatarFallback className="rounded-lg">{(user.firstName + " " + user.lastName).split(" ").map((item) => (item[0])).join('')}</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{(user.firstName + " " + user.lastName).split(" ").map((item) => (item[0]?.toUpperCase())).join('')}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.firstName}</span>

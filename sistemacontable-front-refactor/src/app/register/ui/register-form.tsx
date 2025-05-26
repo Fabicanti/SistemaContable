@@ -2,28 +2,27 @@
 
 import { Button } from '@/components/ui/button';
 import { FloatingLabelInput } from '@/components/ui/floating-label-input';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import useRegister from '@/hooks/use-register';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { useCreateUser } from '@/hooks/use-users';
 import React from 'react'
 
 type InputsId = {
-  id: 'firstName' | 'lastName' | 'email' | 'password' | 'username';
+  id: 'nombre' | 'apellido' | 'email' | 'password' | 'username';
   label: string
   type: string
   personal: boolean
 }
 
 const inputsRegister: InputsId[] = [
-  { id: 'firstName', label: 'Nombre', type: 'text', personal: true },
-  { id: 'lastName', label: 'Apellido', type: 'text', personal: true },
+  { id: 'nombre', label: 'Nombre', type: 'text', personal: true },
+  { id: 'apellido', label: 'Apellido', type: 'text', personal: true },
   { id: 'email', label: 'Email', type: 'email', personal: true },
   { id: 'username', label: 'Nombre de usuario', type: 'text', personal: false },
   { id: 'password', label: 'Contraseña', type: 'password', personal: false },
 ]
 
 export default function RegisterForm() {
-  const { form, onSubmit } = useRegister();
+  const { form, onSubmit } = useCreateUser();
 
   return (
     <div className={`w-full flex items-center justify-center lg:w-1/2 bg-transparent`} >

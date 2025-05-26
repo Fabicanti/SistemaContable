@@ -13,6 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
   getPaginationRowModel,
+  Row,
 } from "@tanstack/react-table"
 
 import {
@@ -98,8 +99,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center justify-between py-4 gap-3">
         <Input
-          placeholder="Filter anything..."
-          // value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Buscar..."
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
@@ -203,7 +203,7 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row: Row<TData>) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}

@@ -22,6 +22,7 @@ export function sortableHeader(label: string) {
       onClick={() =>
         column.toggleSorting(column.getIsSorted() === "asc")
       }
+      className="bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold"
     >
       {label}
       <SortedIcon isSorted={column.getIsSorted()} />
