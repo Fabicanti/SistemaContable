@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 import {
   ColumnDef,
@@ -45,18 +45,21 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Payment } from "./payment.data"
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from "lucide-react"
 import { createGlobalFilter } from "./utils/columns-utils"
+import { Checkbox } from "../ui/checkbox"
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  actions?: (rowData: TData) => React.ReactNode;
   filterableColumns?: string[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  actions,
   filterableColumns = ["name", "category"],
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -70,9 +73,66 @@ export function DataTable<TData, TValue>({
 
   const hasRowSelection = Object.keys(rowSelection).length > 0
 
+  const allColumns = useMemo<ColumnDef<TData, TValue>[]>(
+    () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      } as ColumnDef<TData, TValue>,
+      ...columns,
+      ...(actions
+        ? 
+        [
+          {
+            id: "actions",
+            enableHiding: false,
+            enableSorting: false,
+            cell: ({ row }: { row: Row<TData> }) => {
+              const rowData = row.original;
+              return (
+                <div className="flex items-center justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {actions(rowData)}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              );
+            },
+          } as ColumnDef<TData, TValue>,
+        ]
+        : []),
+    ],
+    [columns, actions]
+  );
+
   const table = useReactTable({
     data,
-    columns,
+    columns: allColumns,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     // onSortingChange: setSorting // sirve para actualizar el estado de la tabla

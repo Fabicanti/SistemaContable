@@ -34,6 +34,7 @@ from "lucide-react"
 import NavHeader from "./nav-header"
 import NavUser from "./nav-user"
 import { NavMain } from "./nav-main"
+import { useUserStore } from "@/stores/user-store"
 
 const data = {
   user: {
@@ -85,6 +86,8 @@ const data = {
 }
 
 export function AppSidebar() {
+  const { user } = useUserStore();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -96,7 +99,7 @@ export function AppSidebar() {
         <NavMain items={data.sueldos} title="Liquidación de sueldos" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={{ firstName: "Enzo", lastName: "Villanueva", email: "enzo@gmail.com", avatar: "" }} />
+        {user && <NavUser user={user} />}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

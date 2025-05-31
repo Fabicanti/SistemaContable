@@ -1,10 +1,13 @@
 "use client"
 
-import { getUsersAll } from "@/core/actions/user.action";
+import { createUser, deleteUser, getUsersAll, updateUser } from "@/core/actions/user.action";
 import { CreateUser, createUserSchema, UpdateUser, updateUserSchema } from "@/schemas/user.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const STALE_TIME = 1000 * 60 * 60;
 
@@ -25,7 +28,9 @@ export function useUsersAll(){
 /**
  * Función para crear un usuario.
  */
-export function useCreateUser() {
+export function useCreateUser(login: boolean = false) {
+  const router = useRouter();
+
   const form = useForm<CreateUser>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
@@ -38,11 +43,24 @@ export function useCreateUser() {
     }
   });
 
+  const createUserMutation = useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      toast.success("¡Registro exitoso!");
+      if (login) router.push('/login');
+    },
+    onError: (error: AxiosError) => {
+      toast.error("Error al registrar el usuario.");
+      console.log(error);
+    }
+  });
+
   const onSubmit = (user: CreateUser) => {
-    console.log(user)
+    console.log(user);
+    createUserMutation.mutate(user);
   }
 
-  return { form, onSubmit }
+  return { form, isLoadingCreateUser: createUserMutation.isPending, onSubmit }
 }
 
 
@@ -50,10 +68,12 @@ export function useCreateUser() {
  * Función para editar o actualizar un usuario.
  * @param user es el usuario actual.
  */
-export function useEditUser(user: User){
+export function useUpdateUser(user: User){
+  const queryClient = useQueryClient();
   const form = useForm<UpdateUser>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
+      id: user.id,
       nombre: user.nombre,
       apellido: user.apellido,
       email: user.email,
@@ -62,9 +82,45 @@ export function useEditUser(user: User){
     }
   });
 
+
+  const updateUserMutation = useMutation({
+    mutationFn: updateUser,
+    onSuccess: () => {
+      toast.success("Se actualizó el usuario!");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error: AxiosError) => {
+      toast.error("Error al actualizar el usuario.");
+      console.log(error);
+    }
+  });
+
+
   const onSubmit = (updateUser: UpdateUser) => {
-    console.log(updateUser);
+    updateUserMutation.mutate(updateUser);
   }
 
-  return { form, onSubmit }
+  return { form, isLoadingUpdateUser: updateUserMutation.isPending , onSubmit }
+}
+
+export function useDeleteUser(){
+  const queryClient = useQueryClient();
+
+  const deleteUserMutation = useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      toast.success("¡Se ha eliminado con exito!");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error: AxiosError) => {
+      toast.error("No se pudo eliminar el usuario");
+      console.log(error);
+    }
+  })
+
+  const onSubmit = (user: User) => {
+    deleteUserMutation.mutate(user);
+  }
+
+  return { isLoadingDeleteUser: deleteUserMutation.isPending, onSubmit } 
 }

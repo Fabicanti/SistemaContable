@@ -3,6 +3,10 @@ import React from 'react'
 import { DashboardCards } from './(ui)/dash-cards'
 import { DashboardChart } from './(ui)/dash-chart'
 
+export const metadata = {
+  title: "SSAA II - Dashboard",
+  description: "Resumen general del sistema",
+}
 
 export default function DashboardPage() {
   return (

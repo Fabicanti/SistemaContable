@@ -22,7 +22,7 @@ export function sortableHeader(label: string) {
       onClick={() =>
         column.toggleSorting(column.getIsSorted() === "asc")
       }
-      className="bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold"
+      className="bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold px-0"
     >
       {label}
       <SortedIcon isSorted={column.getIsSorted()} />
@@ -44,7 +44,6 @@ export const myCustomFilterFn: FilterFn<any> = (
 }
 
 // Filtro para el input de data-table.tsx
-
 export function createGlobalFilter<T>(filterableColumns?: string[]): FilterFn<T> {
   return (row: Row<T>, columnId: string, filterValue: string) => {
     const normalizedParts = filterValue
@@ -55,10 +54,15 @@ export function createGlobalFilter<T>(filterableColumns?: string[]): FilterFn<T>
       .map(part => part.replace(/\s+/g, ''))
 
     // Función para normalizar y unir campos de la fila
-    const rowText = (filterableColumns?.length ? filterableColumns : Object.keys(row.original as object)).map(col => {
-      const value = row.getValue(col)
+    const rowText = (filterableColumns?.length ? filterableColumns : Object.keys(row.original as any)).map(col => {
+      const value = row.original[col as keyof T]
       return String(value ?? "").toLowerCase().replace(/\s+/g, '')
     }).join(" ")
+
+    // const rowText = (filterableColumns?.length ? filterableColumns : Object.keys(row.original as object)).map(col => {
+    //   const value = row.getValue(col)
+    //   return String(value ?? "").toLowerCase().replace(/\s+/g, '')
+    // }).join(" ")
 
     // Devuelve true si todas las partes del filtro están presentes en el texto de la fila
     return normalizedParts.every(part => rowText.includes(part))

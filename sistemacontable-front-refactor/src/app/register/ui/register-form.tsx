@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { FloatingLabelInput } from '@/components/ui/floating-label-input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useCreateUser } from '@/hooks/use-users';
+import { LoaderCircle } from 'lucide-react';
 import React from 'react'
 
 type InputsId = {
@@ -22,7 +23,7 @@ const inputsRegister: InputsId[] = [
 ]
 
 export default function RegisterForm() {
-  const { form, onSubmit } = useCreateUser();
+  const { form, isLoadingCreateUser, onSubmit } = useCreateUser(true);
 
   return (
     <div className={`w-full flex items-center justify-center lg:w-1/2 bg-transparent`} >
@@ -102,7 +103,17 @@ export default function RegisterForm() {
               type="submit" 
               size={'lg'} 
               variant={'violet'}
-            >Registrarse
+              disabled={isLoadingCreateUser}
+            >
+              {isLoadingCreateUser ?
+                (<div className="flex items-center justify-center">
+                  <LoaderCircle className="mr-2 animate-spin" />
+                  Registrando...
+                </div>) :
+                (
+                  "Registrarse"
+                )
+              }
             </Button>
           </div>
         </form>

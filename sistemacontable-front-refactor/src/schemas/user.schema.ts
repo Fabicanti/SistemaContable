@@ -32,6 +32,7 @@ export const createUserSchema = userSchema.extend({
 
 
 export const updateUserSchema = userSchema.extend({
+  id: z.number(),
   password: z.string().optional().nullable()
 });
 

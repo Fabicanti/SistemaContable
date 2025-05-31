@@ -5,20 +5,12 @@ import { ChevronsUpDown, Settings, LogOut } from 'lucide-react'
 import { GradientIcon } from '../shared/gradient-icon'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import useAuth from '@/hooks/use-auth'
 
-export default function NavUser({
-  user,
-}: {
-  user: {
-    firstName: string
-    lastName: string
-    email: string
-    avatar: string
-  }
-}) {
+export default function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
+  const { onLogout } = useAuth();
   
-
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -29,11 +21,11 @@ export default function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.firstName} />
-                <AvatarFallback className="rounded-lg">{(user.firstName + " " + user.lastName).split(" ").map((item) => (item[0]?.toUpperCase())).join('')}</AvatarFallback>
+                <AvatarImage src={undefined} alt={user.nombre} />
+                <AvatarFallback className="rounded-lg">{(user.nombre + " " + user.apellido).split(" ").map((item) => (item[0]?.toUpperCase())).join('')}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.firstName}</span>
+                <span className="truncate font-semibold">{user.nombre}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -48,11 +40,11 @@ export default function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.firstName} />
-                  <AvatarFallback className="rounded-lg">{(user.firstName + " " + user.lastName).split(" ").map((item) => (item[0])).join('')}</AvatarFallback>
+                  <AvatarImage src={undefined} alt={user.nombre} />
+                  <AvatarFallback className="rounded-lg">{(user.nombre + " " + user.apellido).split(" ").map((item) => (item[0])).join('')}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.firstName}</span>
+                  <span className="truncate font-semibold">{user.nombre}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
@@ -66,7 +58,7 @@ export default function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => console.log("Cerrando sesión...")}>
+              <DropdownMenuItem onClick={onLogout}>
                 <GradientIcon Icon={LogOut} fromColorHex="fb2c36 " toColorHex="fb2c36 " size={24} />
                 <p className="text-destructive">Cerrar sesión</p>
               </DropdownMenuItem>

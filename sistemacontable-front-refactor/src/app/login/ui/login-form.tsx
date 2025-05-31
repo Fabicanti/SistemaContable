@@ -4,16 +4,17 @@ import { Button } from "@/components/ui/button";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import useAuth from "@/hooks/use-auth";
+import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const inputsLogin: { id: "username" | "password"; label: string; type: string }[] = [
-  { id: "username", label: "Nombre de usuario", type: "text"},
+  { id: "username", label: "Nombre de usuario", type: "text" },
   { id: "password", label: "Contraseña", type: "password" },
 ]
 
 export default function LoginForm() {
   const router = useRouter();
-  const { form, onSubmit } = useAuth();
+  const { form, isLoading, onSubmit } = useAuth();
   return (
     <div className={`w-full flex items-center justify-center lg:w-1/2 bg-transparent`}>
       <Form {...form}>
@@ -43,12 +44,22 @@ export default function LoginForm() {
           ))}
 
           <div className="mt-4 flex max-xl:flex-col">
-            <Button 
+            <Button
               className="w-full xl:w-1/2 text-lg"
-              type="submit" 
-              size={"lg"} 
-              variant={"pink"} 
-            >Iniciar sesión
+              type="submit"
+              size={"lg"}
+              variant={"pink"}
+              disabled={isLoading}
+            >
+              {isLoading ?
+                (<div className='flex items-center justify-center'>
+                  <LoaderCircle className="mr-2 animate-spin" />
+                  Iniciando sesión...
+                </div>) :
+                (
+                  "Iniciar Sesión"
+                )
+              }
             </Button>
             <div className="flex justify-end items-center w-1/2 max-xl:justify-center max-xl:w-full max-xl:mt-3">
               <p className="text-sm text-gray-400 mr-1">¿No tienes cuenta?</p>
