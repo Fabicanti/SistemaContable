@@ -30,35 +30,10 @@ public class UsuarioController {
     }
 
     /**
-     * Se modifícó el tipo de retorno de la función de Map<String, String> a <?>
-     * @param usuarioDTO
-     * @return Retorna los datos de usuario logeado si la autenticación es exitosa, caso contrario será un estado HTTP 403: Unauthorized.
-     */
-    @PostMapping("/login")
-    public ResponseEntity<?> autenticarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        boolean isAuthenticated = false;
-        Map<String, String> response = new HashMap<>();
-        try {
-            isAuthenticated = usuarioService.autenticarUsuario(usuarioDTO.getUsername(), usuarioDTO.getPassword());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        if (isAuthenticated){
-            UsuarioDTO usuario = usuarioService.buscarUsuario(usuarioDTO);
-            response.put("message", "Usuario autenticado exitosamente");
-            return ResponseEntity.ok(usuario);
-        }else {
-            response.put("error", "Credenciales incorrectas");
-            return ResponseEntity.status(401).body(response);
-        }
-    }
-    
-    /**
      * Elimina un usuario.
      * @param usuarioDTO es el objeto del usuario que quiero eliminar.
      * @return el estado 204 si el usuario se eliminó, caso contrario será el estado 404: NOT FOUND.
      */
-    @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping("/eliminar")
     public ResponseEntity<?> eliminarUsuario(@RequestBody UsuarioDTO usuarioDTO){
         usuarioService.eliminarUsuario(usuarioDTO);

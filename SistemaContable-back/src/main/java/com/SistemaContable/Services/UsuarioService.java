@@ -5,6 +5,7 @@ import com.SistemaContable.Entities.*;
 import com.SistemaContable.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,13 +22,19 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private RolRepository rolRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Método para registrar un nuevo usuario
     public Usuario registrarUsuario(UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
+
+        if (usuarioRepository.existsByUsername(usuarioDTO.getUsername())) {
+            throw new RuntimeException("Username ya existe");
+        }
         // Mapeo de DTO a entidad
         Usuario usuario = new Usuario();
         usuario.setUsername(usuarioDTO.getUsername());
-        usuario.setPasswordHash(encryptPassword(usuarioDTO.getPassword()));
+        usuario.setPasswordHash(passwordEncoder.encode(usuarioDTO.getPassword()));
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setApellido(usuarioDTO.getApellido());
         usuario.setEmail(usuarioDTO.getEmail());
@@ -56,16 +63,6 @@ public class UsuarioService {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar el usuario.");
             }
         }
-    }
-
-    // Método para autenticar un usuario
-    public boolean autenticarUsuario(String username, String password) throws NoSuchAlgorithmException {
-        Optional<Usuario> usuario = usuarioRepository.findByUsername(username);
-        if (usuario.isPresent()) {
-            String passwordHash = encryptPassword(password);
-            return passwordHash.equals(usuario.get().getPasswordHash());
-        }
-        return false;
     }
 
     // Obtener todos los usuarios

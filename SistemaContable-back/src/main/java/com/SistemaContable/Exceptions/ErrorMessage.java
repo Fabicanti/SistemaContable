@@ -1,13 +1,18 @@
 package com.SistemaContable.Exceptions;
 
+
+import java.time.LocalDateTime;
+
 public class ErrorMessage {
+    private final String timestamp;
     private String message;
     private int status;
-    private String details;
-    public ErrorMessage(String message, int status, String details) {
+    private String path;
+    public ErrorMessage( String message, int status, String details) {
+        this.timestamp = LocalDateTime.now().toString();
         this.message = message;
         this.status = status;
-        this.details = details;
+        this.path = details;
     }
 
     public String getMessage() {
@@ -27,10 +32,10 @@ public class ErrorMessage {
     }
 
     public String getDetails() {
-        return details;
+        return path;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
-    }
+    public void setDetails(String details) { this.path = details; }
+
+    public String getTimestamp() { return timestamp; }
 }

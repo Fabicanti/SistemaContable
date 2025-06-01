@@ -16,4 +16,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Long countAsientosUsuarios(@Param("usuarioId") Long usuarioId);
 
     Optional<Usuario> findByUsername(String username);
+
+    boolean existsByUsername(String username);
+
+    @Query("SELECT u FROM Usuario u JOIN FETCH u.role WHERE u.username = :username")
+    Optional<Usuario> findByUsernameWithRole(@Param("username") String username);
+
+    @Query("SELECT u FROM Usuario u JOIN FETCH u.role WHERE u.id = :id")
+    Optional<Usuario> findByIdWithRole(@Param("id") Long id);
 }
