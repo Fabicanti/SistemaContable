@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -38,30 +44,31 @@ public class SecurityConfig {
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
+
     /**
-     * Configura la cadena de filtros de seguridad para la aplicación Spring Security.
-     * Define reglas de autorización para diferentes endpoints, deshabilita CSRF,
-     * incluye un filtro de autenticación basado en JWT y configura el manejo de
-     * excepciones relacionadas con el acceso y la autenticación.
+     * Configura la cadena de filtros de seguridad de la aplicación especificando reglas de autorización,
+     * filtros de seguridad y mecanismos de gestión de excepciones.
      *
-     * @param http el objeto HttpSecurity utilizado para personalizar la configuración de seguridad de la aplicación.
-     * @return un bean de SecurityFilterChain que representa la configuración de seguridad personalizada de la aplicación.
-     * @throws Exception si ocurre algún error al construir la configuración de seguridad.
+     * @param http la instancia de HttpSecurity para configurar ajustes de seguridad como CORS, CSRF,
+     * autorización de solicitudes, cadenas de filtros, encabezados y gestión de excepciones.
+     * @return una instancia de SecurityFilterChain que representa la cadena de filtros configurada.
+     * @throws Exception si se produce un error durante el proceso de configuración de seguridad.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/roles/admin").hasRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/roles/user").hasRole(USER)
-
-
+                        // Usuarios.
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasAnyRole(USER, ADMIN)
                         .requestMatchers("/api/usuarios/registrar").permitAll()
                         .requestMatchers("/api/usuarios/eliminar").hasRole(ADMIN)
                         .requestMatchers("/api/usuarios/modificar").hasRole(ADMIN)
+                        // Cuentas.
+                        .requestMatchers(HttpMethod.GET, "/api/cuentas").hasAnyRole(USER, ADMIN)
+                        .requestMatchers("/api/cuentas/**").hasRole(ADMIN)
 
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
@@ -90,5 +97,25 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    /**
+     * Configura una política CORS (Intercambio de Recursos entre Orígenes) para la aplicación.
+     * Define los orígenes permitidos, los métodos HTTP, los encabezados y las credenciales requeridas
+     * para solicitudes entre orígenes a puntos finales específicos.
+     *
+     * @return un bean CorsConfigurationSource inicializado con la política CORS configurada.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", config);
+        return source;
     }
 }

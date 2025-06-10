@@ -11,6 +11,7 @@ import java.util.Map;
 import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Entities.Usuario;
 import com.SistemaContable.Services.UsuarioService;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -50,7 +51,7 @@ public class UsuarioController {
         if (usuarioService.actualizarUsuario(usuarioDTO)) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
     }
 
     @GetMapping

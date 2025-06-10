@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { FloatingLabelInput } from '@/components/ui/floating-label-input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
 import { useCreateUser } from '@/hooks/use-users';
 import { LoaderCircle } from 'lucide-react';
 import React from 'react'
@@ -41,9 +42,11 @@ export default function RegisterForm() {
               tus operaciones de forma organizada y segura.
             </p>
           </div>
-          <p className="text-violet-600 dark:text-violet-800 font-bold text-lg mb-1">
-            Datos personales
-          </p>
+          <div className="flex items-center gap-4">
+            <Separator className="flex-1" />
+            <span className="text-sm font-semibold text-violet-600 dark:text-violet-800">Datos personales</span>
+            <Separator className="flex-1" />
+          </div>
           {
             inputsRegister.map((input) => (
               (input.personal &&
@@ -63,9 +66,11 @@ export default function RegisterForm() {
               )
             ))
           }
-          <p className="text-violet-600 dark:text-violet-800 font-bold text-lg mb-1">
-            Autenticación
-          </p>
+          <div className="flex items-center gap-4">
+            <Separator className="flex-1" />
+            <span className="text-sm font-semibold text-violet-600 dark:text-violet-800">Autenticación</span>
+            <Separator className="flex-1" />
+          </div>
           {
             inputsRegister.map((input) => (
               (!input.personal &&
@@ -98,10 +103,10 @@ export default function RegisterForm() {
               </Button>
 
             </div>
-            <Button 
-              className="w-full xl:w-1/2 text-lg" 
-              type="submit" 
-              size={'lg'} 
+            <Button
+              className="w-full xl:w-1/2 text-lg"
+              type="submit"
+              size={'lg'}
               variant={'violet'}
               disabled={isLoadingCreateUser}
             >

@@ -13,6 +13,8 @@ import { copyToClipboard } from '@/lib/utils';
 import UserUpdate from './dialog/user-update';
 import { useUserStore } from '@/stores/user-store';
 import UserDelete from './dialog/user-delete';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { User } from '@/interfaces/user-interface';
 
 export default function UsersTable() {
   const { user: myUser } = useUserStore();
@@ -42,13 +44,22 @@ export default function UsersTable() {
   }
 
   return (
-    <div className="p-2">
-      <DataTable
-        columns={usersColumns}
-        data={dataUsers}
-        filterableColumns={['nombre', 'apellido', 'email']}
-        actions={actions}
-      />
+    <div>
+      <Card className="mb-6">
+        <CardHeader className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+          <CardTitle>Gestión de cuentas</CardTitle>
+          <CardDescription>Tabla con información y acciones para cada cuenta.</CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
+          <DataTable
+            columns={usersColumns}
+            data={dataUsers}
+            filterableColumns={['nombre', 'apellido', 'email']}
+            actions={actions}
+          />
+        </CardContent>
+      </Card>
 
       {updateUser &&
         <UserUpdate

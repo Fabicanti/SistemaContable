@@ -18,10 +18,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
    * @param credentials son los datos para autenticarte.
    */
   login: async (credentials) => {
-    try {
-      set({ isLoading: true })
+    set({ isLoading: true })
 
-      const { data } = await api.post<User>('/api/usuarios/login', credentials);
+    try {
+      const { data } = await api.post<User>('/api/auth/login', credentials);
       useUserStore.getState().setUser(data);
 
       toast.success('¡Sesión iniciada!')
@@ -36,14 +36,25 @@ export const useAuthStore = create<AuthStore>((set) => ({
    * Función para cerrar sesión.
    */
   logout: async () => {
+    set({ isLoading: true })
+
     try {
-      // await api.post('/auth/logout')
+      await api.post('/api/auth/logout')
       useUserStore.getState().clearUser();
+
+      // Se persiste la configuración "Theme".
+      const preservedValue = localStorage.getItem("theme");
       localStorage.clear();
+
+      if (preservedValue !== null) {
+        localStorage.setItem("theme", preservedValue);
+      }
 
       toast.success('Sesión cerrada')
     } catch (err) {
       toast.error('Error al cerrar sesión')
+    } finally {
+      set({ isLoading: false })
     }
   },
 }))

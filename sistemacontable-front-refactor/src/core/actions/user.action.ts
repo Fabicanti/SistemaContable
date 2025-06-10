@@ -1,5 +1,6 @@
 import { CreateUser, UpdateUser } from "@/schemas/user.schema";
 import { api } from "../api/axios";
+import { User } from "@/interfaces/user-interface";
 
 const URL_BASE = "api/usuarios";
 

@@ -3,6 +3,11 @@ import Image from 'next/image'
 import Navbar from '@/components/semantic/navbar'
 import { Button } from '@/components/ui/button'
 
+export const metadata = {
+  title: "SSAA II",
+  description: "Página de SSAA II",
+}
+
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-theme-gradient">

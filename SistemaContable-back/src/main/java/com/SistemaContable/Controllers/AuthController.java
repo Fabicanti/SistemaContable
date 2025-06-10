@@ -2,7 +2,9 @@ package com.SistemaContable.Controllers;
 
 import com.SistemaContable.Authentication.util.JwtUtils;
 import com.SistemaContable.DTO.LoginDTO;
+import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Services.Auth.UserDetailsImpl;
+import com.SistemaContable.Services.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthenticationManager authManager;
+    private final UsuarioService usuarioService;
 
-    public AuthController(AuthenticationManager authManager) {
+    public AuthController(AuthenticationManager authManager, UsuarioService usuarioService) {
         this.authManager = authManager;
+        this.usuarioService = usuarioService;
     }
 
     /**
@@ -33,7 +37,7 @@ public class AuthController {
      * El token también se añade a la respuesta como una cookie segura.
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO request, HttpServletResponse response) {
+    public ResponseEntity<UsuarioDTO> login(@RequestBody LoginDTO request, HttpServletResponse response) {
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
@@ -42,7 +46,9 @@ public class AuthController {
 
         String token = JwtUtils.generateToken(userId);
         JwtUtils.addTokenToCookie(response, token);
-        return ResponseEntity.ok(token);
+
+        UsuarioDTO usuario = usuarioService.buscarUsuarioById(userId);
+        return ResponseEntity.ok(usuario);
     }
 
     /**

@@ -62,6 +62,8 @@ public class UsuarioService {
             }catch (Exception e){
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar el usuario.");
             }
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado.");
         }
     }
 
@@ -100,12 +102,13 @@ public class UsuarioService {
 
     /**
      * Busco el usuario por su username, reutilice en método 'mapToDTO'
-     * @param usuarioDTO es objeto que me envía el login
+     * @param userId es objeto que me envía el login
      * @return Todos los datos el usuario buscado.
      */
-    public UsuarioDTO buscarUsuario(UsuarioDTO usuarioDTO){
-        Optional<Usuario> usuario = usuarioRepository.findByUsername(usuarioDTO.getUsername());
-        return this.mapToDTO(usuario.get());
+    public UsuarioDTO buscarUsuarioById(Long userId){
+        return usuarioRepository.findById(userId).map(this::mapToDTO).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")
+        );
     }
 
     /**

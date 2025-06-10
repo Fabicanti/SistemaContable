@@ -1,12 +1,8 @@
 import { sortableHeader } from "@/components/table/utils/columns-utils";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { Copy, MoreHorizontal, Settings2, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "@/interfaces/user-interface";
 
 export const usersColumns: ColumnDef<User>[] = [
   {
@@ -38,10 +34,10 @@ export const usersColumns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const role = row.original.roleId;
       return (
-        <>
+        <div>
           {role === 2 ? <Badge variant="admin" className="text-xs">Administrador</Badge> :
             <Badge variant="default" className="text-xs">Usuario</Badge>}
-        </>
+        </div>
       );
     },
     enableHiding: false

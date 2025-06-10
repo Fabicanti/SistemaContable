@@ -1,6 +1,7 @@
 "use client"
 
 import { createUser, deleteUser, getUsersAll, updateUser } from "@/core/actions/user.action";
+import { User } from "@/interfaces/user-interface";
 import { CreateUser, createUserSchema, UpdateUser, updateUserSchema } from "@/schemas/user.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,13 +10,11 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const STALE_TIME = 1000 * 60 * 60;
-
 /**
  * Función para obtener todos los usuarios.
  * @returns retorna todos los usuarios y un loading.
  */
-export function useUsersAll(){
+export function useUsersAll() {
   const { data, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: getUsersAll
@@ -29,6 +28,7 @@ export function useUsersAll(){
  * Función para crear un usuario.
  */
 export function useCreateUser(login: boolean = false) {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const form = useForm<CreateUser>({
@@ -47,7 +47,11 @@ export function useCreateUser(login: boolean = false) {
     mutationFn: createUser,
     onSuccess: () => {
       toast.success("¡Registro exitoso!");
-      if (login) router.push('/login');
+      if (login)
+        router.push('/login')
+      else
+        queryClient.invalidateQueries({ queryKey: ["users"] });
+      ;
     },
     onError: (error: AxiosError) => {
       toast.error("Error al registrar el usuario.");
@@ -56,7 +60,6 @@ export function useCreateUser(login: boolean = false) {
   });
 
   const onSubmit = (user: CreateUser) => {
-    console.log(user);
     createUserMutation.mutate(user);
   }
 
@@ -68,7 +71,7 @@ export function useCreateUser(login: boolean = false) {
  * Función para editar o actualizar un usuario.
  * @param user es el usuario actual.
  */
-export function useUpdateUser(user: User){
+export function useUpdateUser(user: User) {
   const queryClient = useQueryClient();
   const form = useForm<UpdateUser>({
     resolver: zodResolver(updateUserSchema),
@@ -100,10 +103,14 @@ export function useUpdateUser(user: User){
     updateUserMutation.mutate(updateUser);
   }
 
-  return { form, isLoadingUpdateUser: updateUserMutation.isPending , onSubmit }
+  return { form, isLoadingUpdateUser: updateUserMutation.isPending, onSubmit }
 }
 
-export function useDeleteUser(){
+
+/**
+ * Función para eliminar un usuario.
+ */
+export function useDeleteUser() {
   const queryClient = useQueryClient();
 
   const deleteUserMutation = useMutation({
@@ -122,5 +129,5 @@ export function useDeleteUser(){
     deleteUserMutation.mutate(user);
   }
 
-  return { isLoadingDeleteUser: deleteUserMutation.isPending, onSubmit } 
+  return { isLoadingDeleteUser: deleteUserMutation.isPending, onSubmit }
 }

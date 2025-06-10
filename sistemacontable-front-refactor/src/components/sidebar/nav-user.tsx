@@ -6,6 +6,7 @@ import { GradientIcon } from '../shared/gradient-icon'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import useAuth from '@/hooks/use-auth'
+import { User } from '@/interfaces/user-interface'
 
 export default function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();

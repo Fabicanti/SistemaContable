@@ -3,31 +3,16 @@
 import { 
   Sidebar, 
   SidebarContent, 
-  SidebarFooter, 
-  SidebarGroup, 
-  SidebarGroupContent, 
-  SidebarGroupLabel, 
-  SidebarHeader, 
-  SidebarMenu, 
-  SidebarMenuButton, 
-  SidebarMenuItem, 
+  SidebarFooter,
+  SidebarHeader,
   SidebarRail } 
 from "@/components/ui/sidebar"
-import { 
-  AudioWaveform, 
-  BadgeDollarSign, 
+import {
   Banknote, 
   BookText, 
-  Building2, 
-  Calendar, 
-  Command, 
-  FileSpreadsheet, 
-  GalleryVerticalEnd, 
-  Home, 
-  Inbox, 
-  LayoutDashboard, 
-  Search, 
-  Settings, 
+  Building2,
+  FileSpreadsheet,
+  LayoutDashboard,
   Users, 
   Wallet } 
 from "lucide-react"
@@ -55,7 +40,7 @@ const data = {
     },
     {
       name: "Cuentas",
-      url: "#",
+      url: "/dashboard/accounts",
       icon: Wallet,
     },
   ],

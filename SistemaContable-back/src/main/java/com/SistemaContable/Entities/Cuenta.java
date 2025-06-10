@@ -17,7 +17,7 @@ public class Cuenta {
     @Column(nullable = false)
     private String nombre;
 
-    @Column(name = "codigo_cuenta", nullable = false)
+    @Column(name = "codigo_cuenta", nullable = false, unique = true)
     private String codigoCuenta;
 
     @Column(name = "saldo", nullable = false)

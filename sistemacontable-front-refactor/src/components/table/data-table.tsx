@@ -14,6 +14,7 @@ import {
   useReactTable,
   getPaginationRowModel,
   Row,
+  getFacetedRowModel,
 } from "@tanstack/react-table"
 
 import {
@@ -48,18 +49,23 @@ import { Payment } from "./payment.data"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from "lucide-react"
 import { createGlobalFilter } from "./utils/columns-utils"
 import { Checkbox } from "../ui/checkbox"
+import { capitalize } from "@/lib/utils"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  showToggleColumns?: boolean;
   actions?: (rowData: TData) => React.ReactNode;
+  columnLabels?: Record<string, string>;
   filterableColumns?: string[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  showToggleColumns = true,
   actions,
+  columnLabels = {},
   filterableColumns = ["name", "category"],
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -99,7 +105,7 @@ export function DataTable<TData, TValue>({
       } as ColumnDef<TData, TValue>,
       ...columns,
       ...(actions
-        ? 
+        ?
         [
           {
             id: "actions",
@@ -143,6 +149,7 @@ export function DataTable<TData, TValue>({
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    getFacetedRowModel: getFacetedRowModel(),
     onRowSelectionChange: setRowSelection,
     globalFilterFn: createGlobalFilter(filterableColumns),
 
@@ -155,6 +162,19 @@ export function DataTable<TData, TValue>({
     },
   })
 
+  const columnUniqueValues = useMemo(() => {
+    if (!columnLabels || !columnLabels.column) return []
+
+    const set = new Set<string>()
+
+    data.forEach((row: any) => {
+      const value = row[columnLabels.column]
+      if (value) set.add(value)
+    })
+
+    return Array.from(set).map(val => capitalize(val))
+  }, [data, columnLabels.column]);
+
   return (
     <div>
       <div className="flex items-center justify-between py-4 gap-3">
@@ -165,36 +185,38 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
-        {/* <Select
+        {columnLabels && Object.keys(columnLabels).length > 0 && <Select
           value={currentStatus}
           onValueChange={(value) => {
 
             if (value === "all") {
               setCurrentStatus(value)
-              table.getColumn("status")?.setFilterValue(undefined)
+              table.getColumn(columnLabels.column)?.setFilterValue(undefined)
               return;
             }
 
             setCurrentStatus(value)
-            table.getColumn("status")?.setFilterValue(value)
+            table.getColumn(columnLabels.column)?.setFilterValue(value)
           }}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Status - All" />
+            <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Status</SelectLabel>
-              <SelectItem value={"all"}>All</SelectItem>
-              <SelectItem value={"pending"}>Pending</SelectItem>
-              <SelectItem value={"success"}>Success</SelectItem>
-              <SelectItem value={"failed"}>Failed</SelectItem>
-              <SelectItem value={"processing"}>Processing</SelectItem>
+              <SelectLabel>{columnLabels.label}</SelectLabel>
+              <SelectItem value="all">Todos</SelectItem>
+              {columnUniqueValues.map((value) => (
+                <SelectItem key={value} value={value} className="font-semibold">
+                  {value}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
-        </Select> */}
+        </Select>
+        }
 
-        {
+        {/* {
           hasRowSelection && (
             <Button
               variant={"destructive"}
@@ -208,36 +230,38 @@ export function DataTable<TData, TValue>({
               Delete
             </Button>
           )
-        }
+        } */}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columnas
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter(
-                (column) => column.getCanHide()
-              )
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
+        {showToggleColumns &&
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Columnas
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter(
+                  (column) => column.getCanHide()
                 )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        }
       </div>
 
 
@@ -286,7 +310,7 @@ export function DataTable<TData, TValue>({
         </Table>
 
         <div className="space-x-2 py-4 mx-2 flex justify-between items-center">
-          <div className="flex-1 text-sm text-muted-foreground">
+          <div className="flex-1 hidden md:flex text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} de{" "}
             {table.getFilteredRowModel().rows.length} filas(s) seleccionadas.
           </div>

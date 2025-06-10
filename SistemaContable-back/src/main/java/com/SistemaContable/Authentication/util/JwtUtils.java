@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtUtils {
     private static final SecretKey SECRET_KEY = TokenJWTConfig.SECRET_KEY;
     private static final long EXPIRATION_MS = (1000 * 60) * (60 * 24); // 1 día
-    private static final String COOKIE_NAME = "jwt_token";
+    private static final String COOKIE_NAME = "access_token";
 
     /**
      * Genera un token JWT para el ID de usuario especificado.
