@@ -4,14 +4,38 @@ import { DataTable } from "@/components/table/data-table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { accountsColumns } from "../table/accounts-columns";
 import { useAccountStore } from "@/stores/account-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Account } from "@/interfaces/account-interface";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Copy, Trash2 } from "lucide-react";
+import { copyToClipboard } from "@/lib/utils";
+import { useUserStore } from "@/stores/user-store";
+import AccountDelete from "./dialog/account-delete";
 
 export default function AccountsTable() {
+  const { user } = useUserStore();
+  const [deleteAccount, setDeleteAccount] = useState<Account | null>(null);
   const { accounts, fetchAccounts } = useAccountStore();
 
   useEffect(() => {
     fetchAccounts();
   }, []);
+
+
+  const actions = (account: Account) => {
+    return (
+      <div>
+        <DropdownMenuItem onClick={() => copyToClipboard(String(account.codigoCuenta))}>
+          <Copy /> Copiar Código
+        </DropdownMenuItem>
+        {user?.roleId === 2 &&
+          <DropdownMenuItem onClick={() => setDeleteAccount(account)} variant="destructive">
+            <Trash2 /> Eliminar cuenta
+          </DropdownMenuItem>
+        }
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -31,8 +55,17 @@ export default function AccountsTable() {
               label: "Tipos de cuentas"
             }}
             filterableColumns={['codigoCuenta', 'nombre', 'tipoCuentaNombre']}
+            actions={actions}
           />
         </CardContent>
+
+        {deleteAccount &&
+          <AccountDelete
+            account={deleteAccount}
+            onClose={() => setDeleteAccount(null)}
+          />
+        }
+
       </Card>
     </div>
   )

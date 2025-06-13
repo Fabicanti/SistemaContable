@@ -28,3 +28,12 @@ export const createAccount = async (account: AccountCreate) => {
   const { data } = await api.post(`${URL_BASE}/crear`, account);
   return data;
 }
+
+/**
+ * Endpoint para eliminar una cuenta contable. Método DELETE.
+ * @param id es el ID de la cuenta a eliminar.
+ */
+export const deleteAccount = async (id: number) => {
+  const { data } = await api.delete(`${URL_BASE}/${id}`);
+  return data;
+}

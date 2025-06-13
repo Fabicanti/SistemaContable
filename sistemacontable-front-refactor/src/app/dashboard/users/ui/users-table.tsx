@@ -47,14 +47,14 @@ export default function UsersTable() {
     <div>
       <Card className="mb-6">
         <CardHeader className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-          <CardTitle>Gestión de cuentas</CardTitle>
-          <CardDescription>Tabla con información y acciones para cada cuenta.</CardDescription>
+          <CardTitle>Gestión de usuarios</CardTitle>
+          <CardDescription>Tabla con información y acciones para cada usuarios.</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
           <DataTable
             columns={usersColumns}
-            data={dataUsers}
+            data={dataUsers.filter((user) => user.id !== myUser?.id)}
             filterableColumns={['nombre', 'apellido', 'email']}
             actions={actions}
           />

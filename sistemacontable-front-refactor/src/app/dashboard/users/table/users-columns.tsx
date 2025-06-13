@@ -16,7 +16,7 @@ export const usersColumns: ColumnDef<User>[] = [
       return (
         <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={undefined} alt={`${user.nombre} ${user.apellido}`} />
+            <AvatarImage src={user?.roleId === 2 ? '/avatar/admin.svg' : '/avatar/user.png'} alt={`${user.nombre} ${user.apellido}`} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
           <span>{user.nombre} {user.apellido}</span>

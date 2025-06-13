@@ -8,11 +8,11 @@ import {
   SidebarRail } 
 from "@/components/ui/sidebar"
 import {
-  Banknote, 
   BookText, 
   Building2,
   FileSpreadsheet,
   LayoutDashboard,
+  NotebookPen,
   Users, 
   Wallet } 
 from "lucide-react"
@@ -47,8 +47,8 @@ const data = {
   projects: [
     {
       name: "Asientos",
-      url: "#",
-      icon: Banknote,
+      url: "/dashboard/journal-entries",
+      icon: NotebookPen,
     },
     {
       name: "Libros",

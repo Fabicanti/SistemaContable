@@ -29,7 +29,7 @@ public class UsuarioService {
     public Usuario registrarUsuario(UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
 
         if (usuarioRepository.existsByUsername(usuarioDTO.getUsername())) {
-            throw new RuntimeException("Username ya existe");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El nombre de usuario ya existe.");
         }
         // Mapeo de DTO a entidad
         Usuario usuario = new Usuario();
@@ -40,14 +40,18 @@ public class UsuarioService {
         usuario.setEmail(usuarioDTO.getEmail());
 
         Rol rol = rolRepository.findById(usuarioDTO.getRoleId())
-                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Rol no encontrado"));
         usuario.setRole(rol); // Asignar el Rol al usuario
 
         // Guardar en la base de datos
-        Usuario nuevoUsuario = usuarioRepository.save(usuario);
-        mapToDTO(nuevoUsuario);
-        // Mapeo de la entidad guardada a DTO
-        return nuevoUsuario;
+        try {
+            Usuario nuevoUsuario = usuarioRepository.save(usuario);
+            mapToDTO(nuevoUsuario);
+            // Mapeo de la entidad guardada a DTO
+            return nuevoUsuario;
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al registrar el usuario.");
+        }
     }
 
     public void eliminarUsuario(UsuarioDTO usuarioDTO) {
@@ -133,7 +137,7 @@ public class UsuarioService {
             }
             if (! usuarioDTO.getRoleId().equals(usuario.get().getRole().getId())) {
                 Rol rol = rolRepository.findById(usuarioDTO.getRoleId())
-                        .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Rol no encontrado"));
                 usuario.get().setRole(rol);
             }
             usuarioRepository.save(usuario.get());

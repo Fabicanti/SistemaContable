@@ -1,6 +1,6 @@
 "use client"
 
-import { capitalize } from "@/lib/utils"
+import { capitalize, handleApiError } from "@/lib/utils"
 import { accountSchema, Account as AccountZod } from "@/schemas/account.schema"
 import { Account } from "@/interfaces/account-interface"
 import { useTheme } from "next-themes"
@@ -8,7 +8,7 @@ import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
-import { createAccount } from "@/core/actions/account.action"
+import { createAccount, deleteAccount } from "@/core/actions/account.action"
 import { toast } from "sonner"
 import { AxiosError } from "axios"
 import { useAccountStore } from "@/stores/account-store"
@@ -45,6 +45,10 @@ const darkColors = [
   "#ea580c", // dorado
 ]
 
+/**
+ * Función para generar datos de gráficos y configuración para cuentas según su tipo.
+ * @param accounts son las cuentas contables.
+ */
 export function useAccountsChartData(accounts: Account[]): ChartResult {
   const { resolvedTheme } = useTheme()
 
@@ -73,7 +77,9 @@ export function useAccountsChartData(accounts: Account[]): ChartResult {
   return result;
 }
 
-
+/**
+ * Función para crear una cuenta contable.
+ */
 export function useCreateAccount() {
   const { accounts, refetchAccounts } = useAccountStore();
   const form = useForm<AccountZod>({
@@ -93,9 +99,8 @@ export function useCreateAccount() {
       refetchAccounts();
       toast.success("Se ha creado una nueva cuenta.")
     },
-    onError: (error: AxiosError) => {
-      console.log(error);
-      toast.error("Error al crear la cuenta contable.")
+    onError: (error: AxiosError<ErrorMessage>) => {
+      handleApiError(error, "No se pudo crear la cuenta");
     }
   });
 
@@ -112,4 +117,28 @@ export function useCreateAccount() {
   };
 
   return { form, isLoadingCreateAccount: createAccountMutation.isPending, onSubmit, }
+}
+
+/**
+ * Función para eliminar una cuenta.
+ */
+export function useDeleteAccount() {
+  const { refetchAccounts } = useAccountStore();
+
+  const deleteAccountMutation = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: () => {
+      refetchAccounts();
+      toast.success("Cuenta eliminada");
+    },
+    onError: (error: AxiosError<ErrorMessage>) => {
+      handleApiError(error, "No se pudo eliminar la cuenta");
+    }
+  })
+
+  const onSubmit = (id: number) => {
+    deleteAccountMutation.mutate(id);
+  }
+
+  return { isLoadingDeleteAccount: deleteAccountMutation.isPending, onSubmit }
 }

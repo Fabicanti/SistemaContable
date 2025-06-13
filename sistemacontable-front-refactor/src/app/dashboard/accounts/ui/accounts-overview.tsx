@@ -98,13 +98,13 @@ export default function AccountsOverview() {
           label="Cuentas"
           size="md"
         />
+      </div>
         {createAccount && (
           <AccountCreate
             open={createAccount}
             onClose={() => setCreateAccount(false)}
           />
         )}
-      </div>
     </section>
   );
 }

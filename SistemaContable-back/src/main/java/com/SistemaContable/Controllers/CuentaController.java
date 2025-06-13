@@ -3,8 +3,10 @@ package com.SistemaContable.Controllers;
 import com.SistemaContable.DTO.CuentaDTO;
 import com.SistemaContable.Services.CuentaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class CuentaController {
             CuentaDTO cuentaNueva = cuentaService.crearCuenta(cuentaDTO);
             return ResponseEntity.ok(cuentaNueva);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error creating account: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al crear la cuenta.");
         }
     }
 

@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useUpdateUser } from "@/hooks/use-users";
+import { User } from "@/interfaces/user-interface";
 import { LoaderCircle } from "lucide-react";
 
 type InputsId = {
@@ -21,7 +22,6 @@ const inputsRegister: InputsId[] = [
   { id: 'apellido', label: 'Apellido', type: 'text', personal: true },
   { id: 'email', label: 'Email', type: 'email', personal: true },
   { id: 'username', label: 'Nombre de usuario', type: 'text', personal: false },
-  // { id: 'password', label: 'Contraseña', type: 'password', personal: false },
 ]
 
 const roleOptions = [

@@ -1,11 +1,11 @@
 
 import { AppSidebar } from '@/components/sidebar/app-sidebar'
 import { ModeToggle } from '@/components/theme-toggle';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { cookies } from 'next/headers'
 import React from 'react'
+import DynamicBreadcrumbs from './(ui)/dynamic-breadcrumbs';
 
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -20,19 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Menu principal
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <DynamicBreadcrumbs />
           </div>
           <div className="mr-4">
             <ModeToggle />

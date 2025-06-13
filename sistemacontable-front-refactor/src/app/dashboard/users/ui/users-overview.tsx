@@ -23,8 +23,8 @@ export default function UsersOverview() {
         <CardHeader className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={undefined} alt="Foto de perfil" />
-              <AvatarFallback>JP</AvatarFallback> {/* Iniciales si no hay imagen */}
+              <AvatarImage src={user?.roleId === 2 ? '/avatar/admin.svg' : '/avatar/user.png'}  alt="Foto de perfil" />
+              <AvatarFallback>{(user?.nombre + " " + user?.apellido).split(" ").map((item) => (item[0]?.toUpperCase())).join('')}</AvatarFallback>
             </Avatar>
             <div>
               <CardTitle>Empresa: SSAA II</CardTitle>

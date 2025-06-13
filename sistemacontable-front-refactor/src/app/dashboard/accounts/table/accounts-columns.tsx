@@ -21,7 +21,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
     header: sortableHeader("Recibe saldo"),
     cell: ({ row }) => {
       const recibeSaldo = row.original.recibeSaldo;
-      return <span>{ !recibeSaldo ? <X className="text-red-500 dark:text-red-800"/> : <Check  className="text-green-500 dark:text-green-700"/>}</span>;
+      return <span>{!recibeSaldo ? <X className="text-red-500 dark:text-red-800" /> : <Check className="text-green-500 dark:text-green-700" />}</span>;
     },
     enableHiding: false,
     enableSorting: true,

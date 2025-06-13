@@ -10,36 +10,37 @@ import {
   AlertDialogTitle, 
   AlertDialogTrigger 
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { useDeleteUser } from '@/hooks/use-users';
-import { User } from '@/interfaces/user-interface';
+import { Button } from '@/components/ui/button';
+
+import { useDeleteAccount } from '@/hooks/use-accounts';
+import { Account } from '@/interfaces/account-interface'
 import React from 'react'
 
 type Props = {
-  user: User;
+  account: Account;
   onClose: () => void;
 }
 
-export default function UserDelete({user, onClose}: Props) {
-  const { isLoadingDeleteUser, onSubmit } = useDeleteUser();
+export default function AccountDelete({ account, onClose }: Props) {
+  const { isLoadingDeleteAccount, onSubmit } = useDeleteAccount();
 
-  if (!user) return null;
+  if (!account) return null;
 
   return (
-    <AlertDialog open={!!user} onOpenChange={onClose}>
+    <AlertDialog open={!!account} onOpenChange={onClose}>
       <AlertDialogTrigger asChild>
         <Button variant="outline">Abrir Dialog</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>¿Eliminar este usuario?</AlertDialogTitle>
+          <AlertDialogTitle>¿Eliminar esta cuenta contable?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción no se puede deshacer. El usuario {user.nombre} {user.apellido} será eliminado permanentemente del sistema junto con toda su información asociada.
+            Esta acción es irreversible. La cuenta contable serán eliminada permanentemente del sistema.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>Cancelar</AlertDialogCancel>
-          <AlertDialogAction className="bg-destructive hover:bg-destructive/90 text-white" onClick={() => onSubmit(user)}>Eliminar</AlertDialogAction>
+          <AlertDialogAction className="bg-destructive hover:bg-destructive/90 text-white" onClick={() => onSubmit(account.id)}>Eliminar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

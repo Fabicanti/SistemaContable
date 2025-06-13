@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { clsx, type ClassValue } from "clsx"
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge"
@@ -26,4 +27,36 @@ export function formatDateToSpanish(date: Date): string {
 export function capitalize(str: string): string {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
+export function handleApiError(error: AxiosError<ErrorMessage>, fallbackMessage = "Error inesperado"){
+  const data = error.response?.data;
+
+  if (data?.message && data?.status) {
+    switch (data.status) {
+      case 403:
+        toast.error("Acceso denegado", {
+          description: data.message,
+        });
+        break;
+      case 409:
+        toast.warning("Conflicto", {
+          description: data.message,
+        });
+        break;
+      case 500:
+        toast.error("Error del servidor", {
+          description: data.message,
+        });
+        break;
+      default:
+        toast.error("Error", {
+          description: data.message,
+        });
+    }
+  } else {
+    toast.error(fallbackMessage);
+  }
+
+  // console.error("API Error:", error);
 }

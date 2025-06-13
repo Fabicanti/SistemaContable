@@ -2,6 +2,7 @@
 
 import { createUser, deleteUser, getUsersAll, updateUser } from "@/core/actions/user.action";
 import { User } from "@/interfaces/user-interface";
+import { handleApiError } from "@/lib/utils";
 import { CreateUser, createUserSchema, UpdateUser, updateUserSchema } from "@/schemas/user.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -53,9 +54,8 @@ export function useCreateUser(login: boolean = false) {
         queryClient.invalidateQueries({ queryKey: ["users"] });
       ;
     },
-    onError: (error: AxiosError) => {
-      toast.error("Error al registrar el usuario.");
-      console.log(error);
+    onError: (error: AxiosError<ErrorMessage>) => {
+      handleApiError(error, "No se pudo registrar el usuario");
     }
   });
 
@@ -92,9 +92,8 @@ export function useUpdateUser(user: User) {
       toast.success("Se actualizó el usuario!");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
-    onError: (error: AxiosError) => {
-      toast.error("Error al actualizar el usuario.");
-      console.log(error);
+    onError: (error: AxiosError<ErrorMessage>) => {
+      handleApiError(error, "No se pudo actualizar el usuario");
     }
   });
 
@@ -119,9 +118,8 @@ export function useDeleteUser() {
       toast.success("¡Se ha eliminado con exito!");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
-    onError: (error: AxiosError) => {
-      toast.error("No se pudo eliminar el usuario");
-      console.log(error);
+    onError: (error: AxiosError<ErrorMessage>) => {
+      handleApiError(error, "No se pudo eliminar el usuario");
     }
   })
 
