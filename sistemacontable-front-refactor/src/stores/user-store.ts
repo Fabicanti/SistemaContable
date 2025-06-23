@@ -11,7 +11,7 @@ type UserStore = {
 
 export const useUserStore = create<UserStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null }),

@@ -1,16 +1,18 @@
 "use client";
 
-import { DataTable } from "@/components/table/data-table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { accountsColumns } from "../table/accounts-columns";
-import { useAccountStore } from "@/stores/account-store";
-import { useEffect, useState } from "react";
-import { Account } from "@/interfaces/account-interface";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Copy, Trash2 } from "lucide-react";
-import { copyToClipboard } from "@/lib/utils";
-import { useUserStore } from "@/stores/user-store";
-import AccountDelete from "./dialog/account-delete";
+import { Copy, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+import { DataTable } from '@/components/table/data-table';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Account } from '@/interfaces/account-interface';
+import { copyToClipboard } from '@/lib/utils';
+import { useAccountStore } from '@/stores/account-store';
+import { useUserStore } from '@/stores/user-store';
+
+import { accountsColumns } from '../table/accounts-columns';
+import AccountDelete from './dialog/account-delete';
 
 export default function AccountsTable() {
   const { user } = useUserStore();
@@ -19,7 +21,7 @@ export default function AccountsTable() {
 
   useEffect(() => {
     fetchAccounts();
-  }, []);
+  }, [fetchAccounts]);
 
 
   const actions = (account: Account) => {

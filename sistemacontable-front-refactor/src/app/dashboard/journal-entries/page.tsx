@@ -1,3 +1,5 @@
+import EntriesOverview from "./ui/entries-overview"
+import EntriesTabs from "./ui/entries-tabs"
 
 export const metadata = {
   title: "SSAA II - Asientos",
@@ -6,6 +8,9 @@ export const metadata = {
 
 export default function JournalEntriesPage() {
   return (
-    <div>JournalEntriesPage</div>
+    <div className="p-6">
+      <EntriesOverview />
+      <EntriesTabs />
+    </div>
   )
 }

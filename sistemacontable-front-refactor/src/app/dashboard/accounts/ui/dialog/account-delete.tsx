@@ -22,7 +22,7 @@ type Props = {
 }
 
 export default function AccountDelete({ account, onClose }: Props) {
-  const { isLoadingDeleteAccount, onSubmit } = useDeleteAccount();
+  const { onSubmit } = useDeleteAccount();
 
   if (!account) return null;
 

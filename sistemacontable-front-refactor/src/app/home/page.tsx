@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-theme-gradient">
       <Navbar />
-      <main className="flex-grow md:flex-grow flex items-center bg-background/40 px-6 md:px-10 mx-4 md:mx-40 my-10 md:my-20 rounded-xl gap-8">
+      <main className="flex-grow md:flex-grow flex justify-evenly items-center bg-background/40 px-6 md:px-10 mx-4 md:mx-40 my-10 md:my-20 rounded-xl gap-8">
         <section className="max-w-2xl text-center md:text-left">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Gestioná tu contabilidad con facilidad

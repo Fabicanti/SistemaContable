@@ -1,6 +1,7 @@
 package com.SistemaContable.Services;
 
 import com.SistemaContable.DTO.AsientoDTO;
+import com.SistemaContable.DTO.AsientoResponseDto;
 import com.SistemaContable.DTO.DetalleAsientoDTO;
 import com.SistemaContable.DTO.LibroMayorResponseDTO;
 import com.SistemaContable.Entities.Cuenta;
@@ -12,7 +13,10 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +27,7 @@ public class PdfGeneratorService {
     @Autowired
     private CuentaRepository cuentaRepository;
 
-    public byte[] generarPdfAsiento(List<AsientoDTO> asientos) throws IOException {
+    public byte[] generarPdfAsiento(List<AsientoResponseDto> asientos) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdf = new PdfDocument(writer);
@@ -40,13 +44,13 @@ public class PdfGeneratorService {
         table.addHeaderCell("Haber");
 
         // Recorrer cada asiento contable y sus detalles
-        for (AsientoDTO asiento : asientos) {
+        for (AsientoResponseDto asiento : asientos) {
             boolean firstRow = true; // Para poner la fecha y descripción solo en la primera fila
             for (DetalleAsientoDTO detalle : asiento.getDetalles()) {
                 // Obtener el nombre de la cuenta a partir del cuentaId
                 String nombreCuenta = cuentaRepository.findById(detalle.getCuentaId())
                         .map(Cuenta::getNombre)
-                        .orElse("Cuenta no encontrada");
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cuenta no encontrada"));
 
                 if (firstRow) {
                     table.addCell(new Cell().add(new Paragraph(asiento.getFecha().toString())));

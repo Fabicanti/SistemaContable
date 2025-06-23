@@ -1,8 +1,9 @@
 import { getAccountsAll } from "@/core/actions/account.action";
 import { Account } from "@/interfaces/account-interface"
-import { AxiosError } from "axios";
+import { handleApiError } from "@/lib/utils";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import axios from 'axios';
 
 type AccountStore = {
   accounts: Account[] | null;
@@ -22,7 +23,6 @@ export const useAccountStore = create<AccountStore>()(
 
       /**
        * Endpoint para obtener todas las cuentas.
-       * @returns retorna todas las cuentas registradas.
        */
       fetchAccounts: async () => {
         const { accounts } = get();
@@ -34,20 +34,31 @@ export const useAccountStore = create<AccountStore>()(
           const data = await getAccountsAll();
           set({ accounts: data, isLoadingAccounts: false });
 
-        } catch (error: AxiosError | any) {
-          console.error("Error fetching accounts:", error);
+        } catch (error: unknown) {
+          if (axios.isAxiosError<ErrorMessage>(error)) {
+            handleApiError(error, "No se pudo cargar los datos de las cuentas");
+          } else {
+            console.error("Error desconocido", error);
+          }
         } finally {
           set({ isLoadingAccounts: false });
         }
       },
 
+      /**
+       * Endpoint para actualizar o recargar las cuentas obtenidas.
+       */
       refetchAccounts: async () => {
         set({ isLoadingAccounts: true });
         try {
           const data = await getAccountsAll();
           set({ accounts: data, isLoadingAccounts: false });
-        } catch (error: AxiosError | any) {
-          console.error("Error refetching accounts:", error);
+        } catch (error: unknown) {
+          if (axios.isAxiosError<ErrorMessage>(error)) {
+            handleApiError(error, "No se pudo recargar los datos de las cuentas");
+          } else {
+            console.error("Error desconocido", error);
+          }
         } finally {
           set({ isLoadingAccounts: false });
         }

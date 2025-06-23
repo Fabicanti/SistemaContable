@@ -1,18 +1,18 @@
 package com.SistemaContable.Controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+
+import com.SistemaContable.DTO.AsientoFechaDto;
+import com.SistemaContable.DTO.AsientoResponseDto;
 import com.SistemaContable.Services.PdfGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.SistemaContable.DTO.AsientoDTO;
 import com.SistemaContable.Entities.AsientoContable;
 import com.SistemaContable.Services.AsientoContableService;
@@ -33,15 +33,15 @@ public class AsientoContableController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoAsiento);
     }
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<AsientoDTO>> listarAsientos() {
-        List<AsientoDTO> asientos = asientoContableService.obtenerTodosLosAsientos();
+    @PostMapping("/listar")
+    public ResponseEntity<List<AsientoResponseDto>> listarAsientos(@RequestBody AsientoFechaDto asientoFechaDto) {
+        List<AsientoResponseDto> asientos = asientoContableService.obtenerTodosLosAsientosEntreFechas(asientoFechaDto);
         return ResponseEntity.ok(asientos);
     }
 
-    @GetMapping("/pdf")
-    public ResponseEntity<?> obtenerAsientoPdf() throws IOException {
-        List<AsientoDTO> asientosContables = asientoContableService.obtenerTodosLosAsientos();
+    @PostMapping("/pdf")
+    public ResponseEntity<?> obtenerAsientoPdf(@RequestBody AsientoFechaDto asientoFechaDto) throws IOException {
+        List<AsientoResponseDto> asientosContables = asientoContableService.obtenerTodosLosAsientosEntreFechas(asientoFechaDto);
         byte[] pdfBytes = pdfGeneratorService.generarPdfAsiento(asientosContables);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

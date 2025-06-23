@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/cuentas").hasAnyRole(USER, ADMIN)
                         .requestMatchers("/api/cuentas/**").hasRole(ADMIN)
 
+                        .requestMatchers("/api/asientos/**").hasAnyRole(USER, ADMIN)
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)

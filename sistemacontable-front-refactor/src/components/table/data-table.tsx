@@ -1,31 +1,22 @@
 "use client"
 
-import { useMemo, useState } from "react"
-
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-  getPaginationRowModel,
-  Row,
-  getFacetedRowModel,
-} from "@tanstack/react-table"
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  MoreHorizontal
+} from 'lucide-react';
+import { useMemo, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -33,40 +24,58 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-
+  SelectValue
+} from '@/components/ui/select';
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow
+} from '@/components/ui/table';
+import { capitalize } from '@/lib/utils';
+import {
+  ColumnDef, 
+  ColumnFiltersState, 
+  flexRender, 
+  getCoreRowModel, 
+  getFacetedRowModel,
+  getFilteredRowModel, 
+  getPaginationRowModel, 
+  getSortedRowModel, 
+  Row, 
+  SortingState, 
+  useReactTable,
+  VisibilityState
+} from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Payment } from "./payment.data"
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from "lucide-react"
-import { createGlobalFilter } from "./utils/columns-utils"
-import { Checkbox } from "../ui/checkbox"
-import { capitalize } from "@/lib/utils"
+import { Checkbox } from '../ui/checkbox';
+import { createGlobalFilter } from './utils/columns-utils';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   showToggleColumns?: boolean;
+  showSearchInput?: boolean;
   actions?: (rowData: TData) => React.ReactNode;
-  columnLabels?: Record<string, string>;
-  filterableColumns?: string[]
+  columnLabels?: {
+    column: keyof TData;
+    label: string;
+  } | undefined;
+  filterableColumns?: string[];
+  messageEmpty?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   showToggleColumns = true,
+  showSearchInput = true,
   actions,
-  columnLabels = {},
+  columnLabels = undefined,
   filterableColumns = ["name", "category"],
+  messageEmpty = "Sin resultados"
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -77,7 +86,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState<string>("")
 
-  const hasRowSelection = Object.keys(rowSelection).length > 0
+  // const hasRowSelection = Object.keys(rowSelection).length > 0
 
   const allColumns = useMemo<ColumnDef<TData, TValue>[]>(
     () => [
@@ -163,27 +172,29 @@ export function DataTable<TData, TValue>({
   })
 
   const columnUniqueValues = useMemo(() => {
-    if (!columnLabels || !columnLabels.column) return []
+    if (!columnLabels?.column) return [];
 
-    const set = new Set<string>()
+    const set = new Set<string>();
 
-    data.forEach((row: any) => {
-      const value = row[columnLabels.column]
-      if (value) set.add(value)
-    })
+    data.forEach((row) => {
+      const value = row[columnLabels.column];
+      if (typeof value === 'string') {
+        set.add(value);
+      }
+    });
 
-    return Array.from(set).map(val => capitalize(val))
-  }, [data, columnLabels.column]);
+    return Array.from(set).map((val) => capitalize(val));
+  }, [data, columnLabels?.column]);
 
   return (
     <div>
-      <div className="flex items-center justify-between py-4 gap-3">
-        <Input
+      <div className={`${showSearchInput && columnLabels && showToggleColumns ? 'flex' : 'hidden'} items-center justify-between py-4 gap-3`}>
+        {showSearchInput && <Input
           placeholder="Buscar..."
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
-        />
+        />}
 
         {columnLabels && Object.keys(columnLabels).length > 0 && <Select
           value={currentStatus}
@@ -191,12 +202,12 @@ export function DataTable<TData, TValue>({
 
             if (value === "all") {
               setCurrentStatus(value)
-              table.getColumn(columnLabels.column)?.setFilterValue(undefined)
+              table.getColumn(columnLabels?.column as string)?.setFilterValue(undefined)
               return;
             }
 
             setCurrentStatus(value)
-            table.getColumn(columnLabels.column)?.setFilterValue(value)
+            table.getColumn(columnLabels?.column as string)?.setFilterValue(value)
           }}
         >
           <SelectTrigger className="w-[180px]">
@@ -215,22 +226,6 @@ export function DataTable<TData, TValue>({
           </SelectContent>
         </Select>
         }
-
-        {/* {
-          hasRowSelection && (
-            <Button
-              variant={"destructive"}
-              onClick={() => {
-                const ids = table.getSelectedRowModel().rows.map((row) => {
-                  return (row.original as Payment).clientName
-                })
-                console.log(ids)
-              }}
-            >
-              Delete
-            </Button>
-          )
-        } */}
 
         {showToggleColumns &&
           <DropdownMenu>
@@ -301,8 +296,8 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No hay resultados
+                <TableCell colSpan={allColumns.length} className="h-24 text-center">
+                  {messageEmpty}
                 </TableCell>
               </TableRow>
             )}

@@ -27,7 +27,7 @@ export default function AccountsOverview() {
 
   useEffect(() => {
     fetchAccounts();
-  }, []);
+  }, [fetchAccounts]);
 
   const { chartData, chartConfig } = useAccountsChartData(accounts || []);
 

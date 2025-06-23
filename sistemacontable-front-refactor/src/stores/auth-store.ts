@@ -3,6 +3,7 @@ import { Login } from "@/schemas/login.schema";
 import { create } from "zustand";
 import { useUserStore } from "./user-store";
 import { toast } from "sonner";
+import { User } from "@/interfaces/user-interface";
 
 type AuthStore = {
   isLoading: boolean
@@ -25,7 +26,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       useUserStore.getState().setUser(data);
 
       toast.success('¡Sesión iniciada!')
-    } catch (err) {
+    } catch {
       toast.error('Credenciales invalidas')
     } finally {
       set({ isLoading: false })
@@ -51,7 +52,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
 
       toast.success('Sesión cerrada')
-    } catch (err) {
+    } catch  {
       toast.error('Error al cerrar sesión')
     } finally {
       set({ isLoading: false })
