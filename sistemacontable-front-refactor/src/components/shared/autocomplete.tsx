@@ -42,7 +42,7 @@ export function Autocomplete<T>({
           ref={triggerRef}
           role="combobox"
           aria-expanded={open}
-          className="w-full flex items-start justify-between gap-2 min-w-0 h-auto"
+          className="w-full flex items-start justify-between gap-2 min-w-0 h-auto "
         >
           <span
             className="whitespace-normal break-words text-left flex-1"
@@ -56,7 +56,7 @@ export function Autocomplete<T>({
       <PopoverContent className="p-0" style={{ width: triggerRef.current?.offsetWidth }} >
         <Command>
           <CommandInput
-            placeholder={placeholder}
+            placeholder={'Seleccione'}
             className="h-9"
             onValueChange={(input) => {
               onInputChange?.(input);

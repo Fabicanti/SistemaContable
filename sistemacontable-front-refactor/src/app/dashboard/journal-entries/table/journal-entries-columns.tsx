@@ -1,4 +1,5 @@
 import { Entrie } from '@/interfaces/entrie-interface';
+import { formatDateToSpanish } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
 
 export const JournalEntriesColumns: ColumnDef<Entrie>[] = [
@@ -10,11 +11,7 @@ export const JournalEntriesColumns: ColumnDef<Entrie>[] = [
       const fecha = new Date(row.original.fecha);
       return (
         <div className="flex items-center justify-start">
-          {fecha.toLocaleDateString("es-AR", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          })}
+          {formatDateToSpanish(fecha)}
         </div>
       );
     }

@@ -1,17 +1,20 @@
 "use client"
 
-import { capitalize, handleApiError } from "@/lib/utils"
-import { accountSchema, Account as AccountZod } from "@/schemas/account.schema"
-import { Account } from "@/interfaces/account-interface"
-import { useTheme } from "next-themes"
-import { useMemo } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
-import { createAccount, deleteAccount } from "@/core/actions/account.action"
-import { toast } from "sonner"
-import { AxiosError } from "axios"
-import { useAccountStore } from "@/stores/account-store"
+import { AxiosError } from 'axios';
+import { useTheme } from 'next-themes';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+import {
+    createAccount, deleteAccount, getAccountsWithMovements
+} from '@/core/actions/account.action';
+import { Account } from '@/interfaces/account-interface';
+import { capitalize, handleApiError } from '@/lib/utils';
+import { Account as AccountZod, accountSchema } from '@/schemas/account.schema';
+import { useAccountStore } from '@/stores/account-store';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export interface ChartItem {
   name: string
@@ -141,4 +144,17 @@ export function useDeleteAccount() {
   }
 
   return { isLoadingDeleteAccount: deleteAccountMutation.isPending, onSubmit }
+}
+
+/**
+ * Hook para obtener las cuentas con movimientos.
+ * @returns un objeto con las cuentas y el estado de carga.
+ */
+export function useAccountsWithMovements() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['accounts', 'movements'],
+    queryFn: getAccountsWithMovements,
+  });
+
+  return { accountsWithMovements: data ?? [], isLoadingAccountsWithMovements: isLoading };
 }

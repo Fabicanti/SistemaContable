@@ -4,7 +4,7 @@ import { CalendarIcon, Copy, Eye, FileDown, LoaderCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { DataTable } from '@/components/table/data-table';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useEntriePdf, useEntriesByDateRange } from '@/hooks/use-entries';
 import { Entrie } from '@/interfaces/entrie-interface';
@@ -58,70 +58,64 @@ export default function EntriesTable() {
           Consultá los asientos contables registrados. Podés filtrar por rango de fechas.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid overflow-auto gap-4">
-        <div className='flex items-center justify-between'>
-          <div className='flex gap-4'>
-            <div className="flex flex-col gap-3">
+
+      <CardContent>
+        <div className="flex flex-col gap-4 mb-4 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center">
+            <div>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     id="date"
-                    className="w-64 justify-between font-normal"
+                    className="w-full md:w-64 justify-between font-normal"
                   >
                     {getLabel()}
                     <CalendarIcon />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto overflow-hidden p-0 " align="start">
+                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
                   <Calendar
                     locale={es}
                     mode="range"
                     selected={dateRange}
                     captionLayout="dropdown"
                     onSelect={(date) => {
-                      setDateRange(date)
+                      setDateRange(date);
                     }}
                   />
                 </PopoverContent>
               </Popover>
             </div>
 
-            <Button
-              disabled={!dateRange || isLoadingEntries}
-              onClick={() => onSubmitEntries(dateRange)}
-            >{isLoadingEntries ? (
-              <div className="flex items-center justify-center">
-                <LoaderCircle className="mr-2 animate-spin" />
-                Buscando...
-              </div>) : (
-              "Buscar"
-            )}
-            </Button>
-            <Button variant={'outline'} disabled={!dateRange} onClick={() => setDateRange(undefined)}>Limpiar</Button>
-          </div>
 
-          <div>
-            <Button variant={'destructive'} onClick={() => onSubmitPdfEntries(dateRange)} disabled={isLoadingPdfEntries || !dateRange}>
-              <div className='flex items-center justify-center'>
-                {isLoadingPdfEntries ? (
-                  <>
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                disabled={!dateRange || isLoadingEntries}
+                onClick={() => onSubmitEntries(dateRange)}
+              >
+                {isLoadingEntries ? (
+                  <div className="flex items-center justify-center">
                     <LoaderCircle className="mr-2 animate-spin" />
-                    Descargando...
-                  </>
+                    Buscando...
+                  </div>
                 ) : (
-                  <>
-                    <FileDown  className="mr-2" />
-                    Descargar PDF
-                  </>
-                )
+                  "Buscar"
+                )}
+              </Button>
 
-                }
-              </div>
-            </Button>
+              <Button
+                variant="outline"
+                disabled={!dateRange}
+                onClick={() => setDateRange(undefined)}
+              >
+                Limpiar
+              </Button>
+            </div>
+
           </div>
-
         </div>
+
         <DataTable
           columns={JournalEntriesColumns}
           data={dataEntries}
@@ -131,6 +125,31 @@ export default function EntriesTable() {
           messageEmpty="Sin resultados. Filtra asientos mediante fechas o crea un asiento."
         />
       </CardContent>
+
+      <CardFooter className='flex justify-end'>
+        <Button
+          variant="destructive"
+          onClick={() => onSubmitPdfEntries(dateRange)}
+          disabled={isLoadingPdfEntries || !dateRange}
+        >
+          <div className="flex items-center justify-center">
+            {isLoadingPdfEntries ? (
+              <>
+                <LoaderCircle className="mr-2 animate-spin" />
+                Descargando...
+              </>
+            ) : (
+              <>
+                <FileDown className="mr-2" />
+                Descargar PDF
+              </>
+            )}
+          </div>
+        </Button>
+
+      </CardFooter>
+
+      {/* Vista detalle */}
       {entrieView && (
         <EntrieView
           entrie={entrieView}
@@ -138,5 +157,6 @@ export default function EntriesTable() {
         />
       )}
     </Card>
-  )
+  );
+
 }

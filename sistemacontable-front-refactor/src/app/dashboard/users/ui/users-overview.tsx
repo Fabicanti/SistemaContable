@@ -10,7 +10,6 @@ import React, { useState } from 'react'
 import UserCreate from './dialog/user-create';
 import { formatDateToSpanish } from '@/lib/utils';
 
-const roleId = 2; // Simulating a user role, replace with actual role logic
 
 export default function UsersOverview() {
   const { user } = useUserStore();

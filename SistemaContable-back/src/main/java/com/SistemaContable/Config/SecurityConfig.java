@@ -69,9 +69,11 @@ public class SecurityConfig {
                         // Cuentas.
                         .requestMatchers(HttpMethod.GET, "/api/cuentas").hasAnyRole(USER, ADMIN)
                         .requestMatchers("/api/cuentas/**").hasRole(ADMIN)
-
+                        // Asientos contables.
                         .requestMatchers("/api/asientos/**").hasAnyRole(USER, ADMIN)
                         .requestMatchers("/api/auth/**").permitAll()
+                        // Libros.
+                        .requestMatchers("/api/libros/**").hasAnyRole(USER, ADMIN)
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .headers(headers ->

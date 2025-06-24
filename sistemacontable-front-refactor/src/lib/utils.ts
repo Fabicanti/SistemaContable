@@ -120,8 +120,9 @@ export function downloadBlobPdf(blob: Blob, nombreArchivo: string) {
   const link = document.createElement('a');
   link.href = url;
   link.download = nombreArchivo;
+  link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(url), 100)
 }

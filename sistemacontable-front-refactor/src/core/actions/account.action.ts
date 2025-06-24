@@ -37,3 +37,12 @@ export const deleteAccount = async (id: number) => {
   const { data } = await api.delete(`${URL_BASE}/${id}`);
   return data;
 }
+
+/**
+ * Endpoint para obtener las cuentas con movimientos. Método GET
+ * @returns una lista de cuentas con sus respectivos movimientos.
+ */
+export const getAccountsWithMovements = async (): Promise<Account[]> => {
+  const { data } = await api.get<Account[]>(`/api/libros/nombresMov`);
+  return data;
+}

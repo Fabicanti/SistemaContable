@@ -2,7 +2,7 @@
 import React from 'react';
 
 import SeparatorTitle from '@/components/shared/separator-title';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -58,8 +58,7 @@ export default function EntrieView({ entrie, onClose }: Props) {
                       <div className="h-12 flex items-center justify-start gap-2">
 
                         <Avatar className="h-10 w-10">
-                          <AvatarImage src={'/avatar/admin.svg'} alt={`${entrie.id}`} />
-                          <AvatarFallback>{'AV'}</AvatarFallback>
+                          <AvatarFallback>{entrie.usuarioName.split(" ").map((item) => item[0]).join('')}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col justify-center">
                           <span>{entrie.usuarioName}</span>

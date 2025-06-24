@@ -1,21 +1,26 @@
 package com.SistemaContable.Services;
 
+import com.SistemaContable.DTO.*;
+import com.SistemaContable.Entities.AsientoContable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.SistemaContable.Actualizadores.ActivoLibroMayor;
 import com.SistemaContable.Actualizadores.PasivoLibroMayor;
 import com.SistemaContable.Actualizadores.SaldoLibroMayor;
-import com.SistemaContable.DTO.LibroMayorRequestDTO;
-import com.SistemaContable.DTO.LibroMayorResponseDTO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.SistemaContable.Entities.Cuenta;
 import com.SistemaContable.Entities.DetalleAsiento;
 import com.SistemaContable.Repositories.AsientoContableRepository;
 import com.SistemaContable.Repositories.CuentaRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class LibroContableService {
@@ -32,7 +37,7 @@ public class LibroContableService {
             .findByFechaBetweenAndCuentaId(request.getFechaInicio(), request.getFechaFin(), request.getcuentaId());
         
         Cuenta cuenta = cuentaRepository.findById(request.getcuentaId())
-            .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cuenta no encontrada"));
         String tipoCuentaRaiz = obtenerTipoCuentaRaiz(cuenta);
         SaldoLibroMayor saldoLibroMayor = obtenerEstrategiaSaldoLibroMayor(tipoCuentaRaiz);
 
@@ -53,10 +58,10 @@ public class LibroContableService {
 
     private void validarFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         if (fechaInicio == null || fechaFin == null) {
-            throw new IllegalArgumentException("Las fechas no pueden ser nulas.");
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Las fechas no pueden ser nulas.");
         }
         if (fechaFin.isBefore(fechaInicio)) {
-            throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"La fecha de fin no puede ser anterior a la fecha de inicio.");
         }
     }
 
@@ -78,7 +83,7 @@ public class LibroContableService {
             case "RESULTADO NEGATIVO":
                 return new PasivoLibroMayor();
             default:
-                throw new IllegalArgumentException("Tipo de cuenta no reconocido para estrategia de saldo: " + tipoCuentaRaiz);
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Tipo de cuenta no reconocido para estrategia de saldo: " + tipoCuentaRaiz);
         }
     }
 
@@ -94,22 +99,30 @@ public class LibroContableService {
 
     public String obtenerNombreCuenta(Long cuentaId) {
         Cuenta cuenta = cuentaRepository.findById(cuentaId)
-            .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cuenta no encontrada"));
         return cuenta.getNombre();
     }
 
-    public List<?> nombresCuentasMovimientos(){
-        List<Object[]> results = cuentaRepository.findAllIdNombresCuentas();
-        List<Map<String, Object>> cuentas = new ArrayList<>();
+    public List<CuentaDTO> nombresCuentasMovimientos(){
+        return cuentaRepository
+                .findAllIdNombresCuentas()
+                .stream()
+                .map(this::mapToCuentaDTO)
+                .toList();
+    }
 
-        for (Object[] row : results) {
-            Map<String, Object> cuenta = new HashMap<>();
-            cuenta.put("id", row[0]);
-            cuenta.put("nombre", row[1]);
-            cuentas.add(cuenta);
-        }
-
-        return cuentas;
+    private CuentaDTO mapToCuentaDTO(Cuenta cuenta) {
+        return new CuentaDTO(
+                cuenta.getId(),
+                cuenta.getNombre(),
+                cuenta.getCodigoCuenta(),
+                cuenta.getSaldo(),
+                cuenta.getRecibeSaldo(),
+                cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getId() : null,
+                cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getNombre() : null,
+                cuenta.getCuentaPadre() != null ? cuenta.getCuentaPadre().getId() : null,
+                cuenta.getSubCuentas() != null ? cuenta.getSubCuentas().stream().map(Cuenta::getId).collect(Collectors.toList()) : new ArrayList<>()
+        );
     }
 }
 

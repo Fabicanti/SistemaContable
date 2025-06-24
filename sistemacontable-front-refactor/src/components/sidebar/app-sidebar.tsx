@@ -52,7 +52,7 @@ const data = {
     },
     {
       name: "Libros",
-      url: "#",
+      url: "/dashboard/books",
       icon: BookText,
     },
   ],

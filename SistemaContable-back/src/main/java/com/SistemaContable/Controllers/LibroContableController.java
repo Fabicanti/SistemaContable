@@ -1,5 +1,6 @@
 package com.SistemaContable.Controllers;
 
+import com.SistemaContable.DTO.CuentaDTO;
 import org.springframework.web.bind.annotation.RestController;
 import com.SistemaContable.DTO.LibroMayorRequestDTO;
 import com.SistemaContable.DTO.LibroMayorResponseDTO;
@@ -55,7 +56,7 @@ public class LibroContableController {
     }
 
     @GetMapping("/nombresMov")
-    public ResponseEntity<?> obtenerNombresCuentas(){
+    public ResponseEntity<List<CuentaDTO>> obtenerNombresCuentas(){
         return ResponseEntity.ok(libroContableService.nombresCuentasMovimientos());
     }
 

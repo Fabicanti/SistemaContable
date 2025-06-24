@@ -11,7 +11,7 @@ import SeparatorTitle from '@/components/shared/separator-title';
 import { Button } from '@/components/ui/button';
 import { FloatingLabelInput } from '@/components/ui/floating-label-input';
 import {
-    Table, TableBody, TableCell, TableHead, TableHeader, TableRow
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Account } from '@/interfaces/account-interface';
@@ -133,7 +133,7 @@ export default function EntrieMovements({ form, isSuccess }: Props) {
 
             <SeparatorTitle title='Acciones' />
 
-            <div className={`grid ${user?.roleId === 2 && 'md:grid-cols-3 grid-cols-2'} gap-4`}>
+            <div className={`grid ${user?.roleId === 2 ? 'md:grid-cols-3 grid-cols-2' : 'md:grid-cols-2'} gap-4`}>
               <Button variant={'outline'} onClick={() => setViewAccounts(true)}>Ver cuentas</Button>
               {user?.roleId === 2 && (
                 <>
@@ -141,12 +141,12 @@ export default function EntrieMovements({ form, isSuccess }: Props) {
                     <Plus className="w-4 h-4 " />
                     Cuenta
                   </Button>
-                  <Button type='button' onClick={onSubmit}>
-                    <Plus />
-                    Movimiento
-                  </Button>
                 </>
               )}
+              <Button type='button' onClick={onSubmit}>
+                <Plus />
+                Movimiento
+              </Button>
             </div>
           </div>
 
@@ -169,8 +169,8 @@ export default function EntrieMovements({ form, isSuccess }: Props) {
                   {fields.map((movement, index) => (
                     <TableRow key={index}>
                       <TableCell className="font-medium">{`${movement.haber !== 0 ? '\u00A0'.repeat(8) : ''}${movement.nombreCuenta}`}</TableCell>
-                      <TableCell className='text-right'>{movement.debe !== 0? formatBalance(movement.debe) : movement.debe}</TableCell>
-                      <TableCell className='text-right'>{movement.haber !== 0 ? formatBalance(movement.haber): movement.haber}</TableCell>
+                      <TableCell className='text-right'>{movement.debe !== 0 ? formatBalance(movement.debe) : movement.debe}</TableCell>
+                      <TableCell className='text-right'>{movement.haber !== 0 ? formatBalance(movement.haber) : movement.haber}</TableCell>
                       <TableCell className="text-right flex justify-end">
                         <div
                           className="bg-destructive p-1 flex items-center rounded-lg font-semibold text-primary-foreground cursor-pointer"

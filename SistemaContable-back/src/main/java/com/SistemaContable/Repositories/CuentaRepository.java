@@ -14,8 +14,8 @@ public interface CuentaRepository  extends JpaRepository<Cuenta, Long>{
 
     Long countByCuentaPadreId(Long cuentaPadreId);
 
-    @Query("SELECT DISTINCT (c.id), c.nombre FROM Cuenta c INNER JOIN DetalleAsiento da ON c.id = da.cuenta.id")
-    List<Object[]> findAllIdNombresCuentas();
+    @Query("SELECT DISTINCT c FROM Cuenta c INNER JOIN DetalleAsiento da ON c.id = da.cuenta.id")
+    List<Cuenta> findAllIdNombresCuentas();
 
     @Query("SELECT c.nombre FROM Cuenta c WHERE c.recibeSaldo = true")
     List<String> findAllNombresCuentas();
