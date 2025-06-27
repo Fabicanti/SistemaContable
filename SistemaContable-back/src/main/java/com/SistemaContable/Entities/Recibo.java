@@ -1,6 +1,7 @@
 package com.SistemaContable.Entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -59,7 +60,7 @@ public class Recibo {
     
     @OneToMany(mappedBy = "recibo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<ConceptoRecibo> conceptosRecibos;
+    private List<ConceptoRecibo> conceptosRecibos = new ArrayList<>();
 
     public Recibo(){}
 

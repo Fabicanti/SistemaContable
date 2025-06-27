@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.SistemaContable.DTO.ConceptoReciboDTO;
 import com.SistemaContable.DTO.ReciboDTO;
 import com.SistemaContable.Entities.Concepto;
 import com.SistemaContable.Entities.ConceptoRecibo;
@@ -81,46 +80,34 @@ public class ReciboService {
         recibo.setMesPago(nroMes + "/" + fecha.getYear());
     }
 
-    // De esta función para abajo, excepto el mapToDTO, las estoy probando/arreglando. 
     public void agregarSueldoBase(Recibo recibo){
         double valorConcepto = recibo.getEmpleado().getSalarioBasico();
-        ConceptoReciboDTO conceptoReciboDTO = new ConceptoReciboDTO(recibo.getId(),(long) 1,valorConcepto);
-        ConceptoRecibo conceptoSueldo = conceptoReciboService.crearConceptoRecibo(conceptoReciboDTO);
+        ConceptoRecibo conceptoSueldo = conceptoReciboService.conceptoReciboSinDTO(recibo.getId(), 1, valorConcepto);
         recibo.setConceptoRecibo(conceptoSueldo);
+        reciboRepository.save(recibo);
     }
 
-    public void calcularTotales(Recibo recibo){
+    public void calcularTotales(Recibo recibo, String tipoTotal){
         List<ConceptoRecibo> conceptos = recibo.getConceptosRecibos();
-        for(ConceptoRecibo concepto : conceptos){
-            switch (concepto.getConcepto().getTipo()) {
+        for(ConceptoRecibo conceptoRecibo : conceptos){
+            if(conceptoRecibo.getConcepto().getTipo().equals(tipoTotal)){
+                switch (conceptoRecibo.getConcepto().getTipo()) {
                 case "G":
-                    recibo.setTotalGravadas(recibo.getTotalGravadas() + concepto.getValorConcepto());
+                    recibo.setTotalGravadas(recibo.getTotalGravadas() + conceptoRecibo.getValorConcepto());
                     break;
 
                 case "E":
-                    recibo.setTotalExentas(recibo.getTotalExentas() + concepto.getValorConcepto());
+                    recibo.setTotalExentas(recibo.getTotalExentas() + conceptoRecibo.getValorConcepto());
                     break;
 
                 case "D":
-                    recibo.setTotalDescuentos(recibo.getTotalDescuentos() + concepto.getValorConcepto());
+                    recibo.setTotalDescuentos(recibo.getTotalDescuentos() + conceptoRecibo.getValorConcepto());
                     break;
             
                 default:
                     break;
+                }
             }
-        }
-        reciboRepository.save(recibo);
-    }
-
-    public void calcularConceptosObligatorios(Recibo recibo){
-        ConceptoRecibo conceptoRecibo = conceptoReciboService.crearConceptoReciboVacio();
-        conceptoRecibo.setRecibo(recibo);
-        List<Concepto> conceptos = conceptoRepository.findByObligatorio(true);
-        conceptos.removeFirst();
-        for(Concepto concepto : conceptos){
-            conceptoRecibo.setConcepto(concepto);
-            conceptoRecibo.setValorConcepto(recibo.getTotalGravadas() * concepto.getPorcentaje());
-            recibo.setConceptoRecibo(conceptoRecibo);
         }
         reciboRepository.save(recibo);
     }
@@ -128,11 +115,27 @@ public class ReciboService {
     public void calcularPresentismo(Recibo recibo){
         Concepto presentismo = conceptoRepository.findById((long) 5).get();
         double valorConcepto = recibo.getEmpleado().getSalarioBasico() * presentismo.getPorcentaje();
-        ConceptoRecibo conceptoRecibo = conceptoReciboService.crearConceptoReciboVacio();
-        conceptoRecibo.setRecibo(recibo);
-        conceptoRecibo.setConcepto(presentismo);
-        conceptoRecibo.setValorConcepto(valorConcepto);
-        recibo.setConceptoRecibo(conceptoRecibo);
+        ConceptoRecibo conceptoPresentismo = conceptoReciboService.conceptoReciboSinDTO(recibo.getId(), (long) 5, valorConcepto);
+        recibo.setConceptoRecibo(conceptoPresentismo);
+        reciboRepository.save(recibo);
+    }
+
+    public void calcularCuotaSindical(Recibo recibo){
+        Concepto cuotaSindical = conceptoRepository.findById((long) 6).get();
+        double valorConcepto = recibo.getTotalGravadas() * cuotaSindical.getPorcentaje();
+        ConceptoRecibo conceptoCuotaSindical = conceptoReciboService.conceptoReciboSinDTO(recibo.getId(), (long) 6, valorConcepto);
+        recibo.setConceptoRecibo(conceptoCuotaSindical);
+        reciboRepository.save(recibo);
+    }
+
+    public void calcularConceptosObligatorios(Recibo recibo){
+        List<Concepto> conceptos = conceptoRepository.findByObligatorio(true);
+        conceptos.remove(0);
+        for(Concepto concepto : conceptos){
+            ConceptoRecibo conceptoRecibo = conceptoReciboService.conceptoReciboSinDTO(recibo.getId(), concepto.getId(), 0);
+            conceptoRecibo.setValorConcepto(recibo.getTotalGravadas() * concepto.getPorcentaje());
+            recibo.setConceptoRecibo(conceptoRecibo);
+        }
         reciboRepository.save(recibo);
     }
 

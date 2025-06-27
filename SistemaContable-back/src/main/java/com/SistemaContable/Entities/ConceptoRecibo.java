@@ -1,5 +1,6 @@
 package com.SistemaContable.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
@@ -14,11 +15,12 @@ public class ConceptoRecibo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recibo_id", nullable = false)
-    @JsonIgnoreProperties({"conceptosRecibos","empleador","empresa","empleado","id"})
+    @JsonIgnore
     private Recibo recibo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concepto_id", nullable = false)
+    @JsonIgnoreProperties({"id","obligatorio"})
     private Concepto concepto;
 
     @Column(nullable = false)

@@ -18,9 +18,17 @@ public class ReciboController {
     @Autowired
     private ReciboService reciboService;
 
+    // Necesito si o si esa secuencia para hacer bien el recibo.
     @PostMapping("/generar")
     public ResponseEntity<Recibo> generarRecibo(@RequestBody ReciboDTO reciboDTO) {
         Recibo recibo = reciboService.agregarDatos(reciboDTO);
+        reciboService.agregarSueldoBase(recibo);
+        reciboService.calcularPresentismo(recibo);
+        reciboService.calcularTotales(recibo,"G");
+        reciboService.calcularCuotaSindical(recibo);
+        reciboService.calcularConceptosObligatorios(recibo);
+        reciboService.calcularTotales(recibo,"D");
+        reciboService.calcularTotalNeto(recibo);
         return ResponseEntity.ok(recibo);
     }
 

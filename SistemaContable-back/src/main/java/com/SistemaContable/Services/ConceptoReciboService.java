@@ -38,10 +38,9 @@ public class ConceptoReciboService {
 
         return conceptoReciboRepository.save(conceptoRecibo);
     }
-
-    // Funcion en prueba 
-    public ConceptoRecibo crearConceptoReciboVacio(){
-        ConceptoRecibo conceptoRecibo = new ConceptoRecibo();
-        return conceptoReciboRepository.save(conceptoRecibo);
+    
+    public ConceptoRecibo conceptoReciboSinDTO(long reciboId, long conceptoId, double valorConcepto){
+        ConceptoReciboDTO conceptoReciboDTO = new ConceptoReciboDTO(reciboId, conceptoId, valorConcepto);
+        return crearConceptoRecibo(conceptoReciboDTO);
     }
 }

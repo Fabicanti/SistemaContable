@@ -246,7 +246,7 @@ INSERT INTO empresas (razon_social, cuit, domicilio) VALUES ('Empresa SA','93-23
 
 --Empleados
 INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, salario_basico, empleador_id) 
-VALUES ('Fabian', 'Cantisano', '1997-11-24', '23-38538299-12', 101,'Gerente', 'Informatica', '2021-03-01', 40000, null);
+VALUES ('Fabian', 'Cantisano', '1997-11-24', '23-38538299-12', 101,'Gerente', 'Informatica', '2021-03-01', 23070.80, null);
 
 INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, salario_basico, empleador_id) 
 VALUES ('Gino', 'Arsanto', '2000-07-19', '18-29508362-14', 102,'Desarrollador', 'Informatica', '2024-05-04', 23070.80, 1);
