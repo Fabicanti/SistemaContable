@@ -231,20 +231,22 @@ INSERT INTO cuentas (nombre, codigo_cuenta, saldo, recibe_saldo, tipo_cuenta_id,
 VALUES ('Ventas de Mercaderias', '40101', 0, true, (SELECT id FROM tipos_cuenta WHERE nombre = 'RESULTADO POSITIVO'), 
         (SELECT id FROM cuentas WHERE codigo_cuenta = '40100'));
 
--- Cuentas hijas de Ingresos
+-- Tablas para el Sistema de Sueldos -----------------------------------------------------------------------------------------------------------
 
--- Cuentas hijas de Intereses Ganados
+--Conceptos, la mayoría aparecen SIEMPRE en los recibos. 
+INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Sueldo', 'G', 1, true); -- ID: 1
+INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Jubilacion', 'D', 0.11, true); -- ID: 2
+INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Obra Social', 'D', 0.03, true);-- ID: 3
+INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('PAMI', 'D', 0.03, true);  -- ID: 4
+INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Presentismo', 'G', 0.0833, false); -- ID: 5
+INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Cuota Sindical', 'D', 0.025, false); -- ID: 6
 
----------------------------------------------------------------------------------------------------------------------
+--Empresa totalmente inventada
+INSERT INTO empresas (razon_social, cuit, domicilio) VALUES ('Empresa SA','93-23583520-24','Alem 104');
 
--- Cuentas hijas de Costo Mercaderias Vendidas
+--Empleados
+INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, salario_basico, empleador_id) 
+VALUES ('Fabian', 'Cantisano', '1997-11-24', '23-38538299-12', 101,'Gerente', 'Informatica', '2021-03-01', 40000, null);
 
--- Cuentas hijas de Impuestos
-
--- Cuentas hijas de Sueldos
-
--- Cuentas hijas de Intereses
-
--- Cuentas hijas de Alquileres
-
----------------------------------------------------------------------------------------------------------------------
+INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, salario_basico, empleador_id) 
+VALUES ('Gino', 'Arsanto', '2000-07-19', '18-29508362-14', 102,'Desarrollador', 'Informatica', '2024-05-04', 23070.80, 1);

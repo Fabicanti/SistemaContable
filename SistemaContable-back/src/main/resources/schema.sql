@@ -60,3 +60,90 @@ CREATE TABLE detalles_asiento (
     FOREIGN KEY (cuenta_id) REFERENCES cuentas(id),
     FOREIGN KEY (asiento_id) REFERENCES asientos_contables(id)
 );
+
+-- Tablas para el Sistema de Sueldos ----------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE empleados (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR NOT NULL,
+    apellido VARCHAR NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    --domicilio
+    --email
+    --estado
+    cuil VARCHAR NOT NULL,
+    legajo BIGINT NOT NULL,
+    puesto VARCHAR NOT NULL,
+    departamento VARCHAR NOT NULL,
+    fecha_ingreso DATE NOT NULL,
+    salario_basico DECIMAL(15,5) NOT NULL,
+    empleador_id BIGINT,
+    FOREIGN KEY (empleador_id) REFERENCES empleados(id)
+);
+
+CREATE TABLE familiares (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR NOT NULL,
+    apellido VARCHAR NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    estado_civil VARCHAR NOT NULL,
+    pais_residencia VARCHAR NOT NULL,
+    discapacidad BOOLEAN NOT NULL,
+    ingresos DECIMAL(15,5) NOT NULL,
+    relacion VARCHAR NOT NULL,
+    empleado_id BIGINT NOT NULL,
+    FOREIGN KEY (empleado_id) REFERENCES empleados(id)
+);
+
+CREATE TABLE empresas (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    razon_social VARCHAR NOT NULL,
+    cuit VARCHAR NOT NULL,
+    domicilio VARCHAR NOT NULL
+);
+
+CREATE TABLE recibos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fecha_deposito DATE NOT NULL,
+    mes_pago VARCHAR NOT NULL,
+    periodo_pago VARCHAR NOT NULL,
+    banco VARCHAR NOT NULL,
+    total_gravadas DECIMAL(15,5) NOT NULL,
+    total_exentas DECIMAL(15,5) NOT NULL,
+    total_descuentos DECIMAL(15,5) NOT NULL,
+    total_neto DECIMAL(15,5) NOT NULL,
+    empresa_id BIGINT NOT NULL,
+    empleado_id BIGINT NOT NULL,
+    empleador_id BIGINT NOT NULL,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(id),
+    FOREIGN KEY (empleado_id) REFERENCES empleados(id),
+    FOREIGN KEY (empleador_id) REFERENCES empleados(id)
+);
+
+CREATE TABLE conceptos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR NOT NULL,
+    tipo VARCHAR NOT NULL,
+    porcentaje DECIMAL(15,5) NOT NULL, 
+    obligatorio BOOLEAN NOT NULL
+);
+
+CREATE TABLE conceptos_recibos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    recibo_id BIGINT NOT NULL,
+    concepto_id BIGINT NOT NULL,
+    valor_concepto DECIMAL(15,5) NOT NULL,
+    FOREIGN KEY (recibo_id) REFERENCES recibos(id),
+    FOREIGN KEY (concepto_id) REFERENCES conceptos(id)
+);
+
+
+
+
+
+
+
+
+
+
+
