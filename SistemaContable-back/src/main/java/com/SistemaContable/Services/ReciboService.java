@@ -145,6 +145,22 @@ public class ReciboService {
         reciboRepository.save(recibo);
     }
 
+    public void calcularRemGravadas(Recibo recibo, List<Integer> conceptosId){
+        agregarSueldoBase(recibo);
+        if(conceptosId.contains(5)){
+            calcularPresentismo(recibo);
+        }
+        calcularTotales(recibo, "G");
+    }
+
+    public void calcularRemDescuentos(Recibo recibo, List<Integer> conceptosId){
+        calcularConceptosObligatorios(recibo);
+        if(conceptosId.contains(6)){
+            calcularCuotaSindical(recibo);
+        }
+        calcularTotales(recibo, "D");
+    }
+
     public ReciboDTO mapToDTO(Recibo recibo){
         ReciboDTO reciboDTO = new ReciboDTO();
         reciboDTO.setId(recibo.getId());

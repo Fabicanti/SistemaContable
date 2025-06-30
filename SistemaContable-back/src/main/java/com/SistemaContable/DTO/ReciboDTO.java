@@ -17,6 +17,8 @@ public class ReciboDTO {
     private Long empleadoId;
     private String empleadorNombre;
     private List<ConceptoReciboDTO> conceptosRecibos;
+    //Se necesita una lista con los id's de los conceptos opcionales que se quieran calcular.
+    private List<Integer> conceptosId;
 
     public ReciboDTO(){}
 
@@ -133,6 +135,10 @@ public class ReciboDTO {
 
     public List<ConceptoReciboDTO> getConceptosRecibos(){
         return conceptosRecibos;
+    }
+
+    public List<Integer> getConceptosId(){
+        return conceptosId;
     }
 }
 

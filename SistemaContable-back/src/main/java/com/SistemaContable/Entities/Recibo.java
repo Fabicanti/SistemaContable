@@ -31,18 +31,6 @@ public class Recibo {
     @Column(nullable = false)
     private String banco;
     
-    @Column(nullable = false)
-    private double totalGravadas;
-
-    @Column(nullable = false)
-    private double totalExentas;
-
-    @Column(nullable = false)
-    private double totalDescuentos;
-
-    @Column(nullable = false)
-    private double totalNeto;
-
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
     @JsonIgnoreProperties("id")
@@ -55,12 +43,24 @@ public class Recibo {
     
     @ManyToOne
     @JoinColumn(name = "empleador_id", nullable = false)
-    @JsonIgnoreProperties({"familiares", "recibos","empleador","salarioBasico","fechaNacimiento","id"})
+    @JsonIgnoreProperties({"familiares", "recibos","empleador","salarioBasico","fechaNacimiento","id","fechaIngreso"})
     private Empleado empleador;
     
     @OneToMany(mappedBy = "recibo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<ConceptoRecibo> conceptosRecibos = new ArrayList<>();
+
+    @Column(nullable = false)
+    private double totalGravadas;
+
+    @Column(nullable = false)
+    private double totalExentas;
+
+    @Column(nullable = false)
+    private double totalDescuentos;
+
+    @Column(nullable = false)
+    private double totalNeto;
 
     public Recibo(){}
 
