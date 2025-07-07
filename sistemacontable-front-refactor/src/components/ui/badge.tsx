@@ -18,7 +18,7 @@ const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         admin: 
-          "text-white text-sm bg-theme-gradient"
+          "text-white bg-theme-gradient border-transparent"
       },
     },
     defaultVariants: {

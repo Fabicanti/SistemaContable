@@ -21,7 +21,6 @@ const inputsRegister: InputsId[] = [
   { id: 'nombre', label: 'Nombre', type: 'text', personal: true },
   { id: 'apellido', label: 'Apellido', type: 'text', personal: true },
   { id: 'email', label: 'Email', type: 'email', personal: true },
-  { id: 'username', label: 'Nombre de usuario', type: 'text', personal: false },
 ]
 
 const roleOptions = [

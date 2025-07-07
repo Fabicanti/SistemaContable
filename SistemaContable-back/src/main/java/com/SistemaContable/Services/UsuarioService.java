@@ -1,5 +1,6 @@
 package com.SistemaContable.Services;
 
+import com.SistemaContable.DTO.PasswordDTO;
 import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Entities.*;
 import com.SistemaContable.Repositories.*;
@@ -113,6 +114,28 @@ public class UsuarioService {
         return usuarioRepository.findById(userId).map(this::mapToDTO).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")
         );
+    }
+
+    /**
+     * Cambia la contraseña de un usuario existente, verificando primero que la contraseña
+     * anterior proporcionada coincida con la almacenada en la base de datos.
+     */
+    public void cambiarPassword(PasswordDTO passwordDTO) {
+        Usuario usuario = usuarioRepository.findById(passwordDTO.getUserId()).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")
+        );
+
+        if (!passwordEncoder.matches(passwordDTO.getOldPassword(), usuario.getPasswordHash()))  {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Las contraseñas no coinciden.");
+        }
+
+        try{
+            usuario.setPasswordHash(passwordEncoder.encode(passwordDTO.getNewPassword()));
+            usuarioRepository.save(usuario);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al cambiar la contraseña.");
+        }
+
     }
 
     /**

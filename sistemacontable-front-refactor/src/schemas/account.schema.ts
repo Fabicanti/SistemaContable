@@ -11,7 +11,7 @@ export const accountSchema = z.object({
     .min(0, "El saldo debe ser un número positivo"),
   tipoCuentaId: z
     .number()
-    .refine((val) => accountTypes.includes(val as any), {
+    .refine((val) => accountTypes.includes(val as 1 | 2 | 3 | 4 | 5), {
       message: "Tipo de cuenta inválida."
     }),
   recibeSaldo: z

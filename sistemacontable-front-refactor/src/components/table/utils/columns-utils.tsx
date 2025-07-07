@@ -15,8 +15,10 @@ export const SortedIcon = ({ isSorted }: { isSorted: SortDirection | false }) =>
 }
 
 // Header reutilizable con ordenamiento
-export function sortableHeader(label: string) {
-  return ({ column }: { column: any }) => (
+import type { Column } from "@tanstack/react-table"
+
+export function sortableHeader<T>(label: string) {
+  const SortableHeaderComponent = ({ column }: { column: Column<T, unknown> }) => (
     <Button
       variant="ghost"
       onClick={() =>
@@ -27,15 +29,23 @@ export function sortableHeader(label: string) {
       {label}
       <SortedIcon isSorted={column.getIsSorted()} />
     </Button>
-  )
+  );
+  SortableHeaderComponent.displayName = `SortableHeader(${label})`;
+  return SortableHeaderComponent;
 }
 
 // Filtro personalizado para múltiples campos
-export const myCustomFilterFn: FilterFn<any> = (
-  row: Row<any>,
+// Define a type for your row data
+type ClientRow = {
+  clientName: string
+  email: string
+  status: string
+}
+
+export const myCustomFilterFn: FilterFn<ClientRow> = (
+  row: Row<ClientRow>,
   columnId: string,
   filterValue: string,
-  addMeta: (meta: any) => void
 ) => {
   filterValue = filterValue.toLowerCase()
   const filterParts = filterValue.split(" ")
@@ -54,7 +64,7 @@ export function createGlobalFilter<T>(filterableColumns?: string[]): FilterFn<T>
       .map(part => part.replace(/\s+/g, ''))
 
     // Función para normalizar y unir campos de la fila
-    const rowText = (filterableColumns?.length ? filterableColumns : Object.keys(row.original as any)).map(col => {
+    const rowText = (filterableColumns?.length ? filterableColumns : Object.keys(row.original as Record<string, unknown>)).map(col => {
       const value = row.original[col as keyof T]
       return String(value ?? "").toLowerCase().replace(/\s+/g, '')
     }).join(" ")

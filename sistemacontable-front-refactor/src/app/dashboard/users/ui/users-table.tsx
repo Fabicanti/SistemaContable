@@ -18,7 +18,7 @@ import { User } from '@/interfaces/user-interface';
 
 export default function UsersTable() {
   const { user: myUser } = useUserStore();
-  const { dataUsers, loadingUsers } = useUsersAll();
+  const { dataUsers } = useUsersAll();
 
   // Acciones para actualizar y eliminar usuarios
   const [updateUser, setUpdateUser] = useState<User | null>(null);

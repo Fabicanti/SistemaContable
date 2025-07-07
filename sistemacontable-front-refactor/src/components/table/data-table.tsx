@@ -27,25 +27,25 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import {
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow
 } from '@/components/ui/table';
 import { capitalize } from '@/lib/utils';
 import {
-  ColumnDef, 
-  ColumnFiltersState, 
-  flexRender, 
-  getCoreRowModel, 
+  ColumnDef,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
   getFacetedRowModel,
-  getFilteredRowModel, 
-  getPaginationRowModel, 
-  getSortedRowModel, 
-  Row, 
-  SortingState, 
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  Row,
+  SortingState,
   useReactTable,
   VisibilityState
 } from '@tanstack/react-table';
@@ -188,7 +188,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className={`${showSearchInput && columnLabels && showToggleColumns ? 'flex' : 'hidden'} items-center justify-between py-4 gap-3`}>
+      <div className={`${showSearchInput || columnLabels || showToggleColumns ? 'flex' : 'hidden'} items-center justify-between py-4 gap-3`}>
         {showSearchInput && <Input
           placeholder="Buscar..."
           value={globalFilter ?? ""}

@@ -1,8 +1,18 @@
 import { CreateUser, UpdateUser } from "@/schemas/user.schema";
 import { api } from "../api/axios";
-import { User } from "@/interfaces/user-interface";
+import { ChangePassword, User } from "@/interfaces/user-interface";
 
 const URL_BASE = "api/usuarios";
+
+/**
+ * Endpoint para obtener un usuario por su ID. Método GET.
+ * @param id es el id del usuario a buscar.
+ * @returns retorna el usuario encontrado.
+ */
+export const getUserById = async (id: number): Promise<User> => {
+  const { data } = await api.get<User>(`${URL_BASE}/${id}`);
+  return data;
+}
 
 /**
  * Endpoint donde se obtienen todos los usuarios. Método GET.
@@ -28,6 +38,16 @@ export async function createUser(user: CreateUser): Promise<Record<string, strin
  */
 export async function updateUser(user: UpdateUser){
   const { data } = await api.patch(`${URL_BASE}/modificar`, user);
+  return data;
+}
+
+
+/**
+ * Endpoint para cambiar la contraseña de un usuario. Método PATCH.
+ * @param change es el cambio de contraseña del usuario.
+ */
+export async function changePassword(change: ChangePassword) {
+  const { data } = await api.patch(`${URL_BASE}/modificarPassword`, change);
   return data;
 }
 

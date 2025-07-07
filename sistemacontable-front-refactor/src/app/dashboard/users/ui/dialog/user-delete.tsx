@@ -21,7 +21,7 @@ type Props = {
 }
 
 export default function UserDelete({user, onClose}: Props) {
-  const { isLoadingDeleteUser, onSubmit } = useDeleteUser();
+  const { onSubmit } = useDeleteUser();
 
   if (!user) return null;
 

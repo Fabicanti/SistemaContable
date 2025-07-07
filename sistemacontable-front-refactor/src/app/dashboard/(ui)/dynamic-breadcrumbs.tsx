@@ -11,6 +11,9 @@ const breadcrumbLabels: Record<string, string> = {
   accounts: 'Cuentas',
   "journal-entries": "Asientos",
   books: "Libros",
+  configuration: "Configuración",
+  personal: 'Información personal',
+  security: 'Seguridad del usuario',
 };
 
 export default function DynamicBreadcrumbs() {

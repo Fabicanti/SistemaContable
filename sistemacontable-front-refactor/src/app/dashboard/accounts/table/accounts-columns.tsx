@@ -6,19 +6,19 @@ import { Check, X } from "lucide-react";
 export const accountsColumns: ColumnDef<Account>[] = [
   {
     accessorKey: "codigoCuenta",
-    header: sortableHeader("Código de cuenta"),
+    header: sortableHeader<Account>("Código de cuenta"),
     enableHiding: false,
     enableSorting: true,
   },
   {
     accessorKey: "nombre",
-    header: sortableHeader("Nombre de cuenta"),
+    header: sortableHeader<Account>("Nombre de cuenta"),
     enableHiding: false,
     enableSorting: true,
   },
   {
     accessorKey: "recibeSaldo",
-    header: sortableHeader("Recibe saldo"),
+    header: sortableHeader<Account>("Recibe saldo"),
     cell: ({ row }) => {
       const recibeSaldo = row.original.recibeSaldo;
       return <span>{!recibeSaldo ? <X className="text-red-500 dark:text-red-800" /> : <Check className="text-green-500 dark:text-green-700" />}</span>;
@@ -28,7 +28,7 @@ export const accountsColumns: ColumnDef<Account>[] = [
   },
   {
     accessorKey: "tipoCuentaNombre",
-    header: sortableHeader("Tipo de cuenta"),
+    header: sortableHeader<Account>("Tipo de cuenta"),
     enableHiding: false,
     enableSorting: true,
   },

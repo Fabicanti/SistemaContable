@@ -12,7 +12,8 @@ import { DatesRange } from '@/interfaces/entrie-interface';
 import { downloadBlobPdf, handleApiError } from '@/lib/utils';
 import { Entrie, entrieSchema } from '@/schemas/entrie.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { ErrorMessage } from '@/interfaces/error-interface';
 
 /**
  * Función para obtener todos los asientos contables.
@@ -46,7 +47,6 @@ export function useEntriesByDateRange() {
  * Función para crear un asiento contable.
  */
 export function useCreateEntrie() {
-  const queryClient = useQueryClient();
   const form = useForm<Entrie>({
     resolver: zodResolver(entrieSchema),
     defaultValues: {
@@ -61,7 +61,6 @@ export function useCreateEntrie() {
     mutationFn: createJournalEntrie,
     onSuccess: () => {
       toast.success("Se ha creado un asiento contable.");
-      queryClient.invalidateQueries({ queryKey: ["entries"] });
       form.reset();
     },
     onError: (error: AxiosError<ErrorMessage>) => {

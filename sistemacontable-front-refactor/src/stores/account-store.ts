@@ -4,6 +4,7 @@ import { handleApiError } from "@/lib/utils";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from 'axios';
+import { ErrorMessage } from "@/interfaces/error-interface";
 
 type AccountStore = {
   accounts: Account[] | null;

@@ -1,4 +1,5 @@
 package com.SistemaContable.Controllers;
+import com.SistemaContable.DTO.PasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,17 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    /**
+     * Obtiene un usuario específico según su identificador único.
+     * @param id identificador único del usuario que se desea obtener.
+     * @return una respuesta HTTP con el objeto UsuarioDTO si el usuario es encontrado.
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuario(@PathVariable Long id) {
+        UsuarioDTO usuarioDTO =  usuarioService.buscarUsuarioById(id);
+        return ResponseEntity.ok(usuarioDTO);
+    }
 
     @PostMapping("/registrar")
     public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
@@ -52,6 +64,20 @@ public class UsuarioController {
             return ResponseEntity.noContent().build();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
+    }
+
+    /**
+     * Modifica la contraseña de un usuario existente.
+     * Válida que la contraseña anterior proporcionada coincida con la registrada
+     * y, si es correcto, actualiza la contraseña por la nueva.
+     *
+     * @param passwordDTO contiene los datos necesarios para la validación y cambio de contraseña
+     *                    (ID del usuario, contraseña actual, y nueva contraseña).
+     */
+    @PatchMapping("/modificarPassword")
+    public ResponseEntity<Void> modificarPassword(@RequestBody PasswordDTO passwordDTO) {
+        this.usuarioService.cambiarPassword(passwordDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping

@@ -8,3 +8,9 @@ export interface User {
   password: string;
   roleId: number;
 }
+
+export interface ChangePassword {
+  userId: number;
+  oldPassword: string;
+  newPassword: string;
+}

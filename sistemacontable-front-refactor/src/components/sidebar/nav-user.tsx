@@ -7,11 +7,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { User } from '@/interfaces/user-interface'
 import useAuth from '@/hooks/use-auth'
+import Link from 'next/link'
 
 export default function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
   const { onLogout } = useAuth();
-  
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -53,8 +54,11 @@ export default function NavUser({ user }: { user: User }) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <GradientIcon Icon={Settings} fromColorHex="f6339a" toColorHex="ff6900" size={24} />
-                Configuración
+                <Link href={'/dashboard/configuration'} className="flex items-center gap-2">
+                  <GradientIcon Icon={Settings} fromColorHex="f6339a" toColorHex="ff6900" size={24} />
+                  Configuración
+
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

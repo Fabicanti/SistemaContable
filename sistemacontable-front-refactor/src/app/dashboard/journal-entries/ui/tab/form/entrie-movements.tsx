@@ -134,10 +134,10 @@ export default function EntrieMovements({ form, isSuccess }: Props) {
             <SeparatorTitle title='Acciones' />
 
             <div className={`grid ${user?.roleId === 2 ? 'md:grid-cols-3 grid-cols-2' : 'md:grid-cols-2'} gap-4`}>
-              <Button variant={'outline'} onClick={() => setViewAccounts(true)}>Ver cuentas</Button>
+              <Button type='button' variant={'outline'} onClick={() => setViewAccounts(true)}>Ver cuentas</Button>
               {user?.roleId === 2 && (
                 <>
-                  <Button variant={'outline'} onClick={() => setCreateAccount(true)}>
+                  <Button type='button' variant={'outline'} onClick={() => setCreateAccount(true)}>
                     <Plus className="w-4 h-4 " />
                     Cuenta
                   </Button>

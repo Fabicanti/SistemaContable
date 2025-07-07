@@ -22,11 +22,6 @@ import { NavMain } from "./nav-main"
 import { useUserStore } from "@/stores/user-store"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   principal: [
     {
       name: "Dashboard",

@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@/interfaces/error-interface';
 import { AxiosError } from 'axios';
 import { type ClassValue, clsx } from 'clsx';
 import { toast } from 'sonner';

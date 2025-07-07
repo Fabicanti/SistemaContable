@@ -26,11 +26,11 @@ export const usersColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "email",
-    header: sortableHeader("Email"),
+    header: sortableHeader<User>("Email"),
   },
   {
     accessorKey: "roleId",
-    header: sortableHeader("Rol"),
+    header: sortableHeader<User>("Rol"),
     cell: ({ row }) => {
       const role = row.original.roleId;
       return (
