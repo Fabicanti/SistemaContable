@@ -1,5 +1,6 @@
 package com.SistemaContable.Controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,15 @@ public class ReciboController {
     // Necesito si o si esa secuencia para hacer bien el recibo.
     // Se necesitaría que se agregen en "conceptosId" los id de los conceptos opcionales que se vayan a calcular. De momento hay 2, pero pueden aparecer más.
     @PostMapping("/generar")
-    public ResponseEntity<Recibo> generarRecibo(@RequestBody ReciboDTO reciboDTO) {
-        Recibo recibo = reciboService.agregarDatos(reciboDTO);
-        reciboService.calcularRemGravadas(recibo, reciboDTO.getConceptosId());
-        reciboService.calcularRemDescuentos(recibo, reciboDTO.getConceptosId());
-        reciboService.calcularTotalNeto(recibo);
-        return ResponseEntity.ok(recibo);
+    public ResponseEntity<List<Recibo>> generarRecibo(@RequestBody ReciboDTO reciboDTO) {
+        Recibo recibo = reciboService.generarRecibo(reciboDTO);
+        List<Recibo> recibos = new ArrayList<>();
+        recibos.add(recibo);
+        if(reciboDTO.getFechaDeposito().getMonthValue() == 6 || reciboDTO.getFechaDeposito().getMonthValue() == 12){
+            Recibo aguinaldo = reciboService.generarAguinaldo(reciboDTO);
+            recibos.add(aguinaldo);
+        }
+        return ResponseEntity.ok(recibos);
     }
 
 }

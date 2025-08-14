@@ -76,7 +76,6 @@ CREATE TABLE empleados (
     puesto VARCHAR NOT NULL,
     departamento VARCHAR NOT NULL,
     fecha_ingreso DATE NOT NULL,
-    salario_basico DECIMAL(15,5) NOT NULL,
     empleador_id BIGINT,
     FOREIGN KEY (empleador_id) REFERENCES empleados(id)
 );
@@ -108,6 +107,7 @@ CREATE TABLE recibos (
     mes_pago VARCHAR NOT NULL,
     periodo_pago VARCHAR NOT NULL,
     banco VARCHAR NOT NULL,
+    sueldo_base DECIMAL(15,5) NOT NULL,
     total_gravadas DECIMAL(15,5) NOT NULL,
     total_exentas DECIMAL(15,5) NOT NULL,
     total_descuentos DECIMAL(15,5) NOT NULL,

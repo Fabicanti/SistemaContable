@@ -13,7 +13,6 @@ public class EmpleadoDTO {
     private String puesto;
     private String departamento;
     private LocalDate fechaIngreso;
-    private double salarioBasico;
     private Long empleadorId;
     private List<FamiliarDTO> familiares;
     private List<ReciboDTO> recibos;
@@ -21,7 +20,7 @@ public class EmpleadoDTO {
     public EmpleadoDTO(){
     }
 
-    public EmpleadoDTO(Long id, String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso, double salarioBasico){
+    public EmpleadoDTO(Long id, String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso){
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -31,10 +30,9 @@ public class EmpleadoDTO {
         this.puesto = puesto;
         this.departamento = departamento;
         this.fechaIngreso = fechaIngreso;
-        this.salarioBasico = salarioBasico;
     }
 
-    public EmpleadoDTO(Long id, String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso, double salarioBasico, Long empleadorId){
+    public EmpleadoDTO(Long id, String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso, Long empleadorId){
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -44,7 +42,6 @@ public class EmpleadoDTO {
         this.puesto = puesto;
         this.departamento = departamento;
         this.fechaIngreso = fechaIngreso;
-        this.salarioBasico = salarioBasico;
         this.empleadorId = empleadorId;
     }
 
@@ -120,14 +117,6 @@ public class EmpleadoDTO {
 
     public LocalDate getFechaIngreso(){
         return fechaIngreso;
-    }
-
-    public void setSalarioBasico(double salarioBasico){
-        this.salarioBasico = salarioBasico;
-    }
-
-    public double getSalarioBasico(){
-        return salarioBasico;
     }
 
     public void setEmpleadorId(Long empleadorId){

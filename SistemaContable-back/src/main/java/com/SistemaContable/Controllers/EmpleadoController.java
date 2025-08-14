@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.SistemaContable.DTO.EmpleadoDTO;
 import com.SistemaContable.Entities.Empleado;
 import com.SistemaContable.Entities.Familiar;
+import com.SistemaContable.Entities.Recibo;
 import com.SistemaContable.Services.EmpleadoService;
 
 @RestController
@@ -43,6 +44,12 @@ public class EmpleadoController {
     public ResponseEntity<List<Familiar>> listarFamiliares(@PathVariable Long empleadoId){
         List<Familiar> familiares = empleadoService.obtenerFamiliares(empleadoId);
         return ResponseEntity.ok(familiares);
+    }
+
+    @GetMapping("/listarRecibos/{empleadoId}")
+    public ResponseEntity<List<Recibo>> listarRecibosDeSueldo(@PathVariable Long empleadoId){
+        List<Recibo> recibos = empleadoService.obtenerRecibosDeSueldo(empleadoId);
+        return ResponseEntity.ok(recibos);
     }
 
 }

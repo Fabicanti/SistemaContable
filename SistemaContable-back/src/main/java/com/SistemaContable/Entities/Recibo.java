@@ -30,6 +30,9 @@ public class Recibo {
     
     @Column(nullable = false)
     private String banco;
+
+    @Column(nullable = false)
+    private double sueldoBase;
     
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
@@ -43,11 +46,12 @@ public class Recibo {
     
     @ManyToOne
     @JoinColumn(name = "empleador_id", nullable = false)
-    @JsonIgnoreProperties({"familiares", "recibos","empleador","salarioBasico","fechaNacimiento","id","fechaIngreso"})
+    @JsonIgnoreProperties({"familiares", "recibos","empleador","fechaNacimiento","id","fechaIngreso"})
     private Empleado empleador;
     
-    @OneToMany(mappedBy = "recibo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recibo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @JsonIgnoreProperties("id")
     private List<ConceptoRecibo> conceptosRecibos = new ArrayList<>();
 
     @Column(nullable = false)
@@ -122,6 +126,14 @@ public class Recibo {
 
     public String getBanco(){
         return banco;
+    }
+
+    public void setSueldoBase(double sueldoBase){
+        this.sueldoBase = sueldoBase;
+    }
+
+    public double getSueldoBase(){
+        return sueldoBase;
     }
 
     public void setTotalGravadas(double totalGravadas){

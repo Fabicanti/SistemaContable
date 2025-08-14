@@ -13,12 +13,12 @@ public class ConceptoRecibo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "recibo_id", nullable = false)
     @JsonIgnore
     private Recibo recibo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "concepto_id", nullable = false)
     @JsonIgnoreProperties({"id","obligatorio"})
     private Concepto concepto;

@@ -9,6 +9,7 @@ public class ReciboDTO {
     private String mesPago; // Mes/Año
     private String periodoPago; // Nombre del mes
     private String banco;
+    private double sueldoBase;
     private double totalGravadas;
     private double totalExentas;
     private double totalDescuentos;
@@ -22,11 +23,12 @@ public class ReciboDTO {
 
     public ReciboDTO(){}
 
-    public ReciboDTO(Long empleadoId, Long empresaId, LocalDate fechaDeposito, String banco){
+    public ReciboDTO(Long empleadoId, Long empresaId, LocalDate fechaDeposito, String banco, double sueldoBase){
         this.empleadoId = empleadoId;
         this.empresaId = empresaId;
         this.fechaDeposito = fechaDeposito;
         this.banco = banco;
+        this.sueldoBase = sueldoBase;
     }
 
     public void setId(Long id){
@@ -91,6 +93,14 @@ public class ReciboDTO {
 
     public String getBanco(){
         return banco;
+    }
+
+    public void setSueldoBase(double sueldoBase){
+        this.sueldoBase = sueldoBase;
+    }
+
+    public double getSueldoBase(){
+        return sueldoBase;
     }
 
     public void setTotalGravadas(double totalGravadas){

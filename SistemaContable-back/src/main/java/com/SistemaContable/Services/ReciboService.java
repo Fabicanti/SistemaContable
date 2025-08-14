@@ -1,10 +1,14 @@
 package com.SistemaContable.Services;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.SistemaContable.DTO.ReciboDTO;
 import com.SistemaContable.Entities.Concepto;
@@ -36,14 +40,33 @@ public class ReciboService {
     private ConceptoReciboService conceptoReciboService;
 
     // Genera el encabezado y agrega todos los datos (no calculados) del recibo. 
-    // El reciboDTO solo necesita: fechaDeposito, banco, empresaId y empleadoId. El resto se calcula/genera luego.
+    // El reciboDTO solo necesita: fechaDeposito, banco, empresaId, empleadoId y sueldoBase. El resto se calcula/genera luego.
     public Recibo agregarDatos(ReciboDTO reciboDTO){
         Recibo recibo = new Recibo();
+        Optional<List<Recibo>> aux = reciboRepository.existsByFechaDepositoAndEmpleado(reciboDTO.getFechaDeposito(), reciboDTO.getEmpleadoId());
 
-        recibo.setFechaDeposito(reciboDTO.getFechaDeposito());
-        setFechas(recibo);
-
+        if(aux.get().size() != 0){
+            if((reciboDTO.getFechaDeposito().getMonthValue() == 6 || reciboDTO.getFechaDeposito().getMonthValue() == 12) && aux.get().size() == 1){
+                recibo.setFechaDeposito(reciboDTO.getFechaDeposito());
+                setFechas(recibo);
+            }
+            else{
+                throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,"Ya existe el/los recibo/s correspondiente/s para este mes/año");
+            }
+        }
+        else{
+            recibo.setFechaDeposito(reciboDTO.getFechaDeposito());
+            setFechas(recibo);
+        }
+        
         recibo.setBanco(reciboDTO.getBanco());
+
+        if(reciboDTO.getSueldoBase() < 0){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,"El sueldo ingresado no es válido");
+        }
+        recibo.setSueldoBase(reciboDTO.getSueldoBase());
 
         recibo.setTotalGravadas(0);        
         recibo.setTotalExentas(0);
@@ -62,26 +85,34 @@ public class ReciboService {
 
         Recibo nuevoRecibo = reciboRepository.save(recibo);
 
+        recibo.getEmpleado().setRecibo(nuevoRecibo);
+
         return nuevoRecibo;
     }
 
-    // Devuelve el nombre del mes (PeriodoPago) y la fecha con mes/año (MesPago).
+    // Setea el nombre del mes (PeriodoPago) y la fecha con mes/año (MesPago).
     // Tiene en cuenta el dia de deposito: si se hace entre el 1 y el 15, el pago corresponde al mes pasado. Si esta entre el 16 y 31, corresponde al mes actual.
     public void setFechas(Recibo recibo){
         LocalDate fecha = recibo.getFechaDeposito();
         String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
         int nroMes = fecha.getMonthValue();
 
-        if(fecha.getDayOfMonth() <= 15){
-            nroMes-=1;
+        if(nroMes == 1 && fecha.getDayOfMonth() <= 15){
+            nroMes = 12;
+            recibo.setPeriodoPago(meses[meses.length - 1]);
+        }
+        else{
+            if(fecha.getDayOfMonth() <= 15){
+                nroMes-=1;
+            }
+            recibo.setPeriodoPago(meses[nroMes - 1]);
         }
 
-        recibo.setPeriodoPago(meses[nroMes - 1]);
         recibo.setMesPago(nroMes + "/" + fecha.getYear());
     }
 
-    public void agregarSueldoBase(Recibo recibo){
-        double valorConcepto = recibo.getEmpleado().getSalarioBasico();
+    public void agregarConceptoSueldoBase(Recibo recibo){
+        double valorConcepto = recibo.getSueldoBase();
         ConceptoRecibo conceptoSueldo = conceptoReciboService.conceptoReciboSinDTO(recibo.getId(), 1, valorConcepto);
         recibo.setConceptoRecibo(conceptoSueldo);
         reciboRepository.save(recibo);
@@ -114,7 +145,7 @@ public class ReciboService {
 
     public void calcularPresentismo(Recibo recibo){
         Concepto presentismo = conceptoRepository.findById((long) 5).get();
-        double valorConcepto = recibo.getEmpleado().getSalarioBasico() * presentismo.getPorcentaje();
+        double valorConcepto = recibo.getSueldoBase() * presentismo.getPorcentaje();
         ConceptoRecibo conceptoPresentismo = conceptoReciboService.conceptoReciboSinDTO(recibo.getId(), (long) 5, valorConcepto);
         recibo.setConceptoRecibo(conceptoPresentismo);
         reciboRepository.save(recibo);
@@ -146,7 +177,7 @@ public class ReciboService {
     }
 
     public void calcularRemGravadas(Recibo recibo, List<Integer> conceptosId){
-        agregarSueldoBase(recibo);
+        agregarConceptoSueldoBase(recibo);
         if(conceptosId.contains(5)){
             calcularPresentismo(recibo);
         }
@@ -168,6 +199,7 @@ public class ReciboService {
         reciboDTO.setMesPago(recibo.getMesPago());
         reciboDTO.setPeriodoPago(recibo.getPeriodoPago());
         reciboDTO.setBanco(recibo.getBanco());
+        reciboDTO.setSueldoBase(recibo.getSueldoBase());
         reciboDTO.setTotalGravadas(recibo.getTotalGravadas());
         reciboDTO.setTotalDescuentos(recibo.getTotalDescuentos());
         reciboDTO.setTotalExentas(recibo.getTotalExentas());
@@ -178,5 +210,59 @@ public class ReciboService {
         
         return reciboDTO;
     }
-    
+
+    public Recibo generarAguinaldo(ReciboDTO reciboDTO){
+        Recibo reciboAguinaldo = agregarDatos(reciboDTO);
+        Concepto aguinaldo = conceptoRepository.findById((long) 7).get();
+        List<Recibo> recibosPrevios = reciboAguinaldo.getEmpleado().getRecibos();
+        int mesActual = reciboAguinaldo.getFechaDeposito().getMonthValue(), mesRecibo;
+        int anioActual = reciboAguinaldo.getFechaDeposito().getYear(), anioRecibo;
+        double mayorSueldo = 0, valorConcepto;
+        for(Recibo recibo : recibosPrevios){
+            mesRecibo = recibo.getFechaDeposito().getMonthValue();
+            anioRecibo = recibo.getFechaDeposito().getYear();
+            if(anioActual == anioRecibo && ((mesActual <= 6 && mesRecibo <= 6) || (mesActual > 6 && mesRecibo > 6))){
+                if(recibo.getTotalNeto() > mayorSueldo){
+                    mayorSueldo = recibo.getTotalNeto();
+                }
+            }
+        }
+        System.out.println(mayorSueldo);
+        Period periodoTrabajado = Period.between(reciboAguinaldo.getEmpleado().getFechaIngreso(), reciboAguinaldo.getFechaDeposito());
+        if(periodoTrabajado.getYears() == 0 && periodoTrabajado.getMonths() < 6){
+            valorConcepto = (mayorSueldo / 365) * periodoTrabajado.getDays();
+        }
+        else{
+            valorConcepto = mayorSueldo * aguinaldo.getPorcentaje();
+        }
+        ConceptoRecibo conceptoRecibo = conceptoReciboService.conceptoReciboSinDTO(reciboAguinaldo.getId(), aguinaldo.getId(), valorConcepto);
+        reciboAguinaldo.setConceptoRecibo(conceptoRecibo);
+
+        reciboAguinaldo.setTotalGravadas(valorConcepto);
+
+        calcularRemDescuentos(reciboAguinaldo, reciboDTO.getConceptosId());
+        calcularTotalNeto(reciboAguinaldo);
+
+        return reciboAguinaldo;
+    }
+
+    public Recibo generarRecibo(ReciboDTO reciboDTO){
+        Recibo nuevoRecibo = agregarDatos(reciboDTO);
+        calcularRemGravadas(nuevoRecibo, reciboDTO.getConceptosId());
+        calcularRemDescuentos(nuevoRecibo, reciboDTO.getConceptosId());
+        calcularTotalNeto(nuevoRecibo);
+        return nuevoRecibo;
+    }
+    /**
+     * Aguinaldo = Mejor sueldo * 0,50 o Mejor sueldo / 2
+     * Se calcula tomando como base el mejor sueldo de cada semestre (enero a junio y julio a diciembre) y sobre el mismo se aplica el 50%, es decir, el aguinaldo será la mitad del mejor sueldo del semestre.
+     * En caso de no haber trabajado los 6 meses completos: Aguinaldo = (Mejor sueldo / 12) * cant meses trabajados
+     * 
+     * 1- Se genera en JUNIO y DICIEMBRE. Tomando el mes de la FECHA DE DEPÓSITO.
+     * 2- Es un recibo a parte (más el recibo común), con todos los conceptos obligatorios incluidos + sindicato (si lo tiene). 
+     * 3- Toma el total neto más alto, para calcular (necesito los recibos anteriores).
+     * 
+     */
+
+     //CONTROLAR QUE NO HAYA 2 RECIBOS EN LA MISMA FECHA
 }

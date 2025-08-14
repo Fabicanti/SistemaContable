@@ -32,7 +32,7 @@ public class FamiliarService {
         familiar.setNombre(familiarDTO.getNombre());
         familiar.setApellido(familiarDTO.getApellido());
         familiar.setFechaNacimiento(familiarDTO.getFechaNacimiento());
-        familiar.setEstadoCivil(familiarDTO.getEstadoCivil());
+        familiar.setEstadoCivil(familiarDTO.getEstadoCivil().toLowerCase());
         familiar.setPaisResidencia(familiarDTO.getPaisResidencia());
         familiar.setDiscapacidad(familiarDTO.getDiscapacidad());
 
@@ -43,7 +43,7 @@ public class FamiliarService {
         }
         familiar.setIngresos(familiarDTO.getIngresos());
 
-        familiar.setRelacion(familiarDTO.getRelacion());
+        familiar.setRelacion(familiarDTO.getRelacion().toLowerCase());
 
         if(!empleadoRepository.existsById(familiarDTO.getEmpleadoId())){
             throw new ResponseStatusException(
@@ -56,7 +56,14 @@ public class FamiliarService {
 
         return familiarRepository.save(familiar);
     }
+
+        /**
+     * Condiciones para tener la asignacion familiar: 
+     * Del hijo: Ser menor de 18 años, soltero y residir en el país.
+     * Del hijo con discapacidad: Sin límite de edad. Ser soltero, viudo, divorciado, separado legalmente y residir en el país.
+     * Tope máximo de Ingreso del Grupo Familiar $4.489.372.
+     * Tope máximo de cada integrante del Grupo Familiar $2.244.686.
+     */
+
     
-
-
 }

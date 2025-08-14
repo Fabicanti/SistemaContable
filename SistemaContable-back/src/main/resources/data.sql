@@ -240,13 +240,14 @@ INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Obra Soci
 INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('PAMI', 'D', 0.03, true);  -- ID: 4
 INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Presentismo', 'G', 0.0833, false); -- ID: 5
 INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Cuota Sindical', 'D', 0.025, false); -- ID: 6
+INSERT INTO conceptos (nombre, tipo, porcentaje, obligatorio) VALUES ('Aguinaldo', 'G', 0.50, false); -- ID: 7
 
 --Empresa totalmente inventada
 INSERT INTO empresas (razon_social, cuit, domicilio) VALUES ('Empresa SA','93-23583520-24','Alem 104');
 
 --Empleados
-INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, salario_basico, empleador_id) 
-VALUES ('Fabian', 'Cantisano', '1997-11-24', '23-38538299-12', 101,'Gerente', 'Informatica', '2021-03-01', 23070.80, null);
+INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, empleador_id) 
+VALUES ('Fabian', 'Cantisano', '1997-11-24', '23-38538299-12', 101,'Gerente', 'Informatica', '2021-03-01', null);
 
-INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, salario_basico, empleador_id) 
-VALUES ('Gino', 'Arsanto', '2000-07-19', '18-29508362-14', 102,'Desarrollador', 'Informatica', '2024-05-04', 23070.80, 1);
+INSERT INTO empleados (nombre, apellido, fecha_nacimiento, cuil, legajo, puesto, departamento, fecha_ingreso, empleador_id) 
+VALUES ('Gino', 'Arsanto', '2000-07-19', '18-29508362-14', 102,'Desarrollador', 'Informatica', '2025-05-04', 1);

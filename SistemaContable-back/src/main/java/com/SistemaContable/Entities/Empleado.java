@@ -42,28 +42,25 @@ public class Empleado {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaIngreso;
     
-    @Column(nullable = false)
-    private double salarioBasico;
-    
     @ManyToOne
     @JoinColumn(name = "empleador_id")
     @JsonIgnoreProperties({"familiares", "recibos","empleador","salarioBasico","fechaNacimiento","id"})
     private Empleado empleador;
     
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     @JsonIgnoreProperties({"empleado","id"})
     private List<Familiar> familiares;
     
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    @JsonIgnoreProperties({"empresa","empleado","empleador"})
+    //@JsonIgnoreProperties({"empresa","empleado","empleador","id"})
     private List<Recibo> recibos;
 
     public Empleado(){
     }
 
-    public Empleado(String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso, double salarioBasico){
+    public Empleado(String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso){
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
@@ -72,10 +69,9 @@ public class Empleado {
         this.puesto = puesto;
         this.departamento = departamento;
         this.fechaIngreso = fechaIngreso;
-        this.salarioBasico = salarioBasico;
     }
 
-    public Empleado(String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso, double salarioBasico, Empleado empleador){
+    public Empleado(String nombre, String apellido, LocalDate fechaNacimiento, String cuil, Long legajo, String puesto, String departamento, LocalDate fechaIngreso, Empleado empleador){
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
@@ -84,7 +80,6 @@ public class Empleado {
         this.puesto = puesto;
         this.departamento = departamento;
         this.fechaIngreso = fechaIngreso;
-        this.salarioBasico = salarioBasico;
         this.empleador = empleador;
     }
 
@@ -155,14 +150,6 @@ public class Empleado {
 
     public LocalDate getFechaIngreso(){
         return fechaIngreso;
-    }
-
-    public void setSalarioBasico(double salarioBasico){
-        this.salarioBasico = salarioBasico;
-    }
-
-    public double getSalarioBasico(){
-        return salarioBasico;
     }
 
     public void setEmpleador(Empleado empleador){

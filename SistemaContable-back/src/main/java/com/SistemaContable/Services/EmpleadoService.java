@@ -38,12 +38,6 @@ public class EmpleadoService {
         empleado.setDepartamento(empleadoDTO.getDepartamento().toLowerCase());
         empleado.setFechaIngreso(empleadoDTO.getFechaIngreso());
 
-        if(empleadoDTO.getSalarioBasico() < 0){
-            throw new ResponseStatusException(
-                    HttpStatus.UNPROCESSABLE_ENTITY,"El salario ingresado no es válido");
-        }
-        empleado.setSalarioBasico(empleadoDTO.getSalarioBasico());
-
         if(empleadoDTO.getEmpleadorId() != null){
             Empleado empleador = empleadoRepository.findById(empleadoDTO.getEmpleadorId())
                 .orElseThrow(() -> new IllegalArgumentException("Empleador no encontrado"));
@@ -65,7 +59,6 @@ public class EmpleadoService {
         empleadoDTO.setPuesto(empleado.getPuesto());
         empleadoDTO.setDepartamento(empleado.getDepartamento());
         empleadoDTO.setFechaIngreso(empleado.getFechaIngreso());
-        empleadoDTO.setSalarioBasico(empleado.getSalarioBasico());
 
         return empleadoDTO;
     }
@@ -83,9 +76,6 @@ public class EmpleadoService {
             }
             if (empleadoDTO.getDepartamento() != null) {
                 empleado.get().setDepartamento(empleadoDTO.getDepartamento());
-            }
-            if (empleadoDTO.getSalarioBasico() > 0) { //Lo tuve que poner asi porque tiraba error con null
-                empleado.get().setSalarioBasico(empleadoDTO.getSalarioBasico());
             }
             if (empleadoDTO.getEmpleadorId() != null) {
                 Empleado empleador = empleadoRepository.findById(empleadoDTO.getEmpleadorId())
@@ -117,4 +107,19 @@ public class EmpleadoService {
                     HttpStatus.UNPROCESSABLE_ENTITY,"El empleado no existe");
         }
     }
+
+    public List<Recibo> obtenerRecibosDeSueldo(Long empleadoId){
+        Optional<Empleado> empleado = empleadoRepository.findById(empleadoId);
+        if (empleado.isPresent()){
+        if(empleado.get().getRecibos().isEmpty()){
+                throw new ResponseStatusException(HttpStatus
+                        .CONFLICT, "El empleado todavía no tiene recibos de sueldo");
+            }
+            return empleado.get().getRecibos();
+        }
+        else{
+             throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,"El empleado no existe");
+        }
+    } 
 }
