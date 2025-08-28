@@ -3,7 +3,6 @@ package com.SistemaContable.Services;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,23 +42,10 @@ public class ReciboService {
     // El reciboDTO solo necesita: fechaDeposito, banco, empresaId, empleadoId y sueldoBase. El resto se calcula/genera luego.
     public Recibo agregarDatos(ReciboDTO reciboDTO){
         Recibo recibo = new Recibo();
-        Optional<List<Recibo>> aux = reciboRepository.existsByFechaDepositoAndEmpleado(reciboDTO.getFechaDeposito(), reciboDTO.getEmpleadoId());
 
-        if(aux.get().size() != 0){
-            if((reciboDTO.getFechaDeposito().getMonthValue() == 6 || reciboDTO.getFechaDeposito().getMonthValue() == 12) && aux.get().size() == 1){
-                recibo.setFechaDeposito(reciboDTO.getFechaDeposito());
-                setFechas(recibo);
-            }
-            else{
-                throw new ResponseStatusException(
-                    HttpStatus.UNPROCESSABLE_ENTITY,"Ya existe el/los recibo/s correspondiente/s para este mes/año");
-            }
-        }
-        else{
-            recibo.setFechaDeposito(reciboDTO.getFechaDeposito());
-            setFechas(recibo);
-        }
-        
+        recibo.setFechaDeposito(reciboDTO.getFechaDeposito());
+        setFechas(recibo);
+
         recibo.setBanco(reciboDTO.getBanco());
 
         if(reciboDTO.getSueldoBase() < 0){
@@ -82,7 +68,7 @@ public class ReciboService {
         recibo.setEmpleado(empleado);
 
         recibo.setEmpleador(empleado.getEmpleador());
-
+        
         Recibo nuevoRecibo = reciboRepository.save(recibo);
 
         recibo.getEmpleado().setRecibo(nuevoRecibo);
@@ -159,6 +145,22 @@ public class ReciboService {
         reciboRepository.save(recibo);
     }
 
+    // La antiguedad se incluye a partir del año trabajado. Si lleva menos de 1 año, no se incluye. 
+    public void calcularAntiguedad(Recibo recibo){
+        Period periodoTrabajado = Period.between(recibo.getEmpleado().getFechaIngreso(), recibo.getFechaDeposito());
+        if(periodoTrabajado.getYears() >= 1){
+            double valorAntiguedad = recibo.getSueldoBase() * (periodoTrabajado.getYears() * 0.01);
+            ConceptoRecibo conceptoAntiguedad = conceptoReciboService.conceptoReciboSinDTO(recibo.getId(), (long) 8, valorAntiguedad);
+            recibo.setConceptoRecibo(conceptoAntiguedad);
+            reciboRepository.save(recibo);
+        }
+    }
+
+    /*Antigüedad = Sueldo Base * 1% de Antigüedad GRAVADA
+    Se calcula el 1% por cada año trabajado. En teoría esto es obligatorio a partir del año. 
+    EJ: Sueldo Base = 400.000, Años de antigüedad = 3 → 400.000 * 3% (0,03) = 12.000 
+    */ 
+
     public void calcularConceptosObligatorios(Recibo recibo){
         List<Concepto> conceptos = conceptoRepository.findByObligatorio(true);
         conceptos.remove(0);
@@ -181,6 +183,7 @@ public class ReciboService {
         if(conceptosId.contains(5)){
             calcularPresentismo(recibo);
         }
+        calcularAntiguedad(recibo);
         calcularTotales(recibo, "G");
     }
 
@@ -227,7 +230,7 @@ public class ReciboService {
                 }
             }
         }
-        System.out.println(mayorSueldo);
+       // System.out.println(mayorSueldo);
         Period periodoTrabajado = Period.between(reciboAguinaldo.getEmpleado().getFechaIngreso(), reciboAguinaldo.getFechaDeposito());
         if(periodoTrabajado.getYears() == 0 && periodoTrabajado.getMonths() < 6){
             valorConcepto = (mayorSueldo / 365) * periodoTrabajado.getDays();
@@ -253,6 +256,7 @@ public class ReciboService {
         calcularTotalNeto(nuevoRecibo);
         return nuevoRecibo;
     }
+
     /**
      * Aguinaldo = Mejor sueldo * 0,50 o Mejor sueldo / 2
      * Se calcula tomando como base el mejor sueldo de cada semestre (enero a junio y julio a diciembre) y sobre el mismo se aplica el 50%, es decir, el aguinaldo será la mitad del mejor sueldo del semestre.
