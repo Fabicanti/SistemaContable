@@ -34,7 +34,7 @@ public class JwtUtils {
      * Extrae el ID de usuario del token JWT dado.
      *
      * @param token El token JWT que contiene el ID de usuario en su asunto.
-     * @return El ID de usuario como un valor Long extraído del asunto del token.
+     * @return El ID de usuario como un valor Long extraído del token.
      */
     public static Long getUserIdFromToken(String token) {
         String subject = Jwts.parser().verifyWith(SECRET_KEY).build()

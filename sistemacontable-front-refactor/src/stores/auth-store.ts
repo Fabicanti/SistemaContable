@@ -34,7 +34,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   /**
-   * Función para cerrar sesión.
+   * Función para cerrar sesión. Sólo para cerrar sesión
    */
   logout: async () => {
     set({ isLoading: true })

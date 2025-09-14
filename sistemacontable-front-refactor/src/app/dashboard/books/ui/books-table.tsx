@@ -16,6 +16,7 @@ import { Autocomplete } from '@/components/shared/autocomplete';
 import { Account } from '@/interfaces/account-interface';
 import { capitalize } from '@/lib/utils';
 import { useBooksAll, useBooksPdf } from '@/hooks/use-books';
+import SkeletonDataTable from '@/components/skeleton/table-skeleton';
 
 export default function BooksTable() {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -118,13 +119,19 @@ export default function BooksTable() {
           </div>
         </div>
 
-        <DataTable
-          columns={booksColumns}
-          data={dataBooks}
-          showToggleColumns={false}
-          showSearchInput={false}
-          messageEmpty="No hay movimientos."
-        />
+        {isLoadingBooks ? (
+          <SkeletonDataTable
+            showSearch={false}
+          />
+        ) : (
+          <DataTable
+            columns={booksColumns}
+            data={dataBooks}
+            showToggleColumns={false}
+            showSearchInput={false}
+            messageEmpty="No hay movimientos."
+          />
+        )}
       </CardContent>
 
       <CardFooter className="flex justify-end">

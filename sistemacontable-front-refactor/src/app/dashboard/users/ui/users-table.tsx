@@ -15,14 +15,15 @@ import { useUserStore } from '@/stores/user-store';
 import UserDelete from './dialog/user-delete';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { User } from '@/interfaces/user-interface';
+import SkeletonDataTable from '@/components/skeleton/table-skeleton';
 
 export default function UsersTable() {
   const { user: myUser } = useUserStore();
-  const { dataUsers } = useUsersAll();
+  const { dataUsers, loadingUsers } = useUsersAll();
 
   // Acciones para actualizar y eliminar usuarios
   const [updateUser, setUpdateUser] = useState<User | null>(null);
-  const [deleteUser, setDeleteUser] = useState<User | null>(null)
+  const [deleteUser, setDeleteUser] = useState<User | null>(null);
 
   const actions = (user: User) => {
     return (
@@ -52,12 +53,16 @@ export default function UsersTable() {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
-          <DataTable
-            columns={usersColumns}
-            data={dataUsers.filter((user) => user.id !== myUser?.id)}
-            filterableColumns={['nombre', 'apellido', 'email']}
-            actions={actions}
-          />
+          {loadingUsers ? (
+            <SkeletonDataTable />
+          ) : (
+            <DataTable
+              columns={usersColumns}
+              data={dataUsers.filter((user) => user.id !== myUser?.id)}
+              filterableColumns={['nombre', 'apellido', 'email']}
+              actions={actions}
+            />
+          )}
         </CardContent>
       </Card>
 

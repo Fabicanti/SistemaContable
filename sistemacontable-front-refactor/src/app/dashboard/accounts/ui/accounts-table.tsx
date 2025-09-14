@@ -13,16 +13,16 @@ import { useUserStore } from '@/stores/user-store';
 
 import { accountsColumns } from '../table/accounts-columns';
 import AccountDelete from './dialog/account-delete';
+import SkeletonDataTable from '@/components/skeleton/table-skeleton';
 
 export default function AccountsTable() {
   const { user } = useUserStore();
   const [deleteAccount, setDeleteAccount] = useState<Account | null>(null);
-  const { accounts, fetchAccounts } = useAccountStore();
+  const { accounts, fetchAccounts, isLoadingAccounts } = useAccountStore();
 
   useEffect(() => {
     fetchAccounts();
   }, [fetchAccounts]);
-
 
   const actions = (account: Account) => {
     return (
@@ -37,7 +37,7 @@ export default function AccountsTable() {
         }
       </div>
     )
-  }
+  };
 
   return (
     <div>
@@ -48,17 +48,21 @@ export default function AccountsTable() {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
-          <DataTable
-            columns={accountsColumns}
-            data={accounts ?? []}
-            showToggleColumns={false}
-            columnLabels={{
-              column: "tipoCuentaNombre",
-              label: "Tipos de cuentas"
-            }}
-            filterableColumns={['codigoCuenta', 'nombre', 'tipoCuentaNombre']}
-            actions={actions}
-          />
+          {isLoadingAccounts ? (
+            <SkeletonDataTable />
+          ) : (
+            <DataTable
+              columns={accountsColumns}
+              data={accounts ?? []}
+              showToggleColumns={false}
+              columnLabels={{
+                column: "tipoCuentaNombre",
+                label: "Tipos de cuentas"
+              }}
+              filterableColumns={['codigoCuenta', 'nombre', 'tipoCuentaNombre']}
+              actions={actions}
+            />
+          )}
         </CardContent>
 
         {deleteAccount &&

@@ -1,23 +1,27 @@
 "use client";
 
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import { CalendarIcon, Copy, Eye, FileDown, LoaderCircle } from 'lucide-react';
 import React, { useState } from 'react';
+import { DateRange } from 'react-day-picker';
 
+import SkeletonDataTable from '@/components/skeleton/table-skeleton';
 import { DataTable } from '@/components/table/data-table';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import {
+    Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
+} from '@/components/ui/card';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useEntriePdf, useEntriesByDateRange } from '@/hooks/use-entries';
 import { Entrie } from '@/interfaces/entrie-interface';
 import { copyToClipboard } from '@/lib/utils';
 
 import { JournalEntriesColumns } from '../../table/journal-entries-columns';
 import EntrieView from '../dialog/entrie-view';
-import { es } from 'date-fns/locale';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { DateRange } from 'react-day-picker';
-import { format } from 'date-fns';
+
 
 export default function EntriesTable() {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -115,15 +119,20 @@ export default function EntriesTable() {
 
           </div>
         </div>
-
-        <DataTable
-          columns={JournalEntriesColumns}
-          data={dataEntries}
-          showToggleColumns={false}
-          showSearchInput={false}
-          actions={actions}
-          messageEmpty="Sin resultados. Filtra asientos mediante fechas o crea un asiento."
-        />
+        {isLoadingEntries ? (
+          <SkeletonDataTable
+            showSearch={false}
+          />
+        ) : (
+          <DataTable
+            columns={JournalEntriesColumns}
+            data={dataEntries}
+            showToggleColumns={false}
+            showSearchInput={false}
+            actions={actions}
+            messageEmpty="Sin resultados. Filtra asientos mediante fechas o crea un asiento."
+          />
+        )}
       </CardContent>
 
       <CardFooter className='flex justify-end'>

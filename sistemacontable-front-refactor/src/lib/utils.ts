@@ -4,6 +4,12 @@ import { type ClassValue, clsx } from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
+
+/**
+ * Función para concatenar clases de Tailwind CSS de manera condicional.
+ * @param inputs es una lista de clases de Tailwind CSS.
+ * @returns una cadena con las clases concatenadas. 
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -18,7 +24,7 @@ export const copyToClipboard = async (text: string) => {
     await navigator.clipboard.writeText(text);
     toast.info("Código copiado al portapapeles");
   } catch {
-    toast.error("Error al copiar");
+    toast.error("No se pudo copiar el texto al portapapeles");
   }
 };
 
@@ -91,7 +97,7 @@ export function handleApiError(error: AxiosError<ErrorMessage>, fallbackMessage 
 /**
  * Función para generar un número aleatorio de n dígitos.
  * @param n es la cantidad de dígitos del número generado.
- * @returns 
+ * @returns un número aleatorio de n dígitos.
  */
 export function randomNumber(n: number): number {
   if (n <= 0) throw new Error("La cantidad de dígitos debe ser mayor a cero");
@@ -102,19 +108,24 @@ export function randomNumber(n: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
+/**
+ * Función para formatear un número como una cadena de texto representando una cantidad monetaria en pesos argentinos.
+ * @param n es un número que se desea formatear como una cadena de texto representando una cantidad monetaria en pesos argentinos.
+ * @returns la cadena de texto formateada como una cantidad monetaria en pesos argentinos. 
+ */
 export function formatBalance(n: number): string {
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
-  }).format(n)
-
+  }).format(n);
 }
 
 
 /**
  * Función para descargar un archivo PDF.
- * @param blob  es el Blob que contiene el PDF a descargar.
- * @param nombreArchivo  es el nombre del archivo que se descargará.
+ * @param blob es el Blob que contiene el PDF a descargar.
+ * @param nombreArchivo es el nombre del archivo que se descargará.
  */
 export function downloadBlobPdf(blob: Blob, nombreArchivo: string) {
   const url = URL.createObjectURL(blob);

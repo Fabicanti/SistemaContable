@@ -20,7 +20,6 @@ export default function useAuth() {
   });
 
   const onSubmit = async (credentials: Login) => {
-    console.log('credentials', credentials);
     await login(credentials);
     router.push('/dashboard');
   }
