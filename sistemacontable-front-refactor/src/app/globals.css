@@ -59,7 +59,7 @@
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
-  --gradient-background: linear-gradient(to top right, oklch(70.5% 0.213 47.604), oklch(65.6% 0.241 354.308), oklch(54.1% 0.281 293.009));
+  --gradient-background: linear-gradient(to top right, oklch(70.5% 0.213 47.604), oklch(65.578% 0.24043 354.297), oklch(54.1% 0.281 293.009));
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

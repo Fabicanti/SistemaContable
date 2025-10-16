@@ -10,9 +10,10 @@ from "@/components/ui/sidebar"
 import {
   BookText, 
   Building2,
-  FileSpreadsheet,
   LayoutDashboard,
   NotebookPen,
+  Plus,
+  ScanSearch,
   Users, 
   Wallet } 
 from "lucide-react"
@@ -20,6 +21,7 @@ import NavHeader from "./nav-header"
 import NavUser from "./nav-user"
 import { NavMain } from "./nav-main"
 import { useUserStore } from "@/stores/user-store"
+import { NavCollapse } from "./nav-collapse"
 
 const data = {
   principal: [
@@ -53,15 +55,28 @@ const data = {
   ],
   sueldos: [
     {
-      name: "Empleados",
+      title: "Empleados",
       url: "#",
-      icon: Building2
+      icon: Building2,
+      isActive: true,
+      items: [
+        {
+          title: "Crear",
+          iconItem: Plus,
+          url: "/dashboard/employees/create",
+        },
+        {
+          title: "Ver empleados",
+          url: "#",
+          iconItem: ScanSearch,
+        },
+      ],
     },
-    {
-      name: "Recibos",
-      url: "#",
-      icon: FileSpreadsheet
-    }
+    // {
+    //   name: "Recibos",
+    //   url: "#",
+    //   icon: FileSpreadsheet
+    // }
   ]
 }
 
@@ -76,7 +91,7 @@ export function AppSidebar() {
       <SidebarContent>
         <NavMain items={data.principal} title="Menú Principal" />
         <NavMain items={data.projects} title="Contabilidad" />
-        <NavMain items={data.sueldos} title="Liquidación de sueldos" />
+        <NavCollapse items={data.sueldos} title="Liquidación de sueldos" />
       </SidebarContent>
       <SidebarFooter>
         {user && <NavUser user={user} />}

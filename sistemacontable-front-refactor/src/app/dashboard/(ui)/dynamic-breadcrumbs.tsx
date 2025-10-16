@@ -14,6 +14,8 @@ const breadcrumbLabels: Record<string, string> = {
   configuration: "Configuración",
   personal: 'Información personal',
   security: 'Seguridad del usuario',
+  employees: 'Empleados',
+  create: 'Crear un empleado'
 };
 
 export default function DynamicBreadcrumbs() {

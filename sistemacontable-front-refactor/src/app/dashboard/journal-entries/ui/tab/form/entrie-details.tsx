@@ -29,14 +29,6 @@ export default function EntrieDetails({ form }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                {/* <DateTimePicker
-                  locale={es}
-                  granularity="day"
-                  value={field.value ? new Date(field.value) : undefined}
-                  onChange={(date) => {
-                    field.onChange(date?.toISOString().split("T")[0]); // "YYYY-MM-DD"
-                  }}
-                /> */}
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
                     <Button
@@ -60,6 +52,9 @@ export default function EntrieDetails({ form }: Props) {
                       onSelect={(date) => {
                         field.onChange(date?.toISOString().split("T")[0]);
                       }}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
                     />
                   </PopoverContent>
                 </Popover>

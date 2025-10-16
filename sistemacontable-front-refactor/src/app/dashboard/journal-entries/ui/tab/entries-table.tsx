@@ -82,6 +82,7 @@ export default function EntriesTable() {
                   <Calendar
                     locale={es}
                     mode="range"
+                    numberOfMonths={2}
                     selected={dateRange}
                     captionLayout="dropdown"
                     onSelect={(date) => {
