@@ -36,7 +36,8 @@ export const usersColumns: ColumnDef<User>[] = [
       return (
         <div>
           {role === 2 ? <Badge variant="admin" className="text-xs">Administrador</Badge> :
-            <Badge variant="default" className="text-xs">Usuario</Badge>}
+          (role === 3 ? <Badge variant="secondary" className="text-xs">Espectador</Badge> :
+            <Badge variant="default" className="text-xs">Usuario</Badge>)}
         </div>
       );
     },

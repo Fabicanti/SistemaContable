@@ -1,12 +1,17 @@
-
-import React from 'react';
+"use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useUserStore } from '@/stores/user-store';
 
+import EntriesViewer from './alert/entries-viewer';
 import EntriesCreate from './tab/entries-create';
 import EntriesTable from './tab/entries-table';
 
 export default function EntrieTabs() {
+  const { user } = useUserStore();
+
+  if (!user) return null;
+
   return (
     <div className="flex flex-col gap-6">
       <Tabs defaultValue="entries" className='mt-2'>
@@ -15,7 +20,11 @@ export default function EntrieTabs() {
           <TabsTrigger value="entries-table">Ver asientos</TabsTrigger>
         </TabsList>
         <TabsContent value="entries">
-          <EntriesCreate />
+          {user.roleId === 3 ? (
+            <EntriesViewer />
+          ) : (
+            <EntriesCreate />
+          )}
         </TabsContent>
         <TabsContent value="entries-table">
           <EntriesTable />

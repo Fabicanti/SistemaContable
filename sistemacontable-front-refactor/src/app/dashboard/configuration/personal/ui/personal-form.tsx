@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Separator } from '@/components/ui/separator';
 import { useUpdateMyUser } from '@/hooks/use-users';
 import { useUserStore } from '@/stores/user-store'
-import { BadgeCheckIcon, Crown, LoaderCircle, UserRound } from 'lucide-react';
+import { BadgeCheckIcon, Crown, Eye, LoaderCircle, UserRound } from 'lucide-react';
 import React from 'react'
 
 type InputsId = {
@@ -26,6 +26,10 @@ const inputsUpdate: InputsId[] = [
 
 export default function PersonalForm() {
   const { user } = useUserStore();
+
+  const canCreateAsientos = user?.roleId === 1 || user?.roleId === 2
+  const isAdmin = user?.roleId === 2
+  const isViewer = user?.roleId === 3
 
   const { form, onSubmit, isLoadingUpdateMyUser } = useUpdateMyUser(user);
 
@@ -69,6 +73,7 @@ export default function PersonalForm() {
         <FormField
           key={'email'}
           control={form.control}
+          disabled={isViewer}
           name={'email'}
           render={({ field }) => (
             <FormItem>
@@ -109,27 +114,64 @@ export default function PersonalForm() {
             )}
           />
         </div>
-        <div className='flex items-center gap-2'>
+        <div className="flex items-center gap-2">
+          {/* Badge de permisos sobre asientos */}
           <Badge
             variant="secondary"
-            className="bg-blue-500 text-white dark:bg-blue-600"
-            title='Este usuario puede crear asientos contables.'
+            className={
+              canCreateAsientos
+                ? "bg-blue-500 text-white dark:bg-blue-600"
+                : "bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-100"
+            }
+            title={
+              canCreateAsientos
+                ? "Este usuario puede crear asientos contables."
+                : "Este usuario solo puede visualizar la información (modo espectador)."
+            }
           >
-            <BadgeCheckIcon />
-            Verificado
-          </Badge>
-          <Badge
-            variant={user.roleId === 2 ? 'admin' : 'default'}
-            title={`Este usuario tiene privilegios ${user.roleId === 2 ? 'de administración' : 'básicos'}`}
-          >
-            {user.roleId === 2 ? (
+            {canCreateAsientos ? (
               <>
-                <Crown />
-                Administrador
+                <BadgeCheckIcon className="mr-1 h-3 w-3" />
+                Verificado
               </>
             ) : (
               <>
-                <UserRound />
+                <Eye className="mr-1 h-3 w-3" />
+                No Verificado
+              </>
+            )}
+          </Badge>
+
+          {/* Badge de rol general */}
+          <Badge
+            variant={
+              isAdmin
+                ? "admin" // tu variant custom
+                : isViewer
+                  ? "outline" // o el que uses para algo "menos importante"
+                  : "default"
+            }
+            title={
+              isAdmin
+                ? "Este usuario tiene privilegios de administración."
+                : isViewer
+                  ? "Este usuario solo es espectador."
+                  : "Este usuario tiene privilegios básicos."
+            }
+          >
+            {isAdmin ? (
+              <>
+                <Crown className="mr-1 h-3 w-3" />
+                Administrador
+              </>
+            ) : isViewer ? (
+              <>
+                <Eye className="mr-1 h-3 w-3" />
+                Espectador
+              </>
+            ) : (
+              <>
+                <UserRound className="mr-1 h-3 w-3" />
                 Usuario
               </>
             )}

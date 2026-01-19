@@ -1,6 +1,7 @@
 -- Carga de datos en la tabla Rol
 INSERT INTO roles (nombre) VALUES ('USER');
 INSERT INTO roles (nombre) VALUES ('SUPERUSER');
+INSERT INTO roles (nombre) VALUES ('VIEWER');
 
 -- Cargar datos en la tabla TipoCuenta
 INSERT INTO tipos_cuenta (nombre) VALUES ('RAIZ');

@@ -122,6 +122,7 @@ export default function EntriesTable() {
         </div>
         {isLoadingEntries ? (
           <SkeletonDataTable
+            rows={2}
             showSearch={false}
           />
         ) : (
@@ -140,7 +141,7 @@ export default function EntriesTable() {
         <Button
           variant="destructive"
           onClick={() => onSubmitPdfEntries(dateRange)}
-          disabled={isLoadingPdfEntries || !dateRange}
+          disabled={isLoadingPdfEntries || !dateRange || dataEntries.length === 0}
         >
           <div className="flex items-center justify-center">
             {isLoadingPdfEntries ? (

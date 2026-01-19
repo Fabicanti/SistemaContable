@@ -27,9 +27,6 @@ export default function UserDelete({user, onClose}: Props) {
 
   return (
     <AlertDialog open={!!user} onOpenChange={onClose}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Abrir Dialog</Button>
-      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Eliminar este usuario?</AlertDialogTitle>

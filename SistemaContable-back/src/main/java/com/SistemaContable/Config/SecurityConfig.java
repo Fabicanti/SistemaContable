@@ -1,8 +1,11 @@
 package com.SistemaContable.Config;
 
+import com.SistemaContable.Authentication.oauth.CustomOAuth2SuccessHandler;
 import com.SistemaContable.Authentication.util.JwtAuthenticationFilter;
 import com.SistemaContable.Exceptions.JwtAccessDeniedHandler;
 import com.SistemaContable.Exceptions.JwtAuthenticationEntryPoint;
+import com.SistemaContable.Repositories.RolRepository;
+import com.SistemaContable.Repositories.UsuarioRepository;
 import com.SistemaContable.Services.Auth.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -31,17 +35,25 @@ public class SecurityConfig {
     // Roles
     private static final String ADMIN = "SUPERUSER";
     private static final String USER = "USER";
+    private static final String VIEWER = "VIEWER";
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
+    // OAuth2
+    private final UsuarioRepository usuarioRepository;
+    private final RolRepository rolRepository;
+
+
     public SecurityConfig(CustomUserDetailsService userDetailsService,
                           JwtAccessDeniedHandler accessDeniedHandler,
-                          JwtAuthenticationEntryPoint authenticationEntryPoint) {
+                          JwtAuthenticationEntryPoint authenticationEntryPoint, UsuarioRepository usuarioRepository, RolRepository rolRepository) {
         this.userDetailsService = userDetailsService;
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.usuarioRepository = usuarioRepository;
+        this.rolRepository = rolRepository;
     }
 
 
@@ -60,20 +72,21 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/login", "/css/**", "/js/**", "/images/**", "/oauth2/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         // Usuarios.
-                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasAnyRole(USER, ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasAnyRole(USER, ADMIN, VIEWER)
                         .requestMatchers("/api/usuarios/registrar").permitAll()
                         .requestMatchers("/api/usuarios/eliminar").hasRole(ADMIN)
                         .requestMatchers("/api/usuarios/modificar").hasRole(ADMIN)
                         // Cuentas.
-                        .requestMatchers(HttpMethod.GET, "/api/cuentas").hasAnyRole(USER, ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/api/cuentas").hasAnyRole(USER, ADMIN, VIEWER)
                         .requestMatchers("/api/cuentas/**").hasRole(ADMIN)
                         // Asientos contables.
-                        .requestMatchers("/api/asientos/**").hasAnyRole(USER, ADMIN)
+                        .requestMatchers("/api/asientos/**").hasAnyRole(USER, ADMIN, VIEWER)
                         .requestMatchers("/api/auth/**").permitAll()
                         // Libros.
-                        .requestMatchers("/api/libros/**").hasAnyRole(USER, ADMIN)
+                        .requestMatchers("/api/libros/**").hasAnyRole(USER, ADMIN, VIEWER)
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .headers(headers ->
@@ -82,6 +95,10 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint)
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .successHandler(oAuth2AuthenticationSuccessHandler())
                 );
         return http.build();
     }
@@ -89,7 +106,7 @@ public class SecurityConfig {
     /**
      * Define un bean para PasswordEncoder, que se utiliza para codificar y verificar contraseñas.
      *
-     * @return es una implementación de PasswordEncoder basada en BCrypt,
+     * @return es una implementación de PasswordEncoder basada en Bcrypt,
      * que proporciona un hash robusto para almacenar contraseñas de forma segura.
      */
     @Bean
@@ -100,6 +117,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+        return new CustomOAuth2SuccessHandler(usuarioRepository, rolRepository, this.passwordEncoder());
     }
 
     /**

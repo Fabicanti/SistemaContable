@@ -10,10 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -47,6 +45,24 @@ public class AuthController {
         String token = JwtUtils.generateToken(userId);
         JwtUtils.addTokenToCookie(response, token);
 
+        UsuarioDTO usuario = usuarioService.buscarUsuarioById(userId);
+        return ResponseEntity.ok(usuario);
+    }
+
+    /**
+     * Punto de conexión para recuperar los detalles del usuario autenticado. Si el usuario no está autenticado,
+     * devuelve un estado 401 No autorizado.
+     *
+     * @param userDetails los detalles del usuario autenticado, proporcionados por el contexto de Spring Security.
+     * @return una ResponseEntity que contiene los detalles del usuario si está autenticado, o un estado 401 No autorizado en caso contrario.
+     */
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioDTO> me(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        Long userId = userDetails.getId();
         UsuarioDTO usuario = usuarioService.buscarUsuarioById(userId);
         return ResponseEntity.ok(usuario);
     }

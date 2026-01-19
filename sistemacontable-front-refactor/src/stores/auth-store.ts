@@ -7,6 +7,7 @@ import { User } from "@/interfaces/user-interface";
 
 type AuthStore = {
   isLoading: boolean
+  checkAuth: () => Promise<void>
   login: (credentials: Login) => Promise<void>
   logout: () => Promise<void>
 }
@@ -52,8 +53,20 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
 
       toast.success('Sesión cerrada')
-    } catch  {
+    } catch {
       toast.error('Error al cerrar sesión')
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+  checkAuth: async () => {
+    set({ isLoading: true })
+
+    try {
+      const { data } = await api.get<User>('/api/auth/me')
+      useUserStore.getState().setUser(data)
+    } catch {
+      useAuthStore.getState().logout();
     } finally {
       set({ isLoading: false })
     }

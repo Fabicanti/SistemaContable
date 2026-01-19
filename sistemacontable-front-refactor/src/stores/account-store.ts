@@ -1,6 +1,7 @@
 import { getAccountsAll } from "@/core/actions/account.action";
 import { Account } from "@/interfaces/account-interface"
 import { handleApiError } from "@/lib/utils";
+import { createEncryptedStorage } from "@/config/encrypted-storage";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from 'axios';
@@ -67,7 +68,7 @@ export const useAccountStore = create<AccountStore>()(
     }),
     {
       name: 'account-storage',
-      partialize: (state) => ({ accounts: state.accounts })
+      storage: createEncryptedStorage(),
     }
   )
 );

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const roles = [1, 2] as const;
+const roles = [1, 2, 3] as const;
 
 const userSchema = z.object({
   nombre: z
@@ -24,7 +24,7 @@ const userSchema = z.object({
     .min(2, "El nombre de usuario debe tener al menos 2 caracteres")
     .max(20, "El nombre de usuario no puede tener más de 20 caracteres"),
   roleId: z
-    .number().refine((val) => roles.includes(val as 1 | 2), {
+    .number().refine((val) => roles.includes(val as 1 | 2 | 3), {
       message: "Rol inválido.",
     }),
 });

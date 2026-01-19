@@ -122,6 +122,7 @@ export default function BooksTable() {
 
         {isLoadingBooks ? (
           <SkeletonDataTable
+            rows={2}
             showSearch={false}
           />
         ) : (
@@ -138,7 +139,7 @@ export default function BooksTable() {
       <CardFooter className="flex justify-end">
         <Button
           variant="destructive"
-          disabled={!dateRange || !selectedAccount || isLoadingPdfBooks}
+          disabled={!dateRange || !selectedAccount || isLoadingPdfBooks || dataBooks.length === 0}
           onClick={() => onSubmitBookPdf(dateRange, selectedAccount)}
         >
           <div className="flex items-center justify-center">

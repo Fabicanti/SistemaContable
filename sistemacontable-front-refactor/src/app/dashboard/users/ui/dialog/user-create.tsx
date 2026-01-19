@@ -27,6 +27,7 @@ const inputsRegister: InputsId[] = [
 const roleOptions = [
   { label: "Usuario", value: 1 },
   { label: "Administrador", value: 2 },
+  { label: "Espectador", value: 3 },
 ] as const;
 
 type Props = {

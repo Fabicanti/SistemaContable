@@ -1,26 +1,16 @@
 "use client"
 
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import LogoCompany from '../logo-company';
 
 export default function Navbar() {
   const router = useRouter();
 
   return (
     <header className="py-4 px-6 bg-background dark:bg-gray-900 backdrop-blur-md shadow-md z-50">
-      <div className="max-w-6xl mx-auto flex sm:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-2">
-          <Image
-            src="/favicon.svg"
-            alt="Logo del sistema"
-            width={28}
-            height={28}
-          />
-          <h1 className="text-2xl font-bold bg-gradient-to-tr from-violet-600 via-pink-600 to-orange-500 bg-clip-text text-transparent hidden sm:block">
-            Sistema Contable
-          </h1>
-        </div>
+      <div className="max-w-7xl mx-auto flex sm:flex-row justify-between items-center gap-4">
+        <LogoCompany name='Sistema Contable' url="/home" size={28} />
         <div className="flex items-center gap-2 w-auto">
           <Button
             type="button"
@@ -41,7 +31,5 @@ export default function Navbar() {
         </div>
       </div>
     </header>
-
-
   );
 }
