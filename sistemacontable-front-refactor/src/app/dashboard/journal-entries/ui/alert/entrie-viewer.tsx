@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircleIcon } from 'lucide-react'
 import React from 'react'
 
-export default function EntriesViewer() {
+export default function EntrieViewer() {
   return (
     <div>
       <Alert variant="destructive">

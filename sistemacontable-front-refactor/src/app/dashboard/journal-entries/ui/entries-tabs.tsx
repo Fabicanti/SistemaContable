@@ -3,9 +3,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserStore } from '@/stores/user-store';
 
-import EntriesViewer from './alert/entries-viewer';
 import EntriesCreate from './tab/entries-create';
 import EntriesTable from './tab/entries-table';
+import EntrieViewer from './alert/entrie-viewer';
 
 export default function EntrieTabs() {
   const { user } = useUserStore();
@@ -21,7 +21,7 @@ export default function EntrieTabs() {
         </TabsList>
         <TabsContent value="entries">
           {user.roleId === 3 ? (
-            <EntriesViewer />
+            <EntrieViewer />
           ) : (
             <EntriesCreate />
           )}

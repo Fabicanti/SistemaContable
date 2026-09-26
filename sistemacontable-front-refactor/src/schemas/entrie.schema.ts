@@ -30,7 +30,7 @@ export const entrieSchema = z.object({
     .optional(),
   detalles: z
     .array(movementSchema)
-    .min(1, "Debe haber al menos un movimiento"),
+    .min(2, "Debe haber al menos dos movimientos"),
 });
 
 export type Entrie = z.infer<typeof entrieSchema>;

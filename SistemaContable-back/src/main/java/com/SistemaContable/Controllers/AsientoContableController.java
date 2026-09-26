@@ -8,6 +8,7 @@ import com.SistemaContable.DTO.AsientoFechaDto;
 import com.SistemaContable.DTO.AsientoResponseDto;
 import com.SistemaContable.Services.PdfGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,15 +34,25 @@ public class AsientoContableController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoAsiento);
     }
 
-    @PostMapping("/listar")
-    public ResponseEntity<List<AsientoResponseDto>> listarAsientos(@RequestBody AsientoFechaDto asientoFechaDto) {
-        List<AsientoResponseDto> asientos = asientoContableService.obtenerTodosLosAsientosEntreFechas(asientoFechaDto);
+    @GetMapping("/listar")
+    public ResponseEntity<List<AsientoResponseDto>> listarAsientos(
+            @RequestParam("desde") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam("hasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
+    ) {
+        List<AsientoResponseDto> asientos = asientoContableService
+                .obtenerTodosLosAsientosEntreFechas(desde, hasta);
+
         return ResponseEntity.ok(asientos);
     }
 
-    @PostMapping("/pdf")
-    public ResponseEntity<?> obtenerAsientoPdf(@RequestBody AsientoFechaDto asientoFechaDto) throws IOException {
-        List<AsientoResponseDto> asientosContables = asientoContableService.obtenerTodosLosAsientosEntreFechas(asientoFechaDto);
+    @GetMapping("/pdf")
+    public ResponseEntity<byte[]> obtenerAsientoPdf(
+            @RequestParam("desde") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam("hasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
+    ) throws IOException {
+        List<AsientoResponseDto> asientosContables = asientoContableService
+                .obtenerTodosLosAsientosEntreFechas(desde, hasta);
+
         byte[] pdfBytes = pdfGeneratorService.generarPdfAsiento(asientosContables);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

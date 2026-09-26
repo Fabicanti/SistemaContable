@@ -3,6 +3,7 @@ package com.SistemaContable.Services;
 import com.SistemaContable.DTO.AsientoFechaDto;
 import com.SistemaContable.DTO.AsientoResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,8 +90,8 @@ public class AsientoContableService {
     }
 
     // Prueba por ahora.
-    public List<AsientoResponseDto> obtenerTodosLosAsientosEntreFechas(AsientoFechaDto asientoFechaDto) {
-        return asientoContableRepository.findByFechaBetween(asientoFechaDto.getDesde(), asientoFechaDto.getHasta()).stream()
+    public List<AsientoResponseDto> obtenerTodosLosAsientosEntreFechas(LocalDate desde, LocalDate hasta) {
+        return asientoContableRepository.findByFechaBetween(desde, hasta).stream()
                 .map(this::mapToResponseDto)
                 .collect(Collectors.toList());
     }
