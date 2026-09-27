@@ -4,7 +4,7 @@ import { StorageValue } from 'zustand/middleware';
 /**
  * Storage personalizado para zustand que encripta/desencripta automáticamente
  */
-export const createEncryptedStorage = () => ({
+export const createEncryptedStorage = <State extends { accounts?: unknown }>() => ({
   getItem: (name: string) => {
     const item = localStorage.getItem(name);
     if (!item) return null;
@@ -15,14 +15,14 @@ export const createEncryptedStorage = () => ({
       if (parsed.state?.accounts && typeof parsed.state.accounts === 'string') {
         parsed.state.accounts = decryptData(parsed.state.accounts);
       }
-      return parsed as StorageValue<any>;
+      return parsed as StorageValue<State>;
     } catch (error) {
       console.error('Error al desencriptar datos:', error);
       return null;
     }
   },
 
-  setItem: (name: string, value: StorageValue<any>) => {
+  setItem: (name: string, value: StorageValue<State>) => {
     try {
       const toStore = { ...value };
       // Si state.accounts existe, encriptarlo

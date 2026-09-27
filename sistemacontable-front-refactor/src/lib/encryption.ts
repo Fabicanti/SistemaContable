@@ -17,7 +17,7 @@ const getEncryptionKey = (): string => {
 /**
  * Encripta datos usando el token JWT como clave
  */
-export const encryptData = (data: any): string => {
+export const encryptData = (data: unknown): string => {
   try {
     const key = getEncryptionKey();
     const jsonString = JSON.stringify(data);
@@ -31,7 +31,7 @@ export const encryptData = (data: any): string => {
 /**
  * Desencripta datos usando el token JWT como clave
  */
-export const decryptData = (encryptedData: string): any => {
+export const decryptData = (encryptedData: string): unknown => {
   try {
     const key = getEncryptionKey();
     const decrypted = CryptoJS.AES.decrypt(encryptedData, key).toString(CryptoJS.enc.Utf8);

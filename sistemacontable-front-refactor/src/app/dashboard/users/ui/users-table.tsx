@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { DataTable } from '@/components/table/data-table';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useUsersAll } from '@/hooks/use-users';
-import { Separator } from '@radix-ui/react-separator';
+import { Separator } from '@/components/ui/separator';
 
 import { usersColumns } from '../table/users-columns';
 import { copyToClipboard } from '@/lib/utils';

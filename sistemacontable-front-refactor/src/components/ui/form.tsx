@@ -1,8 +1,9 @@
 "use client"
 
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
+import { CircleAlert } from "lucide-react"
+import { Label as LabelPrimitive } from "radix-ui"
+import { Slot as SlotPrimitive } from "radix-ui"
 import {
   Controller,
   FormProvider,
@@ -104,11 +105,11 @@ function FormLabel({
   )
 }
 
-function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
+function FormControl({ ...props }: React.ComponentProps<typeof SlotPrimitive.Slot>) {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
   return (
-    <Slot
+    <SlotPrimitive.Slot
       data-slot="form-control"
       id={formItemId}
       aria-describedby={
@@ -147,10 +148,11 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn("text-destructive text-sm", className)}
+      className={cn("text-destructive flex items-start gap-1.5 text-sm", className)}
       {...props}
     >
-      {body}
+      {error && <CircleAlert aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />}
+      <span>{body}</span>
     </p>
   )
 }

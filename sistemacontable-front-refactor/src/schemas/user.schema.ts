@@ -19,7 +19,6 @@ const userSchema = z.object({
     .email("El email no es válido"),
   username: z
     .string()
-    .nonempty("El nombre de usuario es obligatorio")
     .regex(/^[a-zA-Z0-9_]+$/, "El nombre de usuario solo puede contener letras, números y guiones bajos")
     .min(2, "El nombre de usuario debe tener al menos 2 caracteres")
     .max(20, "El nombre de usuario no puede tener más de 20 caracteres"),

@@ -1,5 +1,28 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Base de interfaz
+
+- React y React DOM 19.3, con tipos de React 19.
+- Next.js 15.5 y Tailwind CSS 4.3.
+- shadcn/ui: componentes locales, estilo `new-york`, primitivas del paquete unificado `radix-ui`.
+- Recharts 3 para los gráficos existentes; Lucide para iconos y Sonner para notificaciones.
+- Tema claro/oscuro en `src/app/globals.css`, con variables OKLCH y tipografía Geist.
+
+La migración conserva las variantes de botones `pink` y `violet` y no agrega componentes de interfaz. Los componentes personalizados permanecen en `src/components/ui`; no deben sobrescribirse sin revisar sus adaptaciones.
+
+Validaciones disponibles:
+
+```bash
+npm run typecheck
+npm run lint
+npm test -- --runInBand
+npm run build
+```
+
+Las pruebas cubren foco de formularios, navegación por teclado en tabs, apertura/cierre de diálogos y el tooltip de gráficos con React 19. La compilación necesita acceso a Google Fonts para descargar Geist y Geist Mono.
+
+Referencias: [migración de shadcn a Radix unificado](https://ui.shadcn.com/docs/changelog/2026-02-radix-ui), [React 19 y Tailwind 4](https://ui.shadcn.com/docs/tailwind-v4), [Recharts 3](https://github.com/recharts/recharts/wiki/3.0-migration-guide).
+
 ## Getting Started
 
 First, run the development server:

@@ -1,134 +1,134 @@
-"use client"
+"use client";
 
-import LogoCompany from '@/components/logo-company';
-import { Button } from '@/components/ui/button';
-import { FloatingLabelInput } from '@/components/ui/floating-label-input';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { Separator } from '@/components/ui/separator';
-import { useCreateUser } from '@/hooks/use-users';
-import { LoaderCircle } from 'lucide-react';
-import React from 'react'
+import Link from "next/link";
+import { ArrowRight, LoaderCircle, Mail, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FormInput } from "@/components/form/form-input";
+import { FormPasswordInput } from "@/components/form/form-password-input";
+import { Form } from "@/components/ui/form";
+import { useCreateUser } from "@/hooks/use-users";
 
-type InputsId = {
-  id: 'nombre' | 'apellido' | 'email' | 'password' | 'username';
-  label: string
-  type: string
-  personal: boolean
-}
-
-const inputsRegister: InputsId[] = [
-  { id: 'nombre', label: 'Nombre', type: 'text', personal: true },
-  { id: 'apellido', label: 'Apellido', type: 'text', personal: true },
-  { id: 'email', label: 'Email', type: 'email', personal: true },
-  { id: 'username', label: 'Nombre de usuario', type: 'text', personal: false },
-  { id: 'password', label: 'Contraseña', type: 'password', personal: false },
-]
+const personalFields = [
+  {
+    name: "nombre",
+    label: "Nombre",
+    placeholder: "Tu nombre",
+    autoComplete: "given-name",
+    type: "text",
+  },
+  {
+    name: "apellido",
+    label: "Apellido",
+    placeholder: "Tu apellido",
+    autoComplete: "family-name",
+    type: "text",
+  },
+  {
+    name: "email",
+    label: "Correo electrónico",
+    placeholder: "nombre@ejemplo.com",
+    autoComplete: "email",
+    type: "email",
+  },
+] as const;
 
 export default function RegisterForm() {
   const { form, isLoadingCreateUser, onSubmit } = useCreateUser(true);
 
   return (
-    <div className={`w-full flex flex-col p-5 justify-center items-end lg:w-1/2 bg-transparent max-lg:justify-center`} >
-      <div className="bg-background/20 p-2 rounded-md ">
-        <LogoCompany name='SSAA II' url="/home" size={28} />
+    <div className="mx-auto w-full max-w-md">
+      <div className="mb-7">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Creá tu cuenta.
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          Completá tus datos y empezá a organizar tu contabilidad.
+        </p>
       </div>
-      <div className='w-full h-full flex items-center justify-center bg-transparent'>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="px-10 py-13 max-md:px-7 max-md:py-10 rounded-2xl shadow-2xl w-md xl:w-[600px] max-md:w-[350px] bg-background dark:bg-gray-900 space-y-3"
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          noValidate
+          aria-busy={isLoadingCreateUser}
+          className="space-y-6"
+        >
+          <fieldset disabled={isLoadingCreateUser}>
+            <legend className="mb-4 text-xs font-medium text-muted-foreground">
+              01 <span className="ml-2 text-foreground">Tus datos personales</span>
+            </legend>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {personalFields.map((input) => (
+                <FormInput
+                  key={input.name}
+                  control={form.control}
+                  {...input}
+                  icon={input.name === "email" ? Mail : undefined}
+                  itemClassName={
+                    input.name === "email" ? "sm:col-span-2" : undefined
+                  }
+                  autoCapitalize={input.name === "email" ? "none" : "words"}
+                  spellCheck={false}
+                />
+              ))}
+            </div>
+          </fieldset>
+          <fieldset disabled={isLoadingCreateUser} className="border-t pt-5">
+            <legend className="pr-3 text-xs font-medium text-muted-foreground">
+              02 <span className="ml-2 text-foreground">Tu acceso</span>
+            </legend>
+            <div className="space-y-4">
+              <FormInput
+                control={form.control}
+                name="username"
+                icon={UserRound}
+                label="Nombre de usuario"
+                autoComplete="username"
+                autoCapitalize="none"
+                spellCheck={false}
+                placeholder="Elegí tu usuario"
+                description="Entre 2 y 20 caracteres: letras, números o guion bajo."
+              />
+              <FormPasswordInput
+                control={form.control}
+                name="password"
+                label="Contraseña"
+                autoComplete="new-password"
+                placeholder="Creá una contraseña"
+              />
+            </div>
+          </fieldset>
+          <Button
+            type="submit"
+            variant="violet"
+            disabled={isLoadingCreateUser}
+            className="h-12 w-full rounded-lg"
           >
-            <div>
-              <h1 className="text-3xl mb-4 font-semibold text-center text-violet-600">
-                Registrate
-              </h1>
-              <p className="text-gray-500 text-sm">
-                Creá una cuenta para comenzar a usar el sistema contable y gestionar
-                tus operaciones de forma organizada y segura.
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Separator className="flex-1" />
-              <span className="text-sm font-semibold text-violet-600 dark:text-violet-800">Datos personales</span>
-              <Separator className="flex-1" />
-            </div>
-            {
-              inputsRegister.map((input) => (
-                (input.personal &&
-                  <FormField
-                    key={input.id}
-                    control={form.control}
-                    name={input.id}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <FloatingLabelInput {...field} id={input.id} label={input.label} type={input.type} />
-                        </FormControl>
-                        <FormMessage className="text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                )
-              ))
-            }
-            <div className="flex items-center gap-4">
-              <Separator className="flex-1" />
-              <span className="text-sm font-semibold text-violet-600 dark:text-violet-800">Autenticación</span>
-              <Separator className="flex-1" />
-            </div>
-            {
-              inputsRegister.map((input) => (
-                (!input.personal &&
-                  <FormField
-                    key={input.id}
-                    control={form.control}
-                    name={input.id}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <FloatingLabelInput {...field} id={input.id} label={input.label} type={input.type} />
-                        </FormControl>
-                        <FormMessage className="text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                )
-              ))
-            }
-
-            <div className="mt-4 flex max-xl:flex-col">
-              <div className="flex justify-end items-center w-1/2 max-xl:justify-center max-xl:w-full max-xl:mt-3">
-                <p className="text-sm text-gray-400 mr-1">¿Ya tenés cuenta?</p>
-                <Button
-                  variant="link"
-                  type="button"
-                  onClick={() => window.location.href = '/login'}
-                >
-                  Iniciar sesión
-                </Button>
-
-              </div>
-              <Button
-                className="w-full xl:w-1/2 text-md font-semibold"
-                type="submit"
-                size={'lg'}
-                variant={'violet'}
-                disabled={isLoadingCreateUser}
-              >
-                {isLoadingCreateUser ?
-                  (<div className="flex items-center justify-center">
-                    <LoaderCircle className="mr-2 animate-spin" />
-                    Registrando...
-                  </div>) :
-                  (
-                    "Registrarse"
-                  )
-                }
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </div>
+            {isLoadingCreateUser ? (
+              <>
+                <LoaderCircle
+                  aria-hidden="true"
+                  className="size-4 animate-spin"
+                />{" "}
+                Creando cuenta...
+              </>
+            ) : (
+              <>
+                Crear cuenta{" "}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </>
+            )}
+          </Button>
+        </form>
+      </Form>
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        ¿Ya tenés cuenta?{" "}
+        <Link
+          href="/login"
+          className="rounded-sm font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-violet-500 focus-visible:outline-2 focus-visible:outline-ring"
+        >
+          Iniciá sesión
+        </Link>
+      </p>
     </div>
-  )
+  );
 }
