@@ -1,26 +1,22 @@
+﻿"use client"
 
-import Image from 'next/image'
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar'
-// import LogoCompany from '../logo-company'
+import Image from "next/image"
+import Link from "next/link"
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar"
 
 export default function NavHeader() {
+  const { setOpenMobile } = useSidebar()
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuButton
-          asChild
-          className="data-[slot=sidebar-menu-button]:!p-1.5"
-        >
-          <a href="#">
-            <Image
-              src="/favicon.svg"
-              alt="Logo del sistema"
-              width={20}
-              height={20}
-            />
-            <span className="text-lg font-semibold bg-gradient-to-tr from-violet-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">Sistema contable</span>
-          </a>
-          {/* <LogoCompany name='Sistema Contable' url="/dashboard" size={20} /> */}
+        <SidebarMenuButton asChild size="lg" tooltip="Sistema Contable" className="gap-3 rounded-lg group-data-[collapsible=icon]:justify-center">
+          <Link href="/dashboard" aria-label="Sistema Contable, inicio" onClick={() => setOpenMobile(false)}>
+            <Image src="/favicon.svg" alt="" width={28} height={28} className="shrink-0" />
+            <div className="grid min-w-0 gap-0.5 group-data-[collapsible=icon]:hidden">
+              <span className="truncate text-sm font-semibold tracking-tight">Sistema Contable</span>
+              <span className="text-xs text-muted-foreground">Tu espacio de gestión</span>
+            </div>
+          </Link>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

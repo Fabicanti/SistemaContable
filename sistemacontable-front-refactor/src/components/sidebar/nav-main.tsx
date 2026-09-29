@@ -1,61 +1,33 @@
-"use client"
+﻿"use client"
 
-import { type LucideIcon } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { type LucideIcon } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
+import { isNavigationActive, navigationButtonClass, navigationLabelClass } from "./navigation-styles"
 
-import {
-    SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem
-} from '@/components/ui/sidebar';
-
-import { GradientIcon } from '../shared/gradient-icon';
-
-export function NavMain({
-  items,
-  title
-}: {
-  items: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[],
-  title: string;
+export function NavMain({ items, title }: {
+  items: { name: string; url: string; icon: LucideIcon }[]
+  title: string
 }) {
-  const pathname = usePathname();
-
+  const pathname = usePathname()
+  const { setOpenMobile } = useSidebar()
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{title}</SidebarGroupLabel>
-      <SidebarMenu>
+      <SidebarGroupLabel className={navigationLabelClass}>{title}</SidebarGroupLabel>
+      <SidebarMenu className="gap-1.5">
         {items.map((item) => {
-          const isActive = pathname === item.url;
-
+          const isActive = isNavigationActive(pathname, item.url)
           return (
-            <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton
-                asChild
-                tooltip={item.name}
-                className="justify-between"
-              >
-                <a
-                  href={item.url}
-                  className={isActive ? "text-foreground font-semibold" : ""}
-                >
-                  <div className="flex items-center gap-2">
-                    <GradientIcon
-                      Icon={item.icon}
-                      fromColorHex="f6339a"
-                      toColorHex="ff6900"
-                      size={20}
-                    />
-                    <span>{item.name}</span>
-                  </div>
-                  {isActive && <div
-                    className="ml-2 size-3.5 rounded-full bg-gradient-to-br from-[#f6339a] to-[#ff6900]"
-                  />}
-                </a>
+            <SidebarMenuItem key={item.url}>
+              <SidebarMenuButton asChild tooltip={item.name} isActive={isActive} className={navigationButtonClass}>
+                <Link href={item.url} aria-current={isActive ? "page" : undefined} onClick={() => setOpenMobile(false)}>
+                  <item.icon aria-hidden="true" strokeWidth={1.7} />
+                  <span className="group-data-[collapsible=icon]:hidden">{item.name}</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          );
+          )
         })}
       </SidebarMenu>
     </SidebarGroup>

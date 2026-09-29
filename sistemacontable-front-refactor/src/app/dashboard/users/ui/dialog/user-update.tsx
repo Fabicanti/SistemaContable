@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FloatingLabelInput } from "@/components/ui/floating-label-input";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { FormInput } from "@/components/form/form-input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useUpdateUser } from "@/hooks/use-users";
 import { User } from "@/interfaces/user-interface";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Mail, UserRound } from "lucide-react";
 
 type InputsId = {
   id: 'nombre' | 'apellido' | 'email' | 'password' | 'username';
@@ -42,72 +42,52 @@ export default function UserUpdate({ user, onClose }: Props) {
   return (
     <div>
       <Dialog open={!!user} onOpenChange={onClose}>
-        <DialogContent>
+        <DialogContent className="max-h-[90dvh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Editar Usuario</DialogTitle>
+            <DialogTitle>Editar usuario</DialogTitle>
           </DialogHeader>
           <DialogDescription>
             Cambia los datos del usuario para actualizar su información en el sistema.
           </DialogDescription>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2">
               {
                 inputsRegister.map((input) => (
                   (input.personal &&
-                    <FormField
+                    <FormInput
                       key={input.id}
                       control={form.control}
                       name={input.id}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <FloatingLabelInput
-                              {...field}
-                              value={field.value ?? ''}
-                              id={input.id}
-                              label={input.label}
-                              type={input.type}
-                            />
-                          </FormControl>
-                          <FormMessage className="text-xs" />
-                        </FormItem>
-                      )}
+                      label={input.label}
+                      type={input.type}
+                      icon={input.id === 'email' ? Mail : UserRound}
+                      accent="pink"
+                      itemClassName={input.id === 'email' ? 'sm:col-span-2' : undefined}
                     />
                   )
                 ))
               }
+              </div>
               <Separator />
-              <FormField
-                key={'username'}
+              <FormInput
                 control={form.control}
-                name={'username'}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <FloatingLabelInput
-                        {...field}
-                        id={'username'}
-                        value={field.value ?? ''}
-                        label={'Nombre de usuario'}
-                        type={'text'}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs" />
-                  </FormItem>
-                )}
+                name="username"
+                label="Nombre de usuario"
+                icon={UserRound}
+                accent="pink"
+                autoCapitalize="none"
+                spellCheck={false}
               />
 
-              <div className="flex items-center gap-4">
-                <Separator className="flex-1" />
-                <span className="text-sm text-muted-foreground">Roles del sistema</span>
-                <Separator className="flex-1" />
-              </div>
+
 
               <FormField
                 control={form.control}
                 name="roleId"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>Rol</FormLabel>
                     <Select onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value?.toString()} >
                       <FormControl>
@@ -148,7 +128,7 @@ export default function UserUpdate({ user, onClose }: Props) {
                       Guardando...
                     </div>) :
                     (
-                      "Guardar"
+                      "Guardar cambios"
                     )
                   }
                 </Button>

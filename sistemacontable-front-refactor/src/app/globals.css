@@ -119,6 +119,40 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* A shared canvas also fills the space around the floating sidebar. */
+.dashboard-surface {
+  background-color: #f7f7fa;
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgb(236 72 153 / 7%), transparent 50%),
+    radial-gradient(ellipse at 100% 10%, rgb(139 92 246 / 7%), transparent 55%);
+}
+
+.dark .dashboard-surface {
+  background-color: #121215;
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgb(236 72 153 / 6%), transparent 50%),
+    radial-gradient(ellipse at 100% 10%, rgb(139 92 246 / 8%), transparent 55%);
+}
+
+/* Keep the navigation and its portalled menus dark in either app theme. */
+.sidebar-dark {
+  color-scheme: dark;
+  --sidebar: #18181b;
+  --sidebar-foreground: #f4f4f5;
+  --sidebar-accent: #27272a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #3f3f46;
+  --sidebar-ring: #f9a8d4;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #f4f4f5;
+  --border: #3f3f46;
+  --ring: #f9a8d4;
+  color: var(--sidebar-foreground);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -130,4 +164,3 @@
     background: var(--gradient-background);
   }
 }
-

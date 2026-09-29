@@ -84,16 +84,16 @@ export function AppSidebar() {
   const { user } = useUserStore();
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>
+    <Sidebar collapsible="icon" className="dark sidebar-dark" variant="floating">
+      <SidebarHeader className="border-b border-sidebar-border px-3 py-4 group-data-[collapsible=icon]:px-2">
         <NavHeader />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="gap-4 px-2 py-5 group-data-[collapsible=icon]:px-0">
         <NavMain items={data.principal} title="Menú Principal" />
         <NavMain items={data.projects} title="Contabilidad" />
         <NavCollapse items={data.sueldos} title="Liquidación de sueldos" />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="border-t border-sidebar-border p-3 group-data-[collapsible=icon]:p-2">
         {user && <NavUser user={user} />}
       </SidebarFooter>
       <SidebarRail />

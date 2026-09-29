@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function AccountsPage() {
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <AccountsOverview />
       <AccountsTable />
     </div>

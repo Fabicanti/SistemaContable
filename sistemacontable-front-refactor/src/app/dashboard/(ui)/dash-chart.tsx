@@ -124,14 +124,14 @@ const chartData = [
 
 const chartConfig = {
   visitors: {
-    label: "Visitors",
+    label: "Movimientos",
   },
   desktop: {
-    label: "Desktop",
-    color: "#ea580c",
+    label: "Egresos",
+    color: "#a78bfa",
   },
   mobile: {
-    label: "Mobile",
+    label: "Ingresos",
     color: "#ec4899",
   },
 } satisfies ChartConfig
@@ -162,19 +162,21 @@ export function DashboardChart() {
 
   return (
     <Card className="@container/card">
-      <CardHeader className="relative">
+      <CardHeader className="flex flex-wrap items-start justify-between gap-4">
+        <div className="space-y-2">
         <CardTitle>Total de movimientos</CardTitle>
         <CardDescription>
           <span className="@[540px]/card:block hidden">
-            Total en los ultimos 3 meses
+            Cantidad de ingresos y egresos registrados · Datos ficticios
           </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
+          <span className="@[540px]/card:hidden">Movimientos de ejemplo</span>
         </CardDescription>
-        <div className="absolute right-4 top-4">
+        </div>
+        <div className="flex flex-wrap gap-2">
           <ToggleGroup
             type="single"
             value={timeRange}
-            onValueChange={setTimeRange}
+            onValueChange={(value) => { if (value) setTimeRange(value) }}
             variant="outline"
             className="@[767px]/card:flex hidden"
           >
@@ -188,22 +190,22 @@ export function DashboardChart() {
               Últimos 7 días
             </ToggleGroupItem>
           </ToggleGroup>
-          <Select value={timeRange} onValueChange={setTimeRange}>
+          <Select value={timeRange} onValueChange={(value) => { if (value) setTimeRange(value) }}>
             <SelectTrigger
               className="@[767px]/card:hidden flex w-40"
-              aria-label="Select a value"
+              aria-label="Seleccionar período"
             >
-              <SelectValue placeholder="Last 3 months" />
+              <SelectValue placeholder="Últimos 3 meses" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
               <SelectItem value="90d" className="rounded-lg">
-                Last 3 months
+                Últimos 3 meses
               </SelectItem>
               <SelectItem value="30d" className="rounded-lg">
-                Last 30 days
+                Últimos 30 días
               </SelectItem>
               <SelectItem value="7d" className="rounded-lg">
-                Last 7 days
+                Últimos 7 días
               </SelectItem>
             </SelectContent>
           </Select>
@@ -220,24 +222,24 @@ export function DashboardChart() {
                 <stop
                   offset="5%"
                   stopColor="var(--color-desktop)"
-                  stopOpacity={1.0}
+                  stopOpacity={0.25}
                 />
                 <stop
                   offset="95%"
                   stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
+                  stopOpacity={0.02}
                 />
               </linearGradient>
               <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
+                  stopOpacity={0.3}
                 />
                 <stop
                   offset="95%"
                   stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
+                  stopOpacity={0.02}
                 />
               </linearGradient>
             </defs>
@@ -249,8 +251,8 @@ export function DashboardChart() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
+                const date = new Date(`${value}T12:00:00`)
+                return date.toLocaleDateString("es-AR", {
                   month: "short",
                   day: "numeric",
                 })
@@ -262,7 +264,7 @@ export function DashboardChart() {
                 <ChartTooltipContent
                   labelFormatter={(value) => {
                     if (typeof value !== "string" && typeof value !== "number") return value
-                    return new Date(value).toLocaleDateString("en-US", {
+                    return new Date(`${value}T12:00:00`).toLocaleDateString("es-AR", {
                       month: "short",
                       day: "numeric",
                     })

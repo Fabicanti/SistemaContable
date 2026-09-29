@@ -1,23 +1,27 @@
-"use client"
-import { LucideIcon } from "lucide-react";
+﻿"use client"
+
+import { useId } from "react"
+import { type LucideIcon } from "lucide-react"
 
 interface Props {
-  Icon: LucideIcon;
-  size?: number;
-  fromColorHex: string;
-  toColorHex: string;
+  Icon: LucideIcon
+  size?: number
+  fromColorHex: string
+  toColorHex: string
+  className?: string
 }
 
-export const GradientIcon = ({ Icon, size = 18, fromColorHex, toColorHex }: Props) => {
+export const GradientIcon = ({ Icon, size = 18, fromColorHex, toColorHex, className }: Props) => {
+  const gradientId = `icon-gradient-${useId().replace(/:/g, "")}`
+  const color = (hex: string) => `#${hex.trim().replace(/^#/, "")}`
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="url(#gradient)">
+    <Icon size={size} className={className} stroke={`url(#${gradientId})`} fill="none" aria-hidden="true">
       <defs>
-        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={`#${fromColorHex}`} />
-          <stop offset="100%" stopColor={`#${toColorHex}`} />
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor={color(fromColorHex)} />
+          <stop offset="100%" stopColor={color(toColorHex)} />
         </linearGradient>
       </defs>
-      <Icon width={size} height={size} stroke="url(#gradient)" strokeWidth="2" />
-    </svg>
-  );
-};
+    </Icon>
+  )
+}

@@ -17,14 +17,14 @@ export const SortedIcon = ({ isSorted }: { isSorted: SortDirection | false }) =>
 // Header reutilizable con ordenamiento
 import type { Column } from "@tanstack/react-table"
 
-export function sortableHeader<T>(label: string) {
+export function sortableHeader<T>(label: string, neutral = false) {
   const SortableHeaderComponent = ({ column }: { column: Column<T, unknown> }) => (
     <Button
       variant="ghost"
       onClick={() =>
         column.toggleSorting(column.getIsSorted() === "asc")
       }
-      className="bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold px-0"
+      className={neutral ? "text-muted-foreground font-medium px-0" : "bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold px-0"}
     >
       {label}
       <SortedIcon isSorted={column.getIsSorted()} />

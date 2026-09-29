@@ -187,7 +187,7 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+          className={cn("bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden", className)}
           style={
             {
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -538,6 +538,8 @@ function SidebarMenuButton({
       <TooltipContent
         side="right"
         align="center"
+        sideOffset={10}
+        className="border border-zinc-700 bg-zinc-800 bg-none text-zinc-100 shadow-md [&>svg]:bg-zinc-800 [&>svg]:fill-zinc-800"
         hidden={state !== "collapsed" || isMobile}
         {...tooltip}
       />

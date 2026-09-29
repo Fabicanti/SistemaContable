@@ -8,7 +8,7 @@ export const usersColumns: ColumnDef<User>[] = [
   {
     accessorKey: "nombreCompleto",
     enableHiding: false,
-    header: () => <div className="bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold px-0">Nombre completo</div>,
+    header: () => <div className="text-muted-foreground font-medium px-0">Nombre completo</div>,
     cell: ({ row }) => {
       const user = row.original
       const initials = `${user.nombre?.[0] ?? ""}${user.apellido?.[0] ?? ""}`.toUpperCase()
@@ -26,11 +26,11 @@ export const usersColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "email",
-    header: sortableHeader<User>("Email"),
+    header: sortableHeader<User>("Correo", true),
   },
   {
     accessorKey: "roleId",
-    header: sortableHeader<User>("Rol"),
+    header: sortableHeader<User>("Rol", true),
     cell: ({ row }) => {
       const role = row.original.roleId;
       return (

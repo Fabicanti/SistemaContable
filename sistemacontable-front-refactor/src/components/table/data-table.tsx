@@ -65,6 +65,10 @@ interface DataTableProps<TData, TValue> {
   } | undefined;
   filterableColumns?: string[];
   messageEmpty?: string;
+  searchPlaceholder?: string;
+  enableRowSelection?: boolean;
+  rowLabels?: { singular: string; plural: string };
+  showPageSummary?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -72,6 +76,10 @@ export function DataTable<TData, TValue>({
   data,
   showToggleColumns = true,
   showSearchInput = true,
+  searchPlaceholder = "Buscar...",
+  enableRowSelection = true,
+  rowLabels = { singular: "registro", plural: "registros" },
+  showPageSummary = false,
   actions,
   columnLabels = undefined,
   filterableColumns = ["name", "category"],
@@ -90,7 +98,7 @@ export function DataTable<TData, TValue>({
 
   const allColumns = useMemo<ColumnDef<TData, TValue>[]>(
     () => [
-      {
+      ...(enableRowSelection ? [{
         id: "select",
         header: ({ table }) => (
           <Checkbox
@@ -111,7 +119,7 @@ export function DataTable<TData, TValue>({
         ),
         enableSorting: false,
         enableHiding: false,
-      } as ColumnDef<TData, TValue>,
+      } as ColumnDef<TData, TValue>] : []),
       ...columns,
       ...(actions
         ?
@@ -142,12 +150,13 @@ export function DataTable<TData, TValue>({
         ]
         : []),
     ],
-    [columns, actions]
+    [columns, actions, enableRowSelection]
   );
 
   const table = useReactTable({
     data,
     columns: allColumns,
+    enableRowSelection,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     // onSortingChange: setSorting // sirve para actualizar el estado de la tabla
@@ -190,7 +199,8 @@ export function DataTable<TData, TValue>({
     <div>
       <div className={`${showSearchInput || columnLabels || showToggleColumns ? 'flex' : 'hidden'} items-center justify-between py-4 gap-3`}>
         {showSearchInput && <Input
-          placeholder="Buscar..."
+          placeholder={searchPlaceholder}
+          aria-label={searchPlaceholder}
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
@@ -306,28 +316,33 @@ export function DataTable<TData, TValue>({
 
         <div className="space-x-2 py-4 mx-2 flex justify-between items-center">
           <div className="flex-1 hidden md:flex text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} de{" "}
-            {table.getFilteredRowModel().rows.length} filas(s) seleccionadas.
+            {enableRowSelection ? (
+              <>{table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length} filas seleccionadas.</>
+            ) : (
+              <>{table.getFilteredRowModel().rows.length} {table.getFilteredRowModel().rows.length === 1 ? rowLabels.singular : rowLabels.plural}</>
+            )}
           </div>
 
 
-          <div className="flex items-center justify-end gap-4">
+          <div className="flex flex-wrap items-center justify-end gap-4">
+            {showPageSummary && <span className="text-sm text-muted-foreground">Página {table.getState().pagination.pageIndex + 1} de {Math.max(1, table.getPageCount())}</span>}
             <div className="hidden md:block">
               <Select
+                value={String(table.getState().pagination.pageSize)}
                 onValueChange={(value) => {
                   // Esto lo transforma a number
                   table.setPageSize(+value)
                 }}
               >
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filas por páginas" />
+                  <SelectValue placeholder="Filas por página" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Filas por páginas</SelectLabel>
-                    <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
+                    <SelectLabel>Filas por página</SelectLabel>
+                    <SelectItem value="5">5 por página</SelectItem>
+                    <SelectItem value="10">10 por página</SelectItem>
+                    <SelectItem value="20">20 por página</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

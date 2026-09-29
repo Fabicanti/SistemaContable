@@ -1,121 +1,82 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, TrendingUpIcon, Wallet } from "lucide-react";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Plus, Wallet, Layers3, ArrowDownUp } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAccountStore } from "@/stores/account-store";
-import { useAccountsChartData } from "@/hooks/use-accounts";
-import { DonutChart } from "@/components/charts/donut-chart";
-import { Badge } from "@/components/ui/badge";
-import AccountCreate from "./dialog/account-create";
 import { useUserStore } from "@/stores/user-store";
-import { SkeletonCuentasOverview } from "./skeleton/account-overview-skeleton";
-import { SkeletonCuentasChart } from "@/components/skeleton/donut-chart-skeleton";
+import { capitalize } from "@/lib/utils";
+import AccountCreate from "./dialog/account-create";
 
+const typeColors = ["bg-blue-500", "bg-violet-500", "bg-amber-500", "bg-emerald-500", "bg-rose-500"];
 
 export default function AccountsOverview() {
   const { user } = useUserStore();
   const { accounts, fetchAccounts, isLoadingAccounts } = useAccountStore();
-  const [createAccount, setCreateAccount] = useState<boolean>(false);
+  const [createAccount, setCreateAccount] = useState(false);
 
-  useEffect(() => {
-    fetchAccounts();
-  }, [fetchAccounts]);
+  useEffect(() => { fetchAccounts(); }, [fetchAccounts]);
 
-  const { chartData, chartConfig } = useAccountsChartData(accounts || []);
+  const total = accounts?.length ?? 0;
+  const posting = accounts?.filter((account) => account.recibeSaldo).length ?? 0;
+  const groups = Object.values((accounts ?? []).reduce((result, account) => {
+    const group = result[account.tipoCuentaId] ?? { id: account.tipoCuentaId, name: account.tipoCuentaNombre, count: 0 };
+    group.count += 1;
+    result[account.tipoCuentaId] = group;
+    return result;
+  }, {} as Record<number, { id: number; name: string; count: number }>)).sort((a, b) => a.id - b.id);
 
   return (
-    <section className="space-y-6 mb-6">
-      <div className="w-full">
-        {isLoadingAccounts ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <SkeletonCuentasOverview />
-            <SkeletonCuentasChart />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="col-span-1 md:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between gap-2">
-
-                  <h2 className="md:text-lg font-bold flex items-center gap-2">
-                    <Wallet />
-                    Cuentas
-                  </h2>
-
-                  {user?.roleId === 2 &&
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="outline" onClick={() => setCreateAccount(true)}>
-                          <Plus className="w-4 h-4 mr-2" />
-                          Nueva cuenta
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="left" sideOffset={5} className="hidden md:block">
-                        <p>Agregar una nueva cuenta contable</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  }
-
-                </CardTitle>
-                <CardDescription>Visión general del estado actual de las cuentas contables.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Card className="p-4">
-                  <h3 className="text-sm font-semibold text-muted-foreground">Tipo más frecuente</h3>
-                  <p className="text-md font-bold bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent">
-                    {
-                      accounts && (Object.entries(
-                        accounts.reduce((acc, curr) => {
-                          acc[curr.tipoCuentaNombre] = (acc[curr.tipoCuentaNombre] || 0) + 1;
-                          return acc;
-                        }, {} as Record<string, number>)
-                      ).sort((a, b) => b[1] - a[1])[0][0])
-                    }
-                  </p>
-                </Card>
-                <Card className="p-4">
-                  <h3 className="text-sm font-semibold text-muted-foreground">Cuentas que reciben saldo</h3>
-                  <p className="text-xl font-bold flex justify-between bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent">
-                    {
-                      accounts && `${accounts.filter((a) => a.recibeSaldo).length} / ${accounts.length}`
-                    }
-                    <Badge
-                      variant={"admin"}
-                      className={`flex gap-1 rounded-lg text-xs`}>
-                      <TrendingUpIcon className="size-1 text-white" />
-                    </Badge>
-                  </p>
-                </Card>
-              </CardContent>
-            </Card>
-            <DonutChart
-              title="Distribución de cuentas"
-              description="Por tipo de cuenta"
-              data={chartData}
-              config={chartConfig}
-              label="Cuentas"
-              size="md"
-            />
-          </div>
-        )}
-
+    <section className="mb-6 space-y-5" aria-label="Resumen de cuentas">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight"><Wallet className="size-6 text-muted-foreground" />Cuentas</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Organizá tu plan de cuentas y consultá su estructura.</p>
+        </div>
+        {user?.roleId === 2 && <Button variant="pink" onClick={() => setCreateAccount(true)}><Plus className="size-4" />Nueva cuenta</Button>}
       </div>
-      {createAccount && (
-        <AccountCreate
-          open={createAccount}
-          onClose={() => setCreateAccount(false)}
-        />
-      )}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card className="gap-4 shadow-none">
+          <CardHeader><CardTitle className="text-sm font-medium text-muted-foreground">Plan de cuentas</CardTitle></CardHeader>
+          <CardContent>
+            {isLoadingAccounts ? <Skeleton className="h-28 w-full" /> : <>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: "Total de cuentas", value: total, icon: Wallet },
+                  { label: "Reciben saldo", value: posting, icon: ArrowDownUp },
+                  { label: "Agrupadoras", value: total - posting, icon: Layers3 },
+                ].map(({ label, value, icon: Icon }) => <div key={label}>
+                  <Icon className="mb-3 size-4 text-muted-foreground" aria-hidden="true" />
+                  <p className="text-3xl font-semibold tabular-nums tracking-tight">{value}</p>
+                  <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{label}</p>
+                </div>)}
+              </div>
+              <p className="mt-5 border-t pt-3 text-xs text-muted-foreground">Las cuentas agrupadoras organizan el plan y no reciben saldo.</p>
+            </>}
+          </CardContent>
+        </Card>
+        <Card className="gap-4 shadow-none">
+          <CardHeader><CardTitle className="text-sm font-medium">Distribución por tipo</CardTitle><CardDescription>Cantidad de cuentas en cada categoría.</CardDescription></CardHeader>
+          <CardContent>
+            {isLoadingAccounts ? <Skeleton className="h-28 w-full" /> : total === 0 ? <p className="py-6 text-sm text-muted-foreground">La distribución aparecerá cuando agregues cuentas.</p> : <>
+              <div className="mb-4 flex h-2 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+                {groups.map((group) => <div key={group.id} className={typeColors[group.id - 1] ?? "bg-slate-500"} style={{ width: `${group.count / total * 100}%` }} />)}
+              </div>
+              <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                {groups.map((group) => <li key={group.id} className="flex items-center gap-2 text-sm">
+                  <span className={`size-2 shrink-0 rounded-full ${typeColors[group.id - 1] ?? "bg-slate-500"}`} aria-hidden="true" />
+                  <span className="text-muted-foreground">{capitalize(group.name)}</span>
+                  <span className="ml-auto font-medium tabular-nums">{group.count}</span>
+                  <span className="w-9 text-right text-xs tabular-nums text-muted-foreground">{Math.round(group.count / total * 100)}%</span>
+                </li>)}
+              </ul>
+            </>}
+          </CardContent>
+        </Card>
+      </div>
+      {createAccount && <AccountCreate open={createAccount} onClose={() => setCreateAccount(false)} />}
     </section>
   );
 }

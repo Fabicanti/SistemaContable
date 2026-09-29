@@ -84,7 +84,7 @@ export function useAccountsChartData(accounts: Account[]): ChartResult {
 /**
  * Función para crear una cuenta contable.
  */
-export function useCreateAccount() {
+export function useCreateAccount(onCreated?: () => void) {
   const { accounts, refetchAccounts } = useAccountStore();
   const form = useForm<AccountZod>({
     resolver: zodResolver(accountSchema),
@@ -101,7 +101,9 @@ export function useCreateAccount() {
     mutationFn: createAccount,
     onSuccess: () => {
       refetchAccounts();
-      toast.success("Se ha creado una nueva cuenta.")
+      toast.success("Se ha creado una nueva cuenta.");
+      form.reset();
+      onCreated?.();
     },
     onError: (error: AxiosError<ErrorMessage>) => {
       handleApiError(error, "No se pudo crear la cuenta");
@@ -116,7 +118,10 @@ export function useCreateAccount() {
   }
 
   const onSubmit = (data: AccountZod) => {
-    console.log("Cuenta creada:", data);
+    if (data.cuentaPadreId && !findByAccountCode(data.cuentaPadreId)) {
+      form.setError("cuentaPadreId", { message: "No existe una cuenta con ese código." });
+      return;
+    }
     createAccountMutation.mutate({ ...data, cuentaPadreId: findByAccountCode(data.cuentaPadreId || "") });
   };
 

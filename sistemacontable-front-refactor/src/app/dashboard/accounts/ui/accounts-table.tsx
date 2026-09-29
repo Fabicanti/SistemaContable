@@ -41,10 +41,10 @@ export default function AccountsTable() {
 
   return (
     <div>
-      <Card className="mb-6">
+      <Card className="mb-6 gap-2 shadow-none">
         <CardHeader className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-          <CardTitle>Gestión de cuentas</CardTitle>
-          <CardDescription>Tabla con información y acciones para cada cuenta.</CardDescription>
+          <CardTitle>Listado de cuentas</CardTitle>
+          <CardDescription>Buscá por código o nombre y filtrá por tipo de cuenta.</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
@@ -55,6 +55,11 @@ export default function AccountsTable() {
               columns={accountsColumns}
               data={accounts ?? []}
               showToggleColumns={false}
+              enableRowSelection={false}
+              showPageSummary
+              rowLabels={{ singular: "cuenta", plural: "cuentas" }}
+              searchPlaceholder="Buscar por código o nombre..."
+              messageEmpty="No se encontraron cuentas para esta búsqueda."
               columnLabels={{
                 column: "tipoCuentaNombre",
                 label: "Tipos de cuentas"

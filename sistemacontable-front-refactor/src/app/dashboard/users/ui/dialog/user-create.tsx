@@ -2,12 +2,13 @@
 import React from 'react'
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FloatingLabelInput } from "@/components/ui/floating-label-input";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { FormInput } from "@/components/form/form-input";
+import { FormPasswordInput } from "@/components/form/form-password-input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useCreateUser } from "@/hooks/use-users";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Mail, UserRound } from "lucide-react";
 
 type InputsId = {
   id: 'nombre' | 'apellido' | 'email' | 'password' | 'username';
@@ -43,76 +44,61 @@ export default function UserCreate({ open, onClose }: Props) {
   return (
     <div>
       <Dialog open={!!open} onOpenChange={onClose}>
-        <DialogContent>
+        <DialogContent className="max-h-[90dvh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Crear nuevo Usuario</DialogTitle>
+            <DialogTitle>Nuevo usuario</DialogTitle>
           </DialogHeader>
           <DialogDescription>
             Completa los datos para registrar un nuevo usuario.
           </DialogDescription>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2">
               {
                 inputsRegister.map((input) => (
                   (input.personal &&
-                    <FormField
+                    <FormInput
                       key={input.id}
                       control={form.control}
                       name={input.id}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <FloatingLabelInput
-                              {...field}
-                              value={field.value ?? ''}
-                              id={input.id}
-                              label={input.label}
-                              type={input.type}
-                            />
-                          </FormControl>
-                          <FormMessage className="text-xs" />
-                        </FormItem>
-                      )}
+                      label={input.label}
+                      type={input.type}
+                      icon={input.id === 'email' ? Mail : UserRound}
+                      accent="pink"
+                      itemClassName={input.id === 'email' ? 'sm:col-span-2' : undefined}
                     />
                   )
                 ))
               }
+              </div>
               <div className="flex items-center gap-4">
                 <Separator className="flex-1" />
                 <span className="text-sm text-muted-foreground">Autenticación</span>
                 <Separator className="flex-1" />
               </div>
-              {
-                inputsRegister.map((input) => (
-                  (!input.personal &&
-                    <FormField
-                      key={input.id}
-                      control={form.control}
-                      name={input.id}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <FloatingLabelInput {...field} id={input.id} label={input.label} type={input.type} />
-                          </FormControl>
-                          <FormMessage className="text-xs" />
-                        </FormItem>
-                      )}
-                    />
-                  )
-                ))
-              }
-
-              <div className="flex items-center gap-4">
-                <Separator className="flex-1" />
-                <span className="text-sm text-muted-foreground">Roles del sistema</span>
-                <Separator className="flex-1" />
-              </div>
+              <FormInput
+                control={form.control}
+                name="username"
+                label="Nombre de usuario"
+                icon={UserRound}
+                accent="pink"
+                autoCapitalize="none"
+                spellCheck={false}
+              />
+              <FormPasswordInput
+                control={form.control}
+                name="password"
+                label="Contraseña"
+                accent="pink"
+                autoComplete="new-password"
+              />
 
               <FormField
                 control={form.control}
                 name="roleId"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>Rol</FormLabel>
                     <Select onValueChange={(value) => field.onChange(Number(value))}
                       value={field.value?.toString()} >
                       <FormControl>
@@ -153,7 +139,7 @@ export default function UserCreate({ open, onClose }: Props) {
                       Creando...
                     </div>) :
                     (
-                      "Crear"
+                      "Crear usuario"
                     )
                   }
                 </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Settings2, Trash2 } from 'lucide-react';
+import { Copy, Plus, Settings2, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { DataTable } from '@/components/table/data-table';
@@ -10,6 +10,8 @@ import { Separator } from '@/components/ui/separator';
 
 import { usersColumns } from '../table/users-columns';
 import { copyToClipboard } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import UserCreate from './dialog/user-create';
 import UserUpdate from './dialog/user-update';
 import { useUserStore } from '@/stores/user-store';
 import UserDelete from './dialog/user-delete';
@@ -22,6 +24,7 @@ export default function UsersTable() {
   const { dataUsers, loadingUsers } = useUsersAll();
 
   // Acciones para actualizar y eliminar usuarios
+  const [createUser, setCreateUser] = useState(false);
   const [updateUser, setUpdateUser] = useState<User | null>(null);
   const [deleteUser, setDeleteUser] = useState<User | null>(null);
 
@@ -48,8 +51,15 @@ export default function UsersTable() {
     <div>
       <Card className="mb-6">
         <CardHeader className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-          <CardTitle>Gestión de usuarios</CardTitle>
-          <CardDescription>Tabla con información y acciones para cada usuarios.</CardDescription>
+          <div className="space-y-2">
+            <CardTitle className="text-xl">Gestión de usuarios</CardTitle>
+            <CardDescription>Administrá los usuarios y sus permisos.</CardDescription>
+          </div>
+          {myUser?.roleId === 2 && (
+            <Button variant="pink" onClick={() => setCreateUser(true)} className="w-full sm:w-auto">
+              <Plus /> Nuevo usuario
+            </Button>
+          )}
         </CardHeader>
 
         <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
@@ -60,12 +70,17 @@ export default function UsersTable() {
               columns={usersColumns}
               data={dataUsers.filter((user) => user.id !== myUser?.id)}
               filterableColumns={['nombre', 'apellido', 'email']}
+              searchPlaceholder="Buscar por nombre o correo..."
+              enableRowSelection={false}
+              rowLabels={{ singular: 'usuario', plural: 'usuarios' }}
+              showPageSummary
               actions={actions}
             />
           )}
         </CardContent>
       </Card>
 
+      {createUser && <UserCreate open={createUser} onClose={() => setCreateUser(false)} />}
       {updateUser &&
         <UserUpdate
           user={updateUser}

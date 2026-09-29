@@ -1,109 +1,29 @@
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react"
+﻿import { ArrowDownLeft, ArrowUpRight, Landmark, ReceiptText, Wallet } from "lucide-react"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
-import { Badge } from "@/components/ui/badge"
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+const metrics = [
+  { label: "Ingresos del mes", value: "$ 4.850.000", change: "+12,8%", detail: "respecto de mayo", icon: ArrowDownLeft, accent: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" },
+  { label: "Gastos del mes", value: "$ 3.120.000", change: "−4,2%", detail: "respecto de mayo", icon: ArrowUpRight, accent: "bg-orange-500/10 text-orange-700 dark:text-orange-400" },
+  { label: "Balance del mes", value: "$ 1.730.000", change: "35,7%", detail: "de los ingresos disponibles", icon: Wallet, accent: "bg-pink-500/10 text-pink-700 dark:text-pink-300" },
+  { label: "Comprobantes registrados", value: "128", change: "24", detail: "pendientes de conciliación", icon: ReceiptText, accent: "bg-violet-500/10 text-violet-700 dark:text-violet-300" },
+]
 
 export function DashboardCards() {
   return (
-    <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
-      <Card className="@container/card">
-        <CardHeader className="relative">
-          <CardDescription>
-            Movimientos realizados
-          </CardDescription>
-          <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent">
-            45
-          </CardTitle>
-          <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingUpIcon className="size-3" />
-              +12.5%
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Tendencias al alza este mes <TrendingUpIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Analisis de los ultimos 6 meses.
-          </div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader className="relative">
-          <CardDescription>
-            Nuevos empleados
-          </CardDescription>
-          <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent">
-            1,234
-          </CardTitle>
-          <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingDownIcon className="size-3" />
-              -20%
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Un 20% menos en este periodo <TrendingDownIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            La adquisición necesita atención
-          </div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader className="relative">
-          <CardDescription>
-            Usuarios activos
-          </CardDescription>
-          <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent">
-            45,678
-          </CardTitle>
-          <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingUpIcon className="size-3" />
-              +12.5%
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Fuerte retención de usuarios <TrendingUpIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">El Compromiso supera los objetivos</div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader className="relative">
-          <CardDescription>
-            Cuentas activas
-          </CardDescription>
-          <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums bg-gradient-to-tr from-pink-500 to-orange-500 bg-clip-text text-transparent">
-            56
-          </CardTitle>
-          <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-              <TrendingUpIcon className="size-3" />
-              +4.5%
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance <TrendingUpIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
-        </CardFooter>
-      </Card>
+    <div className="grid grid-cols-1 gap-4 px-4 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 lg:px-6">
+      {metrics.map((metric) => (
+        <Card key={metric.label} className="gap-4 shadow-xs">
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
+            <span className="text-sm text-muted-foreground">{metric.label}</span>
+            <span className={`flex size-9 shrink-0 items-center justify-center rounded-xl ${metric.accent}`}><metric.icon className="size-4" aria-hidden="true" /></span>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-2xl font-semibold tracking-tight tabular-nums">{metric.value}</p>
+            <p className="text-xs text-muted-foreground"><span className="font-medium text-foreground">{metric.change}</span> {metric.detail}</p>
+          </CardContent>
+        </Card>
+      ))}
+      <p className="col-span-full flex items-center gap-1.5 text-xs text-muted-foreground"><Landmark className="size-3.5" aria-hidden="true" />Importes expresados en pesos argentinos (ARS).</p>
     </div>
   )
 }
