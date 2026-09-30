@@ -1,11 +1,18 @@
-
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Account } from '@/interfaces/account-interface';
-import { formatBalance } from '@/lib/utils';
-import { Entrie } from '@/schemas/entrie.schema';
-import { Trash2 } from 'lucide-react';
-import React from 'react'
-import { FieldArrayWithId, UseFieldArrayRemove } from 'react-hook-form';
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+import { Account } from "@/interfaces/account-interface";
+import { formatBalance } from "@/lib/utils";
+import { Entrie } from "@/schemas/entrie.schema";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import React from "react";
+import { FieldArrayWithId, UseFieldArrayRemove } from "react-hook-form";
 
 type Props = {
   accounts?: Account[];
@@ -13,50 +20,63 @@ type Props = {
 
   setAccountsAutocomplete: React.Dispatch<React.SetStateAction<Account[]>>;
   remove: UseFieldArrayRemove;
-}
+};
 
-export default function EntrieMovementsTable({ 
-  accounts, 
-  movements, 
-  setAccountsAutocomplete, 
-  remove 
+export default function EntrieMovementsTable({
+  accounts,
+  movements,
+  setAccountsAutocomplete,
+  remove,
 }: Props) {
-
   if (!movements) return null;
 
   return (
-    <div className={`${movements.length > 0 ? 'border' : 'text-center' } rounded-lg`}>
+    <div className="overflow-hidden rounded-xl border">
       {movements.length > 0 ? (
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="bg-muted/40">
               <TableHead className="font-semibold">Cuenta</TableHead>
-              <TableHead className="font-semibold">DEBE</TableHead>
-              <TableHead className="font-semibold">HABER</TableHead>
+              <TableHead className="text-right font-semibold">Debe</TableHead>
+              <TableHead className="text-right font-semibold">Haber</TableHead>
               <TableHead className="text-right"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {movements.map((movement, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">{`${movement.haber !== 0 ? '\u00A0'.repeat(8) : ''}${movement.nombreCuenta}`}</TableCell>
-                <TableCell className='text-right'>{movement.debe !== 0 ? formatBalance(movement.debe) : movement.debe}</TableCell>
-                <TableCell className='text-right'>{movement.haber !== 0 ? formatBalance(movement.haber) : movement.haber}</TableCell>
+              <TableRow key={movement.id}>
+                <TableCell className="font-medium">{`${movement.haber !== 0 ? "\u00A0".repeat(8) : ""}${movement.nombreCuenta}`}</TableCell>
+                <TableCell className="text-right tabular-nums">
+                  {movement.debe !== 0
+                    ? formatBalance(movement.debe)
+                    : movement.debe}
+                </TableCell>
+                <TableCell className="text-right tabular-nums">
+                  {movement.haber !== 0
+                    ? formatBalance(movement.haber)
+                    : movement.haber}
+                </TableCell>
                 <TableCell className="text-right flex justify-end">
-                  <div
-                    className="bg-destructive p-1 flex items-center rounded-lg font-semibold text-primary-foreground cursor-pointer"
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Eliminar movimiento de ${movement.nombreCuenta}`}
+                    className="size-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     onClick={() => {
                       remove(index);
 
                       // Recuperar la cuenta (sin espacios si estaba en HABER)
                       const cleanedName = movement.nombreCuenta.trim();
                       const reverseAccount = accounts?.find(
-                        (item) => item.nombre === cleanedName
+                        (item) => item.nombre === cleanedName,
                       );
 
                       if (reverseAccount) {
                         setAccountsAutocomplete((prev) => {
-                          const exists = prev.some((a) => a.id === reverseAccount.id);
+                          const exists = prev.some(
+                            (a) => a.id === reverseAccount.id,
+                          );
                           if (!exists) {
                             return [...prev, reverseAccount];
                           }
@@ -66,14 +86,21 @@ export default function EntrieMovementsTable({
                     }}
                   >
                     <Trash2 className="size-4" />
-                  </div>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      ) : (`No hay registro de movimientos.`)
-      }
+      ) : (
+        <div className="flex min-h-48 flex-col items-center justify-center gap-2 p-6 text-center">
+          <p className="font-medium">Tu asiento empieza acá</p>
+          <p className="max-w-xs text-sm text-muted-foreground">
+            Agregá una cuenta con su importe para ver los movimientos y sus
+            totales.
+          </p>
+        </div>
+      )}
     </div>
-  )
+  );
 }

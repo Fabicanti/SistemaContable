@@ -1,12 +1,10 @@
 
-import { FloatingLabelInput } from '@/components/ui/floating-label-input';
-import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Entrie } from '@/schemas/entrie.schema'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { es } from 'date-fns/locale';
 import { Textarea } from '@/components/ui/textarea';
-import { randomNumber } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
@@ -21,23 +19,25 @@ export default function EntrieDetails({ form }: Props) {
   const [open, setOpen] = React.useState<boolean>(false);
 
   return (
-    <div className='grid md:grid-cols-2 grid-cols-1 gap-6'>
+    <div className='grid grid-cols-1 gap-5 lg:grid-cols-[minmax(240px,1fr)_2fr]'>
       <div className='space-y-6'>
         <FormField
           control={form.control}
           name="fecha"
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Fecha del asiento</FormLabel>
               <FormControl>
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
                     <Button
+                      type="button"
                       variant="outline"
                       id="date"
                       className="w-full justify-between font-normal"
                     >
                       {field.value ? (
-                        format(new Date(field.value), "PPP", { locale: es })
+                        format(new Date(field.value + "T00:00:00"), "PPP", { locale: es })
                       ) : (
                         <span>Elige una fecha</span>
                       )}
@@ -48,9 +48,10 @@ export default function EntrieDetails({ form }: Props) {
                     <Calendar
                       locale={es}
                       mode="single"
+                      selected={field.value ? new Date(field.value + "T00:00:00") : undefined}
                       captionLayout="dropdown"
                       onSelect={(date) => {
-                        field.onChange(date?.toISOString().split("T")[0]);
+                        if (date) { field.onChange(format(date, "yyyy-MM-dd")); setOpen(false); }
                       }}
                       disabled={(date) =>
                         date > new Date() || date < new Date("1900-01-01")
@@ -63,12 +64,7 @@ export default function EntrieDetails({ form }: Props) {
             </FormItem>
           )}
         />
-        <FloatingLabelInput
-          value={randomNumber(6)}
-          label={'Codigo del asiento'}
-          type={'text'}
-          disabled
-        />
+
       </div>
 
       <div className="grid  gap-4 w-full">
@@ -78,10 +74,12 @@ export default function EntrieDetails({ form }: Props) {
           name={'descripcion'}
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Descripción (opcional)</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="Descripción del asiento."
+                  className="min-h-20 resize-y"
+                  placeholder="Ej.: Pago de sueldos de septiembre"
                 />
               </FormControl>
               <FormMessage className="text-xs" />

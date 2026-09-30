@@ -1,29 +1,19 @@
+﻿import { BookText } from "lucide-react";
 
-import { 
-  Card, 
-  CardContent, 
-  CardDescription,
-  CardHeader, 
-  CardTitle 
-} from '@/components/ui/card';
-import { BookText } from 'lucide-react';
-
-import React from 'react'
-// BookText
 export default function BooksOverview() {
   return (
-    <Card className="w-full mb-6">
-      <CardHeader>
-        <CardTitle className='flex items-center gap-2'>
-          <BookText />
+    <header className="flex items-start gap-4 px-1 py-4">
+      <div className="rounded-xl border bg-card p-3 text-primary shadow-sm">
+        <BookText className="size-6" aria-hidden="true" />
+      </div>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">
           Libros contables
-        </CardTitle>
-        <CardDescription>
-          Visualizá y gestioná el libro mayor del sistema contable. 
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-      </CardContent>
-    </Card>
-  )
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          Consultá los movimientos y el saldo de cada cuenta en el libro mayor.
+        </p>
+      </div>
+    </header>
+  );
 }

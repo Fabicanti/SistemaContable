@@ -34,7 +34,7 @@ export function useBooksAll() {
     booksAllMutation.mutate(request);
   }
 
-  return { dataBooks: booksAllMutation.data ?? [], isLoadingBooks: booksAllMutation.isPending, onSubmit }
+  return { dataBooks: booksAllMutation.data ?? [], isLoadingBooks: booksAllMutation.isPending, isErrorBooks: booksAllMutation.isError, resetBooks: booksAllMutation.reset, onSubmit }
 }
 
 

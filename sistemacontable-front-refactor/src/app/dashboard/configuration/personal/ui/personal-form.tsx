@@ -1,200 +1,56 @@
-"use client"
+﻿"use client";
 
-import SeparatorTitle from '@/components/shared/separator-title';
+import { FormInput } from '@/components/form/form-input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { FloatingLabelInput } from '@/components/ui/floating-label-input';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { Separator } from '@/components/ui/separator';
+import { Form } from '@/components/ui/form';
 import { useUpdateMyUser } from '@/hooks/use-users';
-import { useUserStore } from '@/stores/user-store'
-import { BadgeCheckIcon, Crown, Eye, LoaderCircle, UserRound } from 'lucide-react';
-import React from 'react'
-
-type InputsId = {
-  id: 'nombre' | 'apellido';
-  label: string;
-  type: string;
-  personal: boolean;
-}
-
-const inputsUpdate: InputsId[] = [
-  { id: 'nombre', label: 'Nombre', type: 'text', personal: true },
-  { id: 'apellido', label: 'Apellido', type: 'text', personal: true },
-];
-
+import { useUserStore } from '@/stores/user-store';
+import { Crown, Eye, LoaderCircle, Save, UserRound } from 'lucide-react';
 
 export default function PersonalForm() {
   const { user } = useUserStore();
-
-  const canCreateAsientos = user?.roleId === 1 || user?.roleId === 2
-  const isAdmin = user?.roleId === 2
-  const isViewer = user?.roleId === 3
-
   const { form, onSubmit, isLoadingUpdateMyUser } = useUpdateMyUser(user);
+  const isAdmin = user?.roleId === 2;
+  const isViewer = user?.roleId === 3;
+  const canCreateAsientos = user?.roleId === 1 || isAdmin;
 
   if (!user) return null;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <h2 className="text-xl font-semibold">Información personal</h2>
-        <p className="text-sm text-muted-foreground">
-          Actualizá tus datos para mantener tu cuenta al día.
-        </p>
-
-        <Separator />
-        <div className='grid md:grid-cols-2 grid-cols-1 gap-4'>
-          {inputsUpdate.map((input) => (
-            <FormField
-              key={input.id}
-              control={form.control}
-              name={input.id}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FloatingLabelInput
-                      {...field}
-                      value={field.value ?? ''}
-                      id={input.id}
-                      label={input.label}
-                      type={input.type}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
-          ))}
-        </div>
-
-        <p className='text-sm text-muted-foreground text-center mb-6'>El nombre y apellido se verá en la creación de asientos contables.</p>
-
-        <FormField
-          key={'email'}
-          control={form.control}
-          disabled={isViewer}
-          name={'email'}
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput
-                  {...field}
-                  id={'email'}
-                  value={field.value ?? ''}
-                  label={'Email'}
-                  type={'email'}
-                />
-              </FormControl>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
-
-        <SeparatorTitle title='Usuario' />
-
-        <div className='grid grid-cols-1 gap-2'>
-          <FormField
-            key={'username'}
-            control={form.control}
-            name={'username'}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <FloatingLabelInput
-                    {...field}
-                    id={'username'}
-                    value={field.value ?? ''}
-                    label={'Nombre de usuario'}
-                    type={'text'}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          {/* Badge de permisos sobre asientos */}
-          <Badge
-            variant="secondary"
-            className={
-              canCreateAsientos
-                ? "bg-blue-500 text-white dark:bg-blue-600"
-                : "bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-100"
-            }
-            title={
-              canCreateAsientos
-                ? "Este usuario puede crear asientos contables."
-                : "Este usuario solo puede visualizar la información (modo espectador)."
-            }
-          >
-            {canCreateAsientos ? (
-              <>
-                <BadgeCheckIcon className="mr-1 h-3 w-3" />
-                Verificado
-              </>
-            ) : (
-              <>
-                <Eye className="mr-1 h-3 w-3" />
-                No Verificado
-              </>
-            )}
-          </Badge>
-
-          {/* Badge de rol general */}
-          <Badge
-            variant={
-              isAdmin
-                ? "admin" // tu variant custom
-                : isViewer
-                  ? "outline" // o el que uses para algo "menos importante"
-                  : "default"
-            }
-            title={
-              isAdmin
-                ? "Este usuario tiene privilegios de administración."
-                : isViewer
-                  ? "Este usuario solo es espectador."
-                  : "Este usuario tiene privilegios básicos."
-            }
-          >
-            {isAdmin ? (
-              <>
-                <Crown className="mr-1 h-3 w-3" />
-                Administrador
-              </>
-            ) : isViewer ? (
-              <>
-                <Eye className="mr-1 h-3 w-3" />
-                Espectador
-              </>
-            ) : (
-              <>
-                <UserRound className="mr-1 h-3 w-3" />
-                Usuario
-              </>
-            )}
-          </Badge>
-        </div>
-
-        <Separator />
-
-        <div className='flex justify-end'>
-          <Button
-            disabled={isLoadingUpdateMyUser}
-          >
-            {isLoadingUpdateMyUser ? (
-              <div className='flex items-center justify-center'>
-                <LoaderCircle className="mr-2 animate-spin" />
-                Aplicando...
-              </div>
-            ) : (
-              "Aplicar cambios"
-            )}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <header className="space-y-1 border-b pb-5">
+          <h2 className="text-lg font-semibold">Información personal</h2>
+          <p className="text-sm text-muted-foreground">Mantené actualizados los datos de tu cuenta.</p>
+        </header>
+        <fieldset disabled={isLoadingUpdateMyUser} className="min-w-0 space-y-5">
+          <legend className="mb-4 text-sm font-semibold">Datos personales</legend>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormInput control={form.control} name="nombre" label="Nombre" autoComplete="given-name" />
+            <FormInput control={form.control} name="apellido" label="Apellido" autoComplete="family-name" />
+          </div>
+          <p className="text-xs leading-relaxed text-muted-foreground">Tu nombre y apellido aparecerán en los asientos contables que crees.</p>
+          <FormInput control={form.control} name="email" label="Correo electrónico" type="email" autoComplete="email" readOnly={isViewer} description={isViewer ? 'El correo no se puede editar con el rol de espectador.' : undefined} />
+        </fieldset>
+        <fieldset disabled={isLoadingUpdateMyUser} className="min-w-0 space-y-4 border-t pt-5">
+          <legend className="px-1 text-sm font-semibold">Datos de la cuenta</legend>
+          <FormInput control={form.control} name="username" label="Nombre de usuario" autoComplete="username" autoCapitalize="none" spellCheck={false} />
+          <div className="space-y-2 rounded-lg bg-muted/40 p-3">
+            <p className="text-xs font-medium text-muted-foreground">Rol y permisos</p>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant={isAdmin ? 'admin' : isViewer ? 'outline' : 'default'}>{isAdmin ? <Crown className="size-3" /> : isViewer ? <Eye className="size-3" /> : <UserRound className="size-3" />}{isAdmin ? 'Administrador' : isViewer ? 'Espectador' : 'Usuario'}</Badge>
+              <Badge variant="secondary" className={canCreateAsientos ? 'bg-blue-500 text-white dark:bg-blue-600' : 'bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-100'}>{canCreateAsientos ? 'Puede crear asientos' : 'Solo consulta'}</Badge>
+            </div>
+          </div>
+        </fieldset>
+        <footer className="flex flex-col gap-3 border-t pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted-foreground" role="status">{form.formState.isDirty ? 'Tenés cambios sin guardar.' : 'Tus datos están actualizados.'}</p>
+          <Button type="submit" disabled={isLoadingUpdateMyUser || !form.formState.isDirty} className="w-full sm:w-auto">
+            {isLoadingUpdateMyUser ? <LoaderCircle className="animate-spin" /> : <Save aria-hidden="true" />}{isLoadingUpdateMyUser ? 'Guardando…' : 'Guardar cambios'}
           </Button>
-        </div>
+        </footer>
       </form>
     </Form>
-  )
+  );
 }

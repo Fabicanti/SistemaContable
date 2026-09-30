@@ -57,14 +57,14 @@ export default function EntriesTable() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Asientos contables</CardTitle>
+        <CardTitle>Asientos registrados</CardTitle>
         <CardDescription>
           Consultá los asientos contables registrados. Podés filtrar por rango de fechas.
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <div className="flex flex-col gap-4 mb-4 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-4 mb-5 rounded-xl border bg-muted/20 p-4 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
             <div>
               <Popover open={open} onOpenChange={setOpen}>
@@ -96,7 +96,7 @@ export default function EntriesTable() {
 
             <div className="grid grid-cols-2 gap-3">
               <Button
-                disabled={!dateRange || isLoadingEntries}
+                disabled={!dateRange?.from || !dateRange?.to || isLoadingEntries}
                 onClick={() => onSubmitEntries(dateRange)}
               >
                 {isLoadingEntries ? (
@@ -132,14 +132,14 @@ export default function EntriesTable() {
             showToggleColumns={false}
             showSearchInput={false}
             actions={actions}
-            messageEmpty="Sin resultados. Filtra asientos mediante fechas o crea un asiento."
+            messageEmpty="No hay asientos para mostrar. Seleccioná un rango de fechas y presioná Buscar."
           />
         )}
       </CardContent>
 
       <CardFooter className='flex justify-end'>
         <Button
-          variant="destructive"
+          variant="outline"
           onClick={() => onSubmitPdfEntries(dateRange)}
           disabled={isLoadingPdfEntries || !dateRange || dataEntries.length === 0}
         >
