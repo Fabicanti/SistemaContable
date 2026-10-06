@@ -1,6 +1,9 @@
 package com.SistemaContable.Services;
 
+import com.SistemaContable.DTO.AsientoFechaDto;
+import com.SistemaContable.DTO.AsientoResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,28 +39,66 @@ public class AsientoContableService {
     @Autowired
     private CuentaRepository cuentaRepository;
 
+    /**
+     * Asigna una entidad AsientoContable a un objeto AsientoDTO.
+     *
+     * @param asientoContable la entidad AsientoContable que se asignará a un DTO
+     * @return un objeto AsientoDTO rellenado con datos de la entidad AsientoContable dada
+     */
     private AsientoDTO mapToDTO(AsientoContable asientoContable) {
         AsientoDTO asientoDTO = new AsientoDTO();
         asientoDTO.setId(asientoContable.getId());
         asientoDTO.setFecha(asientoContable.getFecha());
         asientoDTO.setDescripcion(asientoContable.getDescripcion());
         asientoDTO.setUsuarioId(asientoContable.getUsuario().getId());
-        List<DetalleAsientoDTO> detalleDTOs = new ArrayList<>();
-        for (DetalleAsiento detalle : asientoContable.getDetalles()) {
-            DetalleAsientoDTO detalleDTO = new DetalleAsientoDTO();
-            detalleDTO.setId(detalle.getId());
-            detalleDTO.setCuentaId(detalle.getCuenta().getId());
-            detalleDTO.setDebe(detalle.getDebe());
-            detalleDTO.setHaber(detalle.getHaber());
-            detalleDTOs.add(detalleDTO);
-        }
-        asientoDTO.setDetalles(detalleDTOs);
+        asientoDTO.setDetalles(asientoContable.getDetalles().stream().map(this::mapToDetalleAsientoDto).collect(Collectors.toList()));
         return asientoDTO;
     }
 
-    public List<AsientoDTO> obtenerTodosLosAsientos() {
+    /**
+     * Asigna una entidad AsientoContable a un AsientoResponseDto.
+     *
+     * @param asientoContable la entidad AsientoContable que se convertirá
+     * @return un AsientoResponseDto que contiene los datos asignados del AsientoContable proporcionado
+     */
+    private AsientoResponseDto mapToResponseDto(AsientoContable asientoContable) {
+        String nombreApellido = asientoContable.getUsuario().getNombre() + " " + asientoContable.getUsuario().getApellido();
+
+        AsientoResponseDto asientoResponseDto = new AsientoResponseDto();
+        asientoResponseDto.setId(asientoContable.getId());
+        asientoResponseDto.setFecha(asientoContable.getFecha());
+        asientoResponseDto.setDescripcion(asientoContable.getDescripcion());
+        asientoResponseDto.setUsuarioName(nombreApellido);
+        asientoResponseDto.setDetalles(asientoContable.getDetalles().stream().map(this::mapToDetalleAsientoDto).collect(Collectors.toList()));
+        return asientoResponseDto;
+    }
+
+    /**
+     * Asigna una entidad DetalleAsiento a un DetalleAsientoDTO.
+     *
+     * @param detalleAsiento la entidad DetalleAsiento que se asignará
+     * @return un DetalleAsientoDTO que contiene los datos asignados
+     */
+    private DetalleAsientoDTO mapToDetalleAsientoDto(DetalleAsiento detalleAsiento) {
+        DetalleAsientoDTO detalleAsientoDTO = new DetalleAsientoDTO();
+        detalleAsientoDTO.setId(detalleAsiento.getId());
+        detalleAsientoDTO.setCuentaId(detalleAsiento.getCuenta().getId());
+        detalleAsientoDTO.setDebe(detalleAsiento.getDebe());
+        detalleAsientoDTO.setHaber(detalleAsiento.getHaber());
+        detalleAsientoDTO.setNombreCuenta(detalleAsiento.getCuenta().getNombre());
+        return detalleAsientoDTO;
+    }
+
+    // Prueba por ahora.
+    public List<AsientoResponseDto> obtenerTodosLosAsientosEntreFechas(LocalDate desde, LocalDate hasta) {
+        return asientoContableRepository.findByFechaBetween(desde, hasta).stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<AsientoResponseDto> obtenerTodosLosAsientos() {
         return asientoContableRepository.findAll().stream()
-                .map(this::mapToDTO)
+                .map(this::mapToResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -80,7 +121,7 @@ public class AsientoContableService {
 
         // Buscar y asignar usuario
         Usuario usuario = usuarioRepository.findById(asientoDTO.getUsuarioId())
-                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT ,"Usuario no encontrado"));
         asientoContable.setUsuario(usuario);
 
         // Procesar los detalles del asiento
@@ -100,6 +141,10 @@ public class AsientoContableService {
             Cuenta cuenta = cuentaRepository.findById(detalleDTO.getCuentaId())
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND,"La cuenta no fue encontrada."));
+            if (!cuenta.getActiva()) {
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT, "La cuenta " + cuenta.getNombre() + " está inactiva y no puede utilizarse en nuevos movimientos.");
+            }
             // Verifica que la cuenta seleccionada pueda utilizarse (mientras no tenga hijos)        
             Long subCuentas = cuentaRepository.countByCuentaPadreId(cuenta.getId());
             if(subCuentas == 0 && cuenta.getSaldo() >= 0){
@@ -145,9 +190,8 @@ public class AsientoContableService {
         try{
             return asientoContableRepository.save(asientoContable);
         }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar la cuenta.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al crear el asiento contable.");
         }
-//        return asientoContableRepository.save(asientoContable);
     }
 
     // Verifica que la fecha del nuevo asiento esté entre la fecha del ultimo asiento (incluida) y hoy (incluida).

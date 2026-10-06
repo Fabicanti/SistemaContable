@@ -29,6 +29,7 @@ public class CuentaService {
         controlarTipo(cuentaDTO);
         setearSaldo(cuentaDTO);
         Cuenta cuenta = mapToEntity(cuentaDTO);
+        cuenta.setActiva(true);
         Cuenta nuevaCuenta = cuentaRepository.save(cuenta);
         return mapToDTO(nuevaCuenta);
     }
@@ -71,30 +72,38 @@ public class CuentaService {
     }
 
     /**
-     * Método para eliminar una cuenta por ID
-     * Elimina la cuenta si esta no tiene movimientos (DetalleAsiento) asociados ni es cuenta padre de
-     * otras cuentas.
-     * @param id es el ID de la cuenta a eliminar
+     * Desactiva una cuenta sin eliminarla ni afectar sus movimientos históricos.
+     * No permite desactivar cuentas que tengan hijas activas.
      */
     public void eliminarCuenta(Long id) {
-        Long cantidadMovimientos = cuentaRepository.countMovimientosByCuentaId(id);
+        Cuenta cuenta = buscarCuenta(id);
 
-        Long cantidadSubCuentas = cuentaRepository.countByCuentaPadreId(id);
-
-        if (cantidadSubCuentas > 0)
-            throw new ResponseStatusException(HttpStatus
-                    .CONFLICT, "No se puede eliminar la cuenta porque tiene cuentas hijas asociadas.");
-
-        if (cantidadMovimientos > 0)
-            throw new ResponseStatusException(HttpStatus
-                    .CONFLICT, "No se puede eliminar la cuenta porque tiene movimientos asociados.");
-
-        try {
-            cuentaRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar la cuenta.");
+        if (cuentaRepository.existsByCuentaPadreIdAndActivaTrue(id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "No se puede desactivar la cuenta porque tiene cuentas hijas activas.");
         }
-    } //Si las cuentas a borrar tienen movimientos asociados deberiamos "esconder" la cuenta del usuario sin eliminarla realmente. 
+
+        cuenta.setActiva(false);
+        cuentaRepository.save(cuenta);
+    }
+
+    public CuentaDTO reactivarCuenta(Long id) {
+        Cuenta cuenta = buscarCuenta(id);
+        Cuenta cuentaPadre = cuenta.getCuentaPadre();
+
+        if (cuentaPadre != null && !cuentaPadre.getActiva()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "No se puede reactivar la cuenta porque su cuenta padre está inactiva.");
+        }
+
+        cuenta.setActiva(true);
+        return mapToDTO(cuentaRepository.save(cuenta));
+    }
+
+    private Cuenta buscarCuenta(Long id) {
+        return cuentaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cuenta no encontrada."));
+    }
 
     // Método privado para mapear de Cuenta a CuentaDTO
     private CuentaDTO mapToDTO(Cuenta cuenta) {
@@ -104,6 +113,7 @@ public class CuentaService {
                 cuenta.getCodigoCuenta(),
                 cuenta.getSaldo(),
                 cuenta.getRecibeSaldo(),
+                cuenta.getActiva(),
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getId() : null,
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getNombre() : null,
                 cuenta.getCuentaPadre() != null ? cuenta.getCuentaPadre().getId() : null,
@@ -136,6 +146,12 @@ public class CuentaService {
 
     public List<String> obtenerNombresCuentas(){
         return cuentaRepository.findAllNombresCuentas();
+    }
+
+    public List<CuentaDTO> obtenerCuentasOperativas() {
+        return cuentaRepository.findAllByActivaTrueAndRecibeSaldoTrue().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     private void setearSaldo(CuentaDTO cuentaDTO){

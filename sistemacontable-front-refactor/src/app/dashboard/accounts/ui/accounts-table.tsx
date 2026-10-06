@@ -1,0 +1,83 @@
+"use client";
+
+import { Copy, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+import { DataTable } from '@/components/table/data-table';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Account } from '@/interfaces/account-interface';
+import { copyToClipboard } from '@/lib/utils';
+import { useAccountStore } from '@/stores/account-store';
+import { useUserStore } from '@/stores/user-store';
+
+import { accountsColumns } from '../table/accounts-columns';
+import AccountDelete from './dialog/account-delete';
+import SkeletonDataTable from '@/components/skeleton/table-skeleton';
+
+export default function AccountsTable() {
+  const { user } = useUserStore();
+  const [deleteAccount, setDeleteAccount] = useState<Account | null>(null);
+  const { accounts, fetchAccounts, isLoadingAccounts } = useAccountStore();
+
+  useEffect(() => {
+    fetchAccounts();
+  }, [fetchAccounts]);
+
+  const actions = (account: Account) => {
+    return (
+      <div>
+        <DropdownMenuItem onClick={() => copyToClipboard(String(account.codigoCuenta))}>
+          <Copy /> Copiar Código
+        </DropdownMenuItem>
+        {user?.roleId === 2 &&
+          <DropdownMenuItem onClick={() => setDeleteAccount(account)} variant="destructive">
+            <Trash2 /> Eliminar cuenta
+          </DropdownMenuItem>
+        }
+      </div>
+    )
+  };
+
+  return (
+    <div>
+      <Card className="mb-6 gap-2 shadow-none">
+        <CardHeader className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+          <CardTitle>Listado de cuentas</CardTitle>
+          <CardDescription>Buscá por código o nombre y filtrá por tipo de cuenta.</CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
+          {isLoadingAccounts ? (
+            <SkeletonDataTable />
+          ) : (
+            <DataTable
+              columns={accountsColumns}
+              data={accounts ?? []}
+              showToggleColumns={false}
+              enableRowSelection={false}
+              showPageSummary
+              rowLabels={{ singular: "cuenta", plural: "cuentas" }}
+              searchPlaceholder="Buscar por código o nombre..."
+              messageEmpty="No se encontraron cuentas para esta búsqueda."
+              columnLabels={{
+                column: "tipoCuentaNombre",
+                label: "Tipos de cuentas"
+              }}
+              filterableColumns={['codigoCuenta', 'nombre', 'tipoCuentaNombre']}
+              actions={actions}
+            />
+          )}
+        </CardContent>
+
+        {deleteAccount &&
+          <AccountDelete
+            account={deleteAccount}
+            onClose={() => setDeleteAccount(null)}
+          />
+        }
+
+      </Card>
+    </div>
+  )
+}

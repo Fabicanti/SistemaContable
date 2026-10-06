@@ -5,16 +5,16 @@ import java.time.LocalDate;
 public class LibroMayorRequestDTO {
 
     private Long cuentaId;
-    private LocalDate fecha_inicio;
-    private LocalDate fecha_fin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
 
     public LibroMayorRequestDTO() {
     }
 
-    public LibroMayorRequestDTO(Long cuentaId, LocalDate fecha_inicio, LocalDate fecha_fin) {
+    public LibroMayorRequestDTO(Long cuentaId, LocalDate fechaInicio, LocalDate fechaFin) {
         this.cuentaId = cuentaId;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
     }
 
     public Long getcuentaId() {
@@ -25,19 +25,19 @@ public class LibroMayorRequestDTO {
     }
 
     public LocalDate getFechaInicio() {
-        return this.fecha_inicio;
+        return this.fechaInicio;
     }
 
     public void setFechaInicio(LocalDate fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
+        this.fechaInicio = fecha_inicio;
     }
 
     public LocalDate getFechaFin() {
-        return this.fecha_fin;
+        return this.fechaFin;
     }
 
     public void setFechaFin(LocalDate fecha_fin) {
-        this.fecha_fin = fecha_fin;
+        this.fechaFin = fecha_fin;
     }
 
 }

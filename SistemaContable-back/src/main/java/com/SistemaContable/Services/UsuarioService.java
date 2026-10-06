@@ -1,10 +1,12 @@
 package com.SistemaContable.Services;
 
+import com.SistemaContable.DTO.PasswordDTO;
 import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Entities.*;
 import com.SistemaContable.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,26 +23,36 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private RolRepository rolRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Método para registrar un nuevo usuario
     public Usuario registrarUsuario(UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
+
+        if (usuarioRepository.existsByUsername(usuarioDTO.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El nombre de usuario ya existe.");
+        }
         // Mapeo de DTO a entidad
         Usuario usuario = new Usuario();
         usuario.setUsername(usuarioDTO.getUsername());
-        usuario.setPasswordHash(encryptPassword(usuarioDTO.getPassword()));
+        usuario.setPasswordHash(passwordEncoder.encode(usuarioDTO.getPassword()));
         usuario.setNombre(usuarioDTO.getNombre());
         usuario.setApellido(usuarioDTO.getApellido());
         usuario.setEmail(usuarioDTO.getEmail());
 
         Rol rol = rolRepository.findById(usuarioDTO.getRoleId())
-                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Rol no encontrado"));
         usuario.setRole(rol); // Asignar el Rol al usuario
 
         // Guardar en la base de datos
-        Usuario nuevoUsuario = usuarioRepository.save(usuario);
-        mapToDTO(nuevoUsuario);
-        // Mapeo de la entidad guardada a DTO
-        return nuevoUsuario;
+        try {
+            Usuario nuevoUsuario = usuarioRepository.save(usuario);
+            mapToDTO(nuevoUsuario);
+            // Mapeo de la entidad guardada a DTO
+            return nuevoUsuario;
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al registrar el usuario.");
+        }
     }
 
     public void eliminarUsuario(UsuarioDTO usuarioDTO) {
@@ -55,17 +67,9 @@ public class UsuarioService {
             }catch (Exception e){
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar el usuario.");
             }
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado.");
         }
-    }
-
-    // Método para autenticar un usuario
-    public boolean autenticarUsuario(String username, String password) throws NoSuchAlgorithmException {
-        Optional<Usuario> usuario = usuarioRepository.findByUsername(username);
-        if (usuario.isPresent()) {
-            String passwordHash = encryptPassword(password);
-            return passwordHash.equals(usuario.get().getPasswordHash());
-        }
-        return false;
     }
 
     // Obtener todos los usuarios
@@ -103,12 +107,35 @@ public class UsuarioService {
 
     /**
      * Busco el usuario por su username, reutilice en método 'mapToDTO'
-     * @param usuarioDTO es objeto que me envía el login
+     * @param userId es objeto que me envía el login
      * @return Todos los datos el usuario buscado.
      */
-    public UsuarioDTO buscarUsuario(UsuarioDTO usuarioDTO){
-        Optional<Usuario> usuario = usuarioRepository.findByUsername(usuarioDTO.getUsername());
-        return this.mapToDTO(usuario.get());
+    public UsuarioDTO buscarUsuarioById(Long userId){
+        return usuarioRepository.findById(userId).map(this::mapToDTO).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")
+        );
+    }
+
+    /**
+     * Cambia la contraseña de un usuario existente, verificando primero que la contraseña
+     * anterior proporcionada coincida con la almacenada en la base de datos.
+     */
+    public void cambiarPassword(PasswordDTO passwordDTO) {
+        Usuario usuario = usuarioRepository.findById(passwordDTO.getUserId()).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")
+        );
+
+        if (!passwordEncoder.matches(passwordDTO.getOldPassword(), usuario.getPasswordHash()))  {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Las contraseñas no coinciden.");
+        }
+
+        try{
+            usuario.setPasswordHash(passwordEncoder.encode(passwordDTO.getNewPassword()));
+            usuarioRepository.save(usuario);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al cambiar la contraseña.");
+        }
+
     }
 
     /**
@@ -133,7 +160,7 @@ public class UsuarioService {
             }
             if (! usuarioDTO.getRoleId().equals(usuario.get().getRole().getId())) {
                 Rol rol = rolRepository.findById(usuarioDTO.getRoleId())
-                        .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Rol no encontrado"));
                 usuario.get().setRole(rol);
             }
             usuarioRepository.save(usuario.get());

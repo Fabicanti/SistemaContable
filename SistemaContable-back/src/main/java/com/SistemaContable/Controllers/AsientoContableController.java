@@ -1,18 +1,19 @@
 package com.SistemaContable.Controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+
+import com.SistemaContable.DTO.AsientoFechaDto;
+import com.SistemaContable.DTO.AsientoResponseDto;
 import com.SistemaContable.Services.PdfGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.SistemaContable.DTO.AsientoDTO;
 import com.SistemaContable.Entities.AsientoContable;
 import com.SistemaContable.Services.AsientoContableService;
@@ -34,14 +35,24 @@ public class AsientoContableController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<AsientoDTO>> listarAsientos() {
-        List<AsientoDTO> asientos = asientoContableService.obtenerTodosLosAsientos();
+    public ResponseEntity<List<AsientoResponseDto>> listarAsientos(
+            @RequestParam("desde") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam("hasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
+    ) {
+        List<AsientoResponseDto> asientos = asientoContableService
+                .obtenerTodosLosAsientosEntreFechas(desde, hasta);
+
         return ResponseEntity.ok(asientos);
     }
 
     @GetMapping("/pdf")
-    public ResponseEntity<?> obtenerAsientoPdf() throws IOException {
-        List<AsientoDTO> asientosContables = asientoContableService.obtenerTodosLosAsientos();
+    public ResponseEntity<byte[]> obtenerAsientoPdf(
+            @RequestParam("desde") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam("hasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
+    ) throws IOException {
+        List<AsientoResponseDto> asientosContables = asientoContableService
+                .obtenerTodosLosAsientosEntreFechas(desde, hasta);
+
         byte[] pdfBytes = pdfGeneratorService.generarPdfAsiento(asientosContables);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

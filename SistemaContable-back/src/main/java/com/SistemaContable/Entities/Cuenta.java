@@ -17,7 +17,7 @@ public class Cuenta {
     @Column(nullable = false)
     private String nombre;
 
-    @Column(name = "codigo_cuenta", nullable = false)
+    @Column(name = "codigo_cuenta", nullable = false, unique = true)
     private String codigoCuenta;
 
     @Column(name = "saldo", nullable = false)
@@ -25,6 +25,9 @@ public class Cuenta {
 
     @Column(name = "recibe_saldo", nullable = false)
     private boolean recibeSaldo;
+
+    @Column(name = "activa", nullable = false)
+    private boolean activa = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_cuenta_id", nullable = false)
@@ -83,6 +86,14 @@ public class Cuenta {
 
     public void setRecibeSaldo(boolean recibeSaldo){
         this.recibeSaldo = recibeSaldo;
+    }
+
+    public boolean getActiva() {
+        return activa;
+    }
+
+    public void setActiva(boolean activa) {
+        this.activa = activa;
     }
 
     public void setCodigoCuenta(String codigoCuenta) {

@@ -1,4 +1,5 @@
 package com.SistemaContable.Controllers;
+import com.SistemaContable.DTO.PasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.Map;
 import com.SistemaContable.DTO.UsuarioDTO;
 import com.SistemaContable.Entities.Usuario;
 import com.SistemaContable.Services.UsuarioService;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -19,6 +21,17 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    /**
+     * Obtiene un usuario específico según su identificador único.
+     * @param id identificador único del usuario que se desea obtener.
+     * @return una respuesta HTTP con el objeto UsuarioDTO si el usuario es encontrado.
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuario(@PathVariable Long id) {
+        UsuarioDTO usuarioDTO =  usuarioService.buscarUsuarioById(id);
+        return ResponseEntity.ok(usuarioDTO);
+    }
 
     @PostMapping("/registrar")
     public ResponseEntity<Map<String, String>> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws NoSuchAlgorithmException {
@@ -30,35 +43,10 @@ public class UsuarioController {
     }
 
     /**
-     * Se modifícó el tipo de retorno de la función de Map<String, String> a <?>
-     * @param usuarioDTO
-     * @return Retorna los datos de usuario logeado si la autenticación es exitosa, caso contrario será un estado HTTP 403: Unauthorized.
-     */
-    @PostMapping("/login")
-    public ResponseEntity<?> autenticarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        boolean isAuthenticated = false;
-        Map<String, String> response = new HashMap<>();
-        try {
-            isAuthenticated = usuarioService.autenticarUsuario(usuarioDTO.getUsername(), usuarioDTO.getPassword());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        if (isAuthenticated){
-            UsuarioDTO usuario = usuarioService.buscarUsuario(usuarioDTO);
-            response.put("message", "Usuario autenticado exitosamente");
-            return ResponseEntity.ok(usuario);
-        }else {
-            response.put("error", "Credenciales incorrectas");
-            return ResponseEntity.status(401).body(response);
-        }
-    }
-    
-    /**
      * Elimina un usuario.
      * @param usuarioDTO es el objeto del usuario que quiero eliminar.
      * @return el estado 204 si el usuario se eliminó, caso contrario será el estado 404: NOT FOUND.
      */
-    @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping("/eliminar")
     public ResponseEntity<?> eliminarUsuario(@RequestBody UsuarioDTO usuarioDTO){
         usuarioService.eliminarUsuario(usuarioDTO);
@@ -75,7 +63,21 @@ public class UsuarioController {
         if (usuarioService.actualizarUsuario(usuarioDTO)) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
+    }
+
+    /**
+     * Modifica la contraseña de un usuario existente.
+     * Válida que la contraseña anterior proporcionada coincida con la registrada
+     * y, si es correcto, actualiza la contraseña por la nueva.
+     *
+     * @param passwordDTO contiene los datos necesarios para la validación y cambio de contraseña
+     *                    (ID del usuario, contraseña actual, y nueva contraseña).
+     */
+    @PatchMapping("/modificarPassword")
+    public ResponseEntity<Void> modificarPassword(@RequestBody PasswordDTO passwordDTO) {
+        this.usuarioService.cambiarPassword(passwordDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
