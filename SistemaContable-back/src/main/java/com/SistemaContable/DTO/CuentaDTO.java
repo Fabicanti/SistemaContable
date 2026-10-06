@@ -7,6 +7,7 @@ public class CuentaDTO {
     private String codigoCuenta;
     private double saldo;
     private boolean recibeSaldo;
+    private boolean activa;
     private Long tipoCuentaId;
     private String tipoCuentaNombre;
     private Long cuentaPadreId;
@@ -20,12 +21,13 @@ public class CuentaDTO {
         this.nombre = nombre;
     }
 
-    public CuentaDTO(Long id, String nombre, String codigoCuenta, double saldo, boolean recibeSaldo, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
+    public CuentaDTO(Long id, String nombre, String codigoCuenta, double saldo, boolean recibeSaldo, boolean activa, Long tipoCuentaId, String tipoCuentaNombre, Long cuentaPadreId, List<Long> subCuentasIds) {
         this.id = id;
         this.nombre = nombre;
         this.codigoCuenta = codigoCuenta;
         this.saldo = saldo;
         this.recibeSaldo = recibeSaldo;
+        this.activa = activa;
         this.tipoCuentaId = tipoCuentaId;
         this.tipoCuentaNombre = tipoCuentaNombre;
         this.cuentaPadreId = cuentaPadreId;
@@ -81,6 +83,14 @@ public class CuentaDTO {
 
     public void setRecibeSaldo(boolean recibeSaldo){
         this.recibeSaldo = recibeSaldo;
+    }
+
+    public boolean getActiva() {
+        return activa;
+    }
+
+    public void setActiva(boolean activa) {
+        this.activa = activa;
     }
 
     public Long getTipoCuentaId() {

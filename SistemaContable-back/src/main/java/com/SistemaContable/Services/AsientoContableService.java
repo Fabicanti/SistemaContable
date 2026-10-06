@@ -141,6 +141,10 @@ public class AsientoContableService {
             Cuenta cuenta = cuentaRepository.findById(detalleDTO.getCuentaId())
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND,"La cuenta no fue encontrada."));
+            if (!cuenta.getActiva()) {
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT, "La cuenta " + cuenta.getNombre() + " está inactiva y no puede utilizarse en nuevos movimientos.");
+            }
             // Verifica que la cuenta seleccionada pueda utilizarse (mientras no tenga hijos)        
             Long subCuentas = cuentaRepository.countByCuentaPadreId(cuenta.getId());
             if(subCuentas == 0 && cuenta.getSaldo() >= 0){

@@ -14,17 +14,21 @@ public interface CuentaRepository  extends JpaRepository<Cuenta, Long>{
 
     Long countByCuentaPadreId(Long cuentaPadreId);
 
+    boolean existsByCuentaPadreIdAndActivaTrue(Long cuentaPadreId);
+
+    List<Cuenta> findAllByActivaTrueAndRecibeSaldoTrue();
+
     @Query("SELECT DISTINCT c FROM Cuenta c INNER JOIN DetalleAsiento da ON c.id = da.cuenta.id")
     List<Cuenta> findAllIdNombresCuentas();
 
-    @Query("SELECT c.nombre FROM Cuenta c WHERE c.recibeSaldo = true")
+    @Query("SELECT c.nombre FROM Cuenta c WHERE c.recibeSaldo = true AND c.activa = true")
     List<String> findAllNombresCuentas();
 
     /**
      * @param cuentaId es el ID de la cuenta.
      * @return la cantidad de DetalleAsientos (Movimientos) que tiene las cuentas.
      */
-    @Query("SELECT COUNT(m) FROM DetalleAsiento m WHERE m.asientoContable.id = :cuentaId")
+    @Query("SELECT COUNT(m) FROM DetalleAsiento m WHERE m.cuenta.id = :cuentaId")
     Long countMovimientosByCuentaId(@Param("cuentaId") Long cuentaId);
 
     @Query("SELECT c FROM Cuenta c WHERE c.id = (SELECT MAX(c2.id) FROM Cuenta c2 WHERE c2.cuentaPadre.id = :cuentaPadreId)")

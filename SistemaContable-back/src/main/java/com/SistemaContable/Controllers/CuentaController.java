@@ -38,9 +38,19 @@ public class CuentaController {
         return ResponseEntity.ok(cuentaService.obtenerNombresCuentas());
     }
 
+    @GetMapping("/operativas")
+    public ResponseEntity<List<CuentaDTO>> obtenerCuentasOperativas(){
+        return ResponseEntity.ok(cuentaService.obtenerCuentasOperativas());
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> eliminarCuenta(@PathVariable Long id){
         cuentaService.eliminarCuenta(id);
-        return ResponseEntity.ok("Cuenta eliminada correctamente");
+        return ResponseEntity.ok("Cuenta desactivada correctamente");
+    }
+
+    @PatchMapping("/{id}/reactivar")
+    public ResponseEntity<CuentaDTO> reactivarCuenta(@PathVariable Long id){
+        return ResponseEntity.ok(cuentaService.reactivarCuenta(id));
     }
 }

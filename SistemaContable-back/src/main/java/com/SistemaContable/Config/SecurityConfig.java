@@ -81,6 +81,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/usuarios/modificar").hasRole(ADMIN)
                         // Cuentas.
                         .requestMatchers(HttpMethod.GET, "/api/cuentas").hasAnyRole(USER, ADMIN, VIEWER)
+                        .requestMatchers(HttpMethod.GET, "/api/cuentas/nombres", "/api/cuentas/operativas").hasAnyRole(USER, ADMIN, VIEWER)
                         .requestMatchers("/api/cuentas/**").hasRole(ADMIN)
                         // Asientos contables.
                         .requestMatchers("/api/asientos/**").hasAnyRole(USER, ADMIN, VIEWER)

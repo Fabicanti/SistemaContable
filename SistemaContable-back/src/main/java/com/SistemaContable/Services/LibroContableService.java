@@ -118,6 +118,7 @@ public class LibroContableService {
                 cuenta.getCodigoCuenta(),
                 cuenta.getSaldo(),
                 cuenta.getRecibeSaldo(),
+                cuenta.getActiva(),
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getId() : null,
                 cuenta.getTipoCuenta() != null ? cuenta.getTipoCuenta().getNombre() : null,
                 cuenta.getCuentaPadre() != null ? cuenta.getCuentaPadre().getId() : null,
